@@ -2,10 +2,7 @@
 
 ## Getting started
 
-- Clone this repository:
-    ```
-    https://git.baipyr.us/Baipyrus/DiscordJS.git
-    ```
+- Create a new repository from this template.
 - Remove example commands:
     - Either permanently delete directory `commands/examples/`
     - Or move `commands/examples/` elsewhere, commit deletion, add to [`.gitignore`](.gitignore) and move back in
