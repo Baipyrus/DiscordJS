@@ -38,7 +38,7 @@ readdirAsync(cmdPath)
 				categories.map(async (category) => {
 					const catPath = join(cmdPath, category);
 					const content = await readdirAsync(catPath);
-					const files = content.filter((file) => file.endsWith('.js'));
+					const files = content.filter((file) => file.endsWith('.js') && !file.endsWith('.example.js'));
 					// For each command file
 					return await Promise.all(
 						files.map(async (current) => {

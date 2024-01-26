@@ -40,7 +40,7 @@ readdirAsync(mainPath)
 			await Promise.all(
 				categories.map(async (category) => {
 					const catPath = join(mainPath, category);
-					const files = (await readdirAsync(catPath)).filter((file) => file.endsWith('.js'));
+					const files = (await readdirAsync(catPath)).filter((file) => file.endsWith('.js') && !file.endsWith('.example.js'));
 					// For each command file
 					return await Promise.all(
 						files.map(async (current) => {
