@@ -1,3 +1,4 @@
+import defineRoleEmojiPair from './models/roleEmojiPair.js';
 import defineMessage from './models/message.js';
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
@@ -10,8 +11,9 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PWD, {
 	logging: false,
 	host: DB_HOST,
 });
+const RoleEmojiPair = defineRoleEmojiPair(sequelize);
 const Message = defineMessage(sequelize);
 
 sequelize.sync();
 
-export { sequelize, Message };
+export { sequelize, RoleEmojiPair, Message };
