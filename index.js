@@ -18,6 +18,7 @@ const runClient = (commands, events) => {
 		intents: [
 			GatewayIntentBits.Guilds,
 			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.GuildVoiceStates,
 			GatewayIntentBits.GuildMessageReactions
 		],
 		partials: [Partials.Message, Partials.Reaction]
