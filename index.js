@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { promisify } from 'util';
 import { config } from 'dotenv';
 import { readdir } from 'fs';
+import { Partials } from 'discord.js';
 
 config();
 const readdirAsync = promisify(readdir);
@@ -13,7 +14,14 @@ const optional = ['autocomplete', 'modalSubmit'];
 
 const runClient = (commands, events) => {
 	// Create a new client instance
-	const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+	const client = new Client({
+		intents: [
+			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.GuildMessageReactions
+		],
+		partials: [Partials.Message, Partials.Reaction]
+	});
 	client.commands = new Collection();
 	commands.forEach((c) => client.commands.set(c.data.name, c));
 	events.forEach((e) =>
