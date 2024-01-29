@@ -5,12 +5,11 @@ import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
 config();
 
-const { DB_NAME, DB_USER, DB_PWD, DB_HOST } = process.env;
-const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PWD, {
+const { DB_NAME } = process.env;
+const sequelize = new Sequelize({
 	storage: `${DB_NAME}.sqlite`,
 	dialect: 'sqlite',
 	logging: false,
-	host: DB_HOST,
 });
 const RoleEmojiPair = defineRoleEmojiPair(sequelize);
 const VoiceChannel = defineVoiceChannel(sequelize);
