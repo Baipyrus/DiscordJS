@@ -1,6 +1,6 @@
-import defineRoleEmojiPair from './models/roleEmojiPair.js';
-import defineVoiceChannel from './models/voiceChannel.js';
-import defineMessage from './models/message.js';
+import defineRoleEmojiPair from './models/roleEmojiPairs.js';
+import defineVoiceChannel from './models/voiceChannels.js';
+import defineMessage from './models/messages.js';
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
 config();
