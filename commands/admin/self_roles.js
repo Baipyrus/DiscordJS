@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
+import { Message, RoleEmojiPair } from './../../database.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('self_roles')
@@ -84,10 +85,15 @@ export async function execute(interaction) {
 				content: 'Added new entry for self roles!',
 				ephemeral: true,
 			});
+
+			RoleEmojiPair.create({ message: id, role: role.id, emoji });
+
 			console.debug(`[DEBUG] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
 			break;
 	}
 
-	if (createNew)
+	if (createNew) {
 		console.debug(`[DEBUG] New self roles on message with ID: '${id}'.`);
+		Message.create({ id });
+	}
 }
