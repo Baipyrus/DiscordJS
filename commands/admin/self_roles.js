@@ -14,37 +14,80 @@ export const data = new SlashCommandBuilder()
 					.setDescription('The text to be displayed in the message.')))
 	.addSubcommand(subcommand =>
 		subcommand
-			.setName('add')
-			.setDescription('Adds functionality to an existing message.')
+			.setName('register')
+			.setDescription('Registers an existing message.')
 			.addStringOption(option =>
 				option
 					.setName('id')
 					.setRequired(true)
-					.setDescription('The ID to reference the message to be used.')));
+					.setDescription('The ID to reference the message to be used.')))
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('add')
+			.setDescription('Add a role-emoji-pair to a message.')
+			.addStringOption(option =>
+				option
+					.setName('id')
+					.setRequired(true)
+					.setDescription('The ID to reference the message to be used.'))
+			.addRoleOption(option =>
+				option
+					.setName('role')
+					.setRequired(true)
+					.setDescription('The role be assigned to.'))
+			.addStringOption(option =>
+				option
+					.setName('emoji')
+					.setRequired(true)
+					.setDescription('The emoji to be reacted with.')));
 export async function execute(interaction) {
 	const channel = interaction.channel;
-	let message = null;
 
+	let createNew = false;
+	let id = interaction.options.getString('id');
 	switch (interaction.options.getSubcommand()) {
 		case 'create':
 			// Create message with text input
 			const text = interaction.options.getString('text');
-			message = await channel.send(text);
+			id = (await channel.send(text)).id;
 			// Reply and delete to acknowledge command
 			interaction.deferReply();
 			interaction.deleteReply();
+			// Flag to create new database entry
+			createNew = true;
+			break;
+		case 'register':
+			try {
+				// Get message by id
+				await channel.messages.fetch(id);
+				// Reply successfully to acknowledge command
+				await interaction.reply({
+					content: 'Successfully fetched message!',
+					ephemeral: true,
+				});
+				// Flag to create new database entry
+				createNew = true;
+			} catch (_) {
+				// Reply failed to acknowledge command
+				await interaction.reply({
+					content: 'Failed to fetch message!',
+					ephemeral: true,
+				});
+			}
 			break;
 		case 'add':
-			// Get message by id
-			const id = interaction.options.getString('id');
-			message = await channel.messages.fetch(id);
-			// Reply to acknowledge command
+			const role = interaction.options.getRole('role');
+			const emoji = interaction.options.getString('emoji');
+
+			// Reply successfully to acknowledge command
 			await interaction.reply({
-				content: 'Successfully fetched message!',
+				content: 'Added new entry for self roles!',
 				ephemeral: true,
 			});
+			console.debug(`[DEBUG] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
 			break;
 	}
 
-	console.debug(`[DEBUG] Message ID: '${message.id}'.`);
+	if (createNew)
+		console.debug(`[DEBUG] New self roles on message with ID: '${id}'.`);
 }
