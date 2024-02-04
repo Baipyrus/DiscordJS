@@ -1,5 +1,106 @@
+import { Op } from 'sequelize';
 import { SlashCommandBuilder } from 'discord.js';
 import { Message, RoleEmojiPair } from './../../database.js';
+
+const createSelfRoles = async (interaction) => {
+	const { options, channel } = interaction;
+
+	// Create message with text input
+	const text = options.getString('text');
+	const id = (await channel.send(text)).id;
+
+	// Reply and delete to acknowledge command
+	interaction.deferReply();
+	interaction.deleteReply();
+
+	return id;
+};
+
+const registerSelfRoles = async (interaction) => {
+	const { options, channel } = interaction;
+	const id = options.getString('id');
+	const response = {
+		success: false,
+		msgID: null,
+	};
+
+	try {
+		// Get message by id
+		await channel.messages.fetch(id);
+
+		// Reply successfully to acknowledge command
+		await interaction.reply({
+			content: 'Successfully fetched message!',
+			ephemeral: true,
+		});
+
+		response.success = true;
+		response.msgID = id;
+
+		return response;
+	} catch (_) {
+		// Reply failed to acknowledge command
+		await interaction.reply({
+			content: 'Failed to fetch message!',
+			ephemeral: true,
+		});
+	}
+	return response;
+};
+
+const addSelfRoles = async (interaction) => {
+	const { options, channel } = interaction;
+	const id = options.getString('id');
+
+	let step = 'fetch';
+	try {
+		// Get message by id
+		const message = await channel.messages.fetch(id);
+
+		// Get user arguments
+		const role = options.getRole('role');
+		const emoji = options.getString('emoji');
+
+		step = 'save data from';
+		// Try finding existing entry
+		const rep = await RoleEmojiPair.findOne({
+			where: {
+				[Op.or]: [
+					{
+						message: id,
+						role: role.id
+					}, {
+						message: id,
+						emoji
+					}
+				]
+			}
+		});
+		if (rep !== null) throw new Error();
+
+		// Create database entry for pair
+		RoleEmojiPair.create({ message: id, role: role.id, emoji });
+
+		step = 'react to';
+		// React with emoji to message
+		await message.react(emoji);
+
+		// Reply successfully to acknowledge command
+		await interaction.reply({
+			content: 'Added new entry for self roles!',
+			ephemeral: true,
+		});
+
+		console.info(`[INFO] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
+	} catch (_) {
+		// Reply failed to acknowledge command
+		await interaction.reply({
+			content: `Failed to ${step} message!`,
+			ephemeral: true,
+		});
+	}
+
+}
 
 export const data = new SlashCommandBuilder()
 	.setName('self_roles')
@@ -42,58 +143,28 @@ export const data = new SlashCommandBuilder()
 					.setRequired(true)
 					.setDescription('The emoji to be reacted with.')));
 export async function execute(interaction) {
-	const channel = interaction.channel;
+	const { options } = interaction;
 
-	let createNew = false;
-	let id = interaction.options.getString('id');
-	switch (interaction.options.getSubcommand()) {
+	let createNew = false, id;
+	switch (options.getSubcommand()) {
 		case 'create':
-			// Create message with text input
-			const text = interaction.options.getString('text');
-			id = (await channel.send(text)).id;
-			// Reply and delete to acknowledge command
-			interaction.deferReply();
-			interaction.deleteReply();
+			id = await createSelfRoles(interaction);
 			// Flag to create new database entry
 			createNew = true;
 			break;
 		case 'register':
-			try {
-				// Get message by id
-				await channel.messages.fetch(id);
-				// Reply successfully to acknowledge command
-				await interaction.reply({
-					content: 'Successfully fetched message!',
-					ephemeral: true,
-				});
-				// Flag to create new database entry
-				createNew = true;
-			} catch (_) {
-				// Reply failed to acknowledge command
-				await interaction.reply({
-					content: 'Failed to fetch message!',
-					ephemeral: true,
-				});
-			}
+			const { success, msgID } = await registerSelfRoles(interaction);
+			id = msgID ?? id;
+			// Flag to create new database entry
+			createNew = success;
 			break;
 		case 'add':
-			const role = interaction.options.getRole('role');
-			const emoji = interaction.options.getString('emoji');
-
-			// Reply successfully to acknowledge command
-			await interaction.reply({
-				content: 'Added new entry for self roles!',
-				ephemeral: true,
-			});
-
-			RoleEmojiPair.create({ message: id, role: role.id, emoji });
-
-			console.debug(`[DEBUG] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
+			await addSelfRoles(interaction);
 			break;
 	}
 
 	if (createNew) {
-		console.debug(`[DEBUG] New self roles on message with ID: '${id}'.`);
+		console.info(`[INFO] New self roles on message with ID: '${id}'.`);
 		Message.create({ id });
 	}
 }
