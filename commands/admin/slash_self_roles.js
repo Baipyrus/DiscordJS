@@ -38,7 +38,9 @@ const registerSelfRoles = async (interaction) => {
 		response.msgID = id;
 
 		return response;
-	} catch (_) {
+	} catch (error) {
+		console.error(error);
+
 		// Reply failed to acknowledge command
 		await interaction.reply({
 			content: 'Failed to fetch message!',
@@ -92,7 +94,9 @@ const addSelfRoles = async (interaction) => {
 		});
 
 		console.info(`[INFO] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
-	} catch (_) {
+	} catch (error) {
+		console.error(error);
+
 		// Reply failed to acknowledge command
 		await interaction.reply({
 			content: `Failed to ${step} message!`,
@@ -163,7 +167,19 @@ export async function execute(interaction) {
 	}
 
 	if (createNew) {
+		try {
+			// Create database entry
+			Message.create({ id });
+		} catch (error) {
+			console.error(error);
+
+			// Reply failed to acknowledge command
+			await interaction.followUp({
+				content: 'Failed to save data from message!',
+				ephemeral: true,
+			});
+		}
+
 		console.info(`[INFO] New self roles on message with ID: '${id}'.`);
-		Message.create({ id });
 	}
 }
