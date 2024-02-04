@@ -99,7 +99,6 @@ const addSelfRoles = async (interaction) => {
 			ephemeral: true,
 		});
 	}
-
 }
 
 export const data = new SlashCommandBuilder()
