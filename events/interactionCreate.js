@@ -1,6 +1,6 @@
 import { Events } from 'discord.js';
 
-const chatInputCommand = async (interaction, command) => {
+const executeCommand = async (interaction, command) => {
 	// Try executing command
 	try {
 		console.info(`[INFO] Command ${interaction.commandName} was executed.`);
@@ -34,9 +34,9 @@ export const name = Events.InteractionCreate;
 export async function execute(interaction) {
 	let command = interaction.client.commands.get(interaction.commandName);
 
-	// Execute slash commands
-	if (interaction.isChatInputCommand()) {
-		await chatInputCommand(interaction, command);
+	// Execute slash- and context-menu-commands
+	if (interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
+		await executeCommand(interaction, command);
 		return;
 	}
 	// Autocomplete input
@@ -44,7 +44,7 @@ export async function execute(interaction) {
 		await genericExecute(interaction, command, 'autocomplete');
 		return;
 	}
-	// Modeal submit event
+	// Modal submit event
 	if (interaction.isModalSubmit()) {
 		const name = interaction.customId.split('-')[0];
 		command = interaction.client.commands.get(name);
