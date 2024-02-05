@@ -80,7 +80,7 @@ const addSelfRoles = async (interaction) => {
 				]
 			}
 		});
-		if (rep !== null) throw new Error();
+		if (rep !== null) throw new Error(`Failed to fetch RoleEmojiPair entry with data {message:${id},role:${role.id},emoji:${emoji}}!`);
 
 		// Create database entry for pair
 		await RoleEmojiPair.create({ message: id, role: role.id, emoji });

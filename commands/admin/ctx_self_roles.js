@@ -13,7 +13,7 @@ export async function execute(interaction) {
 
 		// Reply successfully to acknowledge command
 		await interaction.reply({
-			content: 'Successfully saved data from message!',
+			content: `Successfully saved data from message! Add roles to it with reference ID '${id}'.`,
 			ephemeral: true,
 		});
 
