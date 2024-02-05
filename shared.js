@@ -1,7 +1,11 @@
 import { Op } from "sequelize";
-import { RoleEmojiPair } from "./database.js";
+import { Message, RoleEmojiPair } from "./database.js";
 
 const saveMessageData = async (id, role, emoji) => {
+	// Try finding message
+	const msg = await Message.findOne({ where: { id } });
+	if (msg === null) throw new Error(`No message with ID '${id}' could be found!`);
+
 	// Try finding existing entry
 	const rep = await RoleEmojiPair.findOne({
 		where: {
@@ -16,7 +20,7 @@ const saveMessageData = async (id, role, emoji) => {
 			]
 		}
 	});
-	if (rep !== null) throw new Error(`Failed to fetch RoleEmojiPair entry with data {message:${id},role:${role.id},emoji:${emoji}}!`);
+	if (rep !== null) throw new Error(`Existing RoleEmojiPair entry with (partial) data {message:${id},role:${role.id},emoji:${emoji}}!`);
 
 	// Create database entry for pair
 	await RoleEmojiPair.create({ message: id, role: role.id, emoji });
