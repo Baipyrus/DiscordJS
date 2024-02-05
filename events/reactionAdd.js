@@ -37,7 +37,13 @@ export async function execute(reaction, user) {
 	const role = await guild.roles.fetch(rep.role);
 	if (role === null) return;
 
-	// Add role to user
-	await guild.members.addRole({ role, user });
-	console.info(`[INFO] Added role with id '${role.id}' to user '${user.username}'.`);
+	try {
+		// Add role to user
+		await guild.members.addRole({ role, user });
+		console.info(`[INFO] Added role with id '${role.id}' to user '${user.username}'.`);
+	} catch (error) {
+		// Missing permissions
+		console.error(error);
+		await user.send('Unable to assign role. Please contact server staff.');
+	}
 }

@@ -33,7 +33,13 @@ export async function execute(reaction, user) {
 	const role = await guild.roles.fetch(rep.role);
 	if (role === null) return;
 
-	// Add role to user
-	await guild.members.removeRole({ role, user });
-	console.info(`[INFO] Removed role with id '${role.id}' from user '${user.username}'.`);
+	try {
+		// Remove role from user
+		await guild.members.removeRole({ role, user });
+		console.info(`[INFO] Removed role with id '${role.id}' from user '${user.username}'.`);
+	} catch (error) {
+		// Missing permissions
+		console.error(error);
+		await user.send('Unable to retract role. Please contact server staff.');
+	}
 }
