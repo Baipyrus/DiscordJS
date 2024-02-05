@@ -1,9 +1,7 @@
 import { TextInputBuilder, TextInputStyle } from 'discord.js';
 import { RoleEmojiPair } from '../../database.js';
 import {
-	ComponentType,
 	ActionRowBuilder,
-	RoleSelectMenuBuilder,
 	ApplicationCommandType,
 	ContextMenuCommandBuilder
 } from 'discord.js';
@@ -68,41 +66,54 @@ export const data = new ContextMenuCommandBuilder()
 	.setName('Add role emoji pair')
 	.setType(ApplicationCommandType.Message);
 export async function modalSubmit(interaction) {
-	console.log(interaction);
+	const { fields, guild } = interaction;
+	// Get text inputs from modal
+	const message = fields.getTextInputValue('message');
+	const roleID = fields.getTextInputValue('role');
+	const emoji = fields.getTextInputValue('emoji');
 
-	// await interaction.reply({
-	// 	content: 'Successfully submitted Form!',
-	// 	ephemeral: true
-	// });
+	// Fetch role from guild
+	const role = await guild.roles.fetch(roleID);
+	// Role not found
+	if (role === null) {
+		await interaction.reply({
+			content: 'Could not fetch role! Please contact server staff.',
+			ephemeral: true,
+		});
+		return;
+	}
+
+	await addSelfRoles(interaction, message, emoji, role);
 }
 export async function execute(interaction) {
 	const modal = new ModalBuilder()
 		.setCustomId('Add role emoji pair-pair')
 		.setTitle('Role Emoji Pair');
 
-	const roleSelector = new ActionRowBuilder().addComponents(
+	const id = interaction.targetMessage.id;
+	const message = new ActionRowBuilder().addComponents(
+		new TextInputBuilder()
+			.setLabel('The message ID this command is run on.')
+			.setStyle(TextInputStyle.Short)
+			.setCustomId('message')
+			.setRequired(true)
+			.setValue(id));
+
+	const role = new ActionRowBuilder().addComponents(
 		new TextInputBuilder()
 			.setLabel('Enter exactly one role ID.')
 			.setStyle(TextInputStyle.Short)
 			.setCustomId('role')
 			.setRequired(true));
 
-	// const roles = await interaction.guild.roles.fetch();
-	// const selection = roles.find((r) =>
-	// 	roleInteraction.values.includes(r.id)
-	// );
-
-	const emojiTextInput = new ActionRowBuilder().addComponents(
+	const emoji = new ActionRowBuilder().addComponents(
 		new TextInputBuilder()
 			.setLabel('Enter exactly one emoji.')
 			.setStyle(TextInputStyle.Short)
 			.setCustomId('emoji')
 			.setRequired(true));
 
-	// const id = interaction.targetMessage.id;
-	// await addSelfRoles(interaction, id, emoji, role);
-
-	modal.addComponents(roleSelector, emojiTextInput);
+	modal.addComponents(message, role, emoji);
 
 	await interaction.showModal(modal);
 }
