@@ -9,7 +9,7 @@ export async function execute(interaction) {
 
 	try {
 		// Create database entry
-		Message.create({ id });
+		await Message.create({ id });
 
 		// Reply successfully to acknowledge command
 		await interaction.reply({

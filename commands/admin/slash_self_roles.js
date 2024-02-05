@@ -10,8 +10,8 @@ const createSelfRoles = async (interaction) => {
 	const id = (await channel.send(text)).id;
 
 	// Reply and delete to acknowledge command
-	interaction.deferReply();
-	interaction.deleteReply();
+	await interaction.deferReply();
+	await interaction.deleteReply();
 
 	return id;
 };
@@ -83,7 +83,7 @@ const addSelfRoles = async (interaction) => {
 		if (rep !== null) throw new Error();
 
 		// Create database entry for pair
-		RoleEmojiPair.create({ message: id, role: role.id, emoji });
+		await RoleEmojiPair.create({ message: id, role: role.id, emoji });
 
 		step = 'react to';
 		// React with emoji to message
@@ -116,8 +116,8 @@ export const data = new SlashCommandBuilder()
 			.setDescription('Creates new message in channel.')
 			.addStringOption(option =>
 				option
-					.setRequired(true)
 					.setName('text')
+					.setRequired(true)
 					.setDescription('The text to be displayed in the message.')))
 	.addSubcommand(subcommand =>
 		subcommand
@@ -171,7 +171,7 @@ export async function execute(interaction) {
 	if (createNew) {
 		try {
 			// Create database entry
-			Message.create({ id });
+			await Message.create({ id });
 		} catch (error) {
 			console.error(error);
 
