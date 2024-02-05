@@ -35,7 +35,11 @@ export async function execute(reaction, user) {
 	// Fetch role from guild
 	const guild = reaction.message.guild;
 	const role = await guild.roles.fetch(rep.role);
-	if (role === null) return;
+	// Role not found
+	if (role === null) {
+		await user.send('Could not fetch role! Please contact server staff.');
+		return;
+	}
 
 	try {
 		// Add role to user
