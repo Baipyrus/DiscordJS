@@ -61,7 +61,9 @@ const addSelfRoles = async (interaction) => {
 
 		// Get user arguments
 		const role = options.getRole('role');
-		const emoji = options.getString('emoji');
+		const emoji = options
+			.getString('emoji')
+			.replace(/:.*?:/, ':_:');
 
 		step = 'save data from';
 		// Try finding existing entry
