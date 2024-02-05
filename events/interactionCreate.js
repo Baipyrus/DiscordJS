@@ -21,9 +21,9 @@ const executeCommand = async (interaction, command) => {
 	}
 };
 
-const genericExecute = async (interaction, command, name, description) => {
+const genericExecute = async (interaction, command, name, description, cmdName) => {
 	try {
-		console.info(`[INFO] Command ${interaction.commandName} ${description ?? `used "${name}"`}.`);
+		console.info(`[INFO] Command ${(cmdName ?? interaction.commandName) ?? 'anonymous'} ${description ?? `used "${name}"`}.`);
 		await command[name](interaction);
 	} catch (error) {
 		console.error(error);
@@ -49,7 +49,7 @@ export async function execute(interaction) {
 		const name = interaction.customId.split('-')[0];
 		command = interaction.client.commands.get(name);
 
-		await genericExecute(interaction, command, 'modalSubmit', 'submitted a modal');
+		await genericExecute(interaction, command, 'modalSubmit', 'submitted a modal', name);
 		return;
 	}
 
