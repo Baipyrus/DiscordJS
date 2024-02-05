@@ -2,6 +2,7 @@ import { Message } from '../../database.js';
 import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 
 export const data = new ContextMenuCommandBuilder()
+	.setDMPermission(false)
 	.setName('Register self roles')
 	.setType(ApplicationCommandType.Message);
 export async function execute(interaction) {

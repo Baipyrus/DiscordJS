@@ -113,6 +113,7 @@ const addSelfRoles = async (interaction) => {
 
 export const data = new SlashCommandBuilder()
 	.setName('self_roles')
+	.setDMPermission(false)
 	.setDescription('Manages reactions for self roles.')
 	.addSubcommand(subcommand =>
 		subcommand
