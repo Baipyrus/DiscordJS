@@ -50,6 +50,27 @@ const registerSelfRoles = async (interaction) => {
 	return response;
 };
 
+const saveMessageData = async (id, role, emoji) => {
+	// Try finding existing entry
+	const rep = await RoleEmojiPair.findOne({
+		where: {
+			[Op.or]: [
+				{
+					message: id,
+					role: role.id
+				}, {
+					message: id,
+					emoji
+				}
+			]
+		}
+	});
+	if (rep !== null) throw new Error(`Failed to fetch RoleEmojiPair entry with data {message:${id},role:${role.id},emoji:${emoji}}!`);
+
+	// Create database entry for pair
+	await RoleEmojiPair.create({ message: id, role: role.id, emoji });
+};
+
 const addSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;
 	const id = options.getString('id');
@@ -66,24 +87,7 @@ const addSelfRoles = async (interaction) => {
 			.replace(/:.*?:/, ':_:');
 
 		step = 'save data from';
-		// Try finding existing entry
-		const rep = await RoleEmojiPair.findOne({
-			where: {
-				[Op.or]: [
-					{
-						message: id,
-						role: role.id
-					}, {
-						message: id,
-						emoji
-					}
-				]
-			}
-		});
-		if (rep !== null) throw new Error(`Failed to fetch RoleEmojiPair entry with data {message:${id},role:${role.id},emoji:${emoji}}!`);
-
-		// Create database entry for pair
-		await RoleEmojiPair.create({ message: id, role: role.id, emoji });
+		await saveMessageData(id, role, emoji);
 
 		step = 'react to';
 		// React with emoji to message
