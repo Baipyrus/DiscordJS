@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import { SlashCommandBuilder } from 'discord.js';
 import { Message, RoleEmojiPair } from './../../database.js';
+import { addSelfRoles } from '../../shared.js';
 
 const createSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;
@@ -49,67 +50,6 @@ const registerSelfRoles = async (interaction) => {
 	}
 	return response;
 };
-
-const saveMessageData = async (id, role, emoji) => {
-	// Try finding existing entry
-	const rep = await RoleEmojiPair.findOne({
-		where: {
-			[Op.or]: [
-				{
-					message: id,
-					role: role.id
-				}, {
-					message: id,
-					emoji
-				}
-			]
-		}
-	});
-	if (rep !== null) throw new Error(`Failed to fetch RoleEmojiPair entry with data {message:${id},role:${role.id},emoji:${emoji}}!`);
-
-	// Create database entry for pair
-	await RoleEmojiPair.create({ message: id, role: role.id, emoji });
-};
-
-const addSelfRoles = async (interaction) => {
-	const { options, channel } = interaction;
-	const id = options.getString('id');
-
-	let step = 'fetch';
-	try {
-		// Get message by id
-		const message = await channel.messages.fetch(id);
-
-		// Get user arguments
-		const role = options.getRole('role');
-		const emoji = options
-			.getString('emoji')
-			.replace(/:.*?:/, ':_:');
-
-		step = 'save data from';
-		await saveMessageData(id, role, emoji);
-
-		step = 'react to';
-		// React with emoji to message
-		await message.react(emoji);
-
-		// Reply successfully to acknowledge command
-		await interaction.reply({
-			content: 'Added new entry for self roles!',
-			ephemeral: true,
-		});
-
-		console.info(`[INFO] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
-	} catch (error) {
-		console.error(error);
-
-		// Reply failed to acknowledge command
-		await interaction.reply({
-			content: `Failed to ${step} message!`,
-			ephemeral: true,
-		});
-	}
-}
 
 export const data = new SlashCommandBuilder()
 	.setName('self_roles')
@@ -163,13 +103,18 @@ export async function execute(interaction) {
 			createNew = true;
 			break;
 		case 'register':
-			const { success, msgID } = await registerSelfRoles(interaction);
-			id = msgID ?? id;
+			const response = await registerSelfRoles(interaction);
+			id = response.msgID ?? id;
 			// Flag to create new database entry
-			createNew = success;
+			createNew = response.success;
 			break;
 		case 'add':
-			await addSelfRoles(interaction);
+			// Get command options
+			const msgID = options.getString('id');
+			const role = options.getRole('role');
+			const emoji = options.getString('emoji');
+			// Try adding self role pair
+			await addSelfRoles(interaction, msgID, role, emoji);
 			break;
 	}
 
