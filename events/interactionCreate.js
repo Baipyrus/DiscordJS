@@ -23,7 +23,11 @@ const executeCommand = async (interaction, command) => {
 
 const genericExecute = async (interaction, command, name, description, cmdName) => {
 	try {
-		console.info(`[INFO] Command ${(cmdName ?? interaction.commandName) ?? 'anonymous'} ${description ?? `used "${name}"`}.`);
+		console.info(
+			`[INFO] Command ${cmdName ?? interaction.commandName ?? 'anonymous'} ${
+				description ?? `used "${name}"`
+			}.`
+		);
 		await command[name](interaction);
 	} catch (error) {
 		console.error(error);

@@ -1,25 +1,25 @@
-import { DataTypes, Deferrable } from "sequelize";
+import { DataTypes, Deferrable } from 'sequelize';
 
-export default function(sequelize) {
+export default function (sequelize) {
 	return sequelize.define('RoleEmojiPairs', {
 		id: {
 			defaultValue: DataTypes.UUIDV4,
 			type: DataTypes.UUID,
-			primaryKey: true,
+			primaryKey: true
 		},
 		message: {
 			type: DataTypes.STRING,
 			references: {
 				deferrable: Deferrable.INITIALLY_IMMEDIATE,
 				model: 'Messages',
-				key: 'id',
-			},
+				key: 'id'
+			}
 		},
 		role: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING
 		},
 		emoji: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING
 		}
 	});
 }

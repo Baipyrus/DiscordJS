@@ -9,7 +9,7 @@ const { DB_NAME } = process.env;
 const sequelize = new Sequelize({
 	storage: `${DB_NAME}.sqlite`,
 	dialect: 'sqlite',
-	logging: false,
+	logging: false
 });
 const RoleEmojiPair = defineRoleEmojiPair(sequelize);
 const VoiceChannel = defineVoiceChannel(sequelize);

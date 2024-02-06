@@ -34,4 +34,5 @@ getFiles(cmdPath)
 		(await Promise.all(files.map(importAndCheck)))
 			.filter((module) => module !== 0)
 			.map((module) => module.data.toJSON())
-	).then(putCommands);
+	)
+	.then(putCommands);

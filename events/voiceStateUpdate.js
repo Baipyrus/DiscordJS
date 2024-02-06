@@ -4,7 +4,7 @@ export const name = Events.VoiceStateUpdate;
 export async function execute(oldState, newState) {
 	console.debug('[DEBUG] Voice State Update');
 
-	const change = (!!oldState.channel) ^ (!!newState.channel);
+	const change = !!oldState.channel ^ !!newState.channel;
 	if (!change) return;
 
 	const guild = newState.guild.name;

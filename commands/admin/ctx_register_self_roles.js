@@ -15,7 +15,7 @@ export async function execute(interaction) {
 		// Reply successfully to acknowledge command
 		await interaction.reply({
 			content: `Successfully saved data from message! Add roles to it with reference ID '${id}'.`,
-			ephemeral: true,
+			ephemeral: true
 		});
 
 		console.info(`[INFO] New self roles on message with ID: '${id}'.`);
@@ -24,7 +24,7 @@ export async function execute(interaction) {
 		// Reply failed to acknowledge command
 		await interaction.reply({
 			content: 'Failed to save data from message!',
-			ephemeral: true,
+			ephemeral: true
 		});
 	}
 }

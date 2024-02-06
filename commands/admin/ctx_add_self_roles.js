@@ -24,7 +24,7 @@ export async function modalSubmit(interaction) {
 	if (role === null) {
 		await interaction.reply({
 			content: 'Could not fetch role! Please contact server staff.',
-			ephemeral: true,
+			ephemeral: true
 		});
 		return;
 	}
@@ -43,21 +43,24 @@ export async function execute(interaction) {
 			.setStyle(TextInputStyle.Short)
 			.setCustomId('message')
 			.setRequired(true)
-			.setValue(id));
+			.setValue(id)
+	);
 
 	const role = new ActionRowBuilder().addComponents(
 		new TextInputBuilder()
 			.setLabel('Enter exactly one role ID.')
 			.setStyle(TextInputStyle.Short)
 			.setCustomId('role')
-			.setRequired(true));
+			.setRequired(true)
+	);
 
 	const emoji = new ActionRowBuilder().addComponents(
 		new TextInputBuilder()
 			.setLabel('Enter exactly one emoji.')
 			.setStyle(TextInputStyle.Short)
 			.setCustomId('emoji')
-			.setRequired(true));
+			.setRequired(true)
+	);
 
 	modal.addComponents(message, role, emoji);
 

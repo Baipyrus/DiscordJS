@@ -1,5 +1,5 @@
-import { Op } from "sequelize";
-import { Message, RoleEmojiPair } from "./database.js";
+import { Op } from 'sequelize';
+import { Message, RoleEmojiPair } from './database.js';
 
 const saveMessageData = async (id, role, emoji) => {
 	// Try finding message
@@ -13,14 +13,18 @@ const saveMessageData = async (id, role, emoji) => {
 				{
 					message: id,
 					role: role.id
-				}, {
+				},
+				{
 					message: id,
 					emoji
 				}
 			]
 		}
 	});
-	if (rep !== null) throw new Error(`Existing RoleEmojiPair entry with (partial) data {message:${id},role:${role.id},emoji:${emoji}}!`);
+	if (rep !== null)
+		throw new Error(
+			`Existing RoleEmojiPair entry with (partial) data {message:${id},role:${role.id},emoji:${emoji}}!`
+		);
 
 	// Create database entry for pair
 	await RoleEmojiPair.create({ message: id, role: role.id, emoji });
@@ -44,7 +48,7 @@ export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 		// Reply successfully to acknowledge command
 		await interaction.reply({
 			content: 'Added new entry for self roles!',
-			ephemeral: true,
+			ephemeral: true
 		});
 
 		console.info(`[INFO] Added new entry to get role with ID '${role.id}' using '${emoji}'.`);
@@ -54,10 +58,10 @@ export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 		// Reply failed to acknowledge command
 		await interaction.reply({
 			content: `Failed to ${step} message!`,
-			ephemeral: true,
+			ephemeral: true
 		});
 	}
-}
+};
 import { join } from 'path';
 import { readdir } from 'fs/promises';
 
@@ -66,10 +70,12 @@ const optional = ['autocomplete', 'modalSubmit'];
 
 export const getFiles = async (dir) => {
 	const dirents = await readdir(dir, { withFileTypes: true });
-	const files = await Promise.all(dirents.map((dirent) => {
-		const res = join(dir, dirent.name);
-		return dirent.isDirectory() ? getFiles(res) : res;
-	}));
+	const files = await Promise.all(
+		dirents.map((dirent) => {
+			const res = join(dir, dirent.name);
+			return dirent.isDirectory() ? getFiles(res) : res;
+		})
+	);
 	return Array.prototype.concat(...files);
 };
 

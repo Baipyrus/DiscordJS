@@ -37,13 +37,10 @@ const evtPath = join(__dirname, 'events');
 getFiles(cmdPath)
 	// For each command file
 	.then(async (files) =>
-		(await Promise.all(files.map(importAndCheck)))
-			.filter((module) => module !== 0)
-	).then(async (commands) => {
+		(await Promise.all(files.map(importAndCheck))).filter((module) => module !== 0)
+	)
+	.then(async (commands) => {
 		const files = await getFiles(evtPath);
-		const events = await Promise.all(
-			files.map(async (filePath) =>
-				await import(filePath)
-			));
+		const events = await Promise.all(files.map(async (filePath) => await import(filePath)));
 		runClient(commands, events);
 	});

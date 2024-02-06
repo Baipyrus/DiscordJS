@@ -11,7 +11,7 @@ export async function execute(reaction, user) {
 	const msgID = reaction.message.id;
 	const message = await Message.findOne({
 		where: {
-			id: msgID,
+			id: msgID
 		}
 	});
 	// Ignore if unregistered
@@ -22,7 +22,7 @@ export async function execute(reaction, user) {
 	const rep = await RoleEmojiPair.findOne({
 		where: {
 			message: msgID,
-			emoji,
+			emoji
 		}
 	});
 	// Deny if unregistered
