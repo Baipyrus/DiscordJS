@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { Events } from 'discord.js';
 import { Message, RoleEmojiPair } from '../../database.js';
+
 config();
 
 export const name = Events.MessageReactionRemove;
