@@ -1,6 +1,6 @@
+import { addSelfRoles } from '../../../shared.js';
 import { SlashCommandBuilder } from 'discord.js';
-import { Message } from './../../database.js';
-import { addSelfRoles } from '../../shared.js';
+import { Message } from '../../../database.js';
 
 const createSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;

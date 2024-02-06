@@ -1,4 +1,4 @@
-import { Message } from '../../database.js';
+import { Message } from '../../../../database.js';
 import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 
 export const data = new ContextMenuCommandBuilder()

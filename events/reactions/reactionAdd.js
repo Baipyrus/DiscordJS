@@ -1,9 +1,9 @@
 import { config } from 'dotenv';
 import { Events } from 'discord.js';
-import { Message, RoleEmojiPair } from '../database.js';
+import { Message, RoleEmojiPair } from '../../database.js';
 config();
 
-export const name = Events.MessageReactionRemove;
+export const name = Events.MessageReactionAdd;
 export async function execute(reaction, user) {
 	if (user.id === process.env.CLIENT) return;
 
@@ -26,7 +26,11 @@ export async function execute(reaction, user) {
 		}
 	});
 	// Deny if unregistered
-	if (rep === null) return;
+	if (rep === null) {
+		// Remove reaction and quit
+		await reaction.remove();
+		return;
+	}
 
 	// Fetch role from guild
 	const guild = reaction.message.guild;
@@ -38,12 +42,12 @@ export async function execute(reaction, user) {
 	}
 
 	try {
-		// Remove role from user
-		await guild.members.removeRole({ role, user });
-		console.info(`[INFO] Removed role with id '${role.id}' from user '${user.username}'.`);
+		// Add role to user
+		await guild.members.addRole({ role, user });
+		console.info(`[INFO] Added role with id '${role.id}' to user '${user.username}'.`);
 	} catch (error) {
 		// Missing permissions
 		console.error(error);
-		await user.send('Unable to retract role. Please contact server staff.');
+		await user.send('Unable to assign role. Please contact server staff.');
 	}
 }
