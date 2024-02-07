@@ -14,7 +14,7 @@ const getchannel = async (member, channels) => {
 
 	// Create private channel with all permissions
 	const name = member.user.username;
-	const chName = `${name}${name.endsWith('s') ? "'" : "'s"} channel`;
+	const chName = `${name}${name.toLowerCase().endsWith('s') ? "'" : "'s"} channel`;
 	const privCh = await channels.create({
 		name: chName,
 		type: ChannelType.GuildVoice,
