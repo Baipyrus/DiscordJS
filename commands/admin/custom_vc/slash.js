@@ -82,7 +82,7 @@ export async function execute(interaction) {
 
         // Reply failed to acknowledge command
         await interaction.reply({
-            content: `Failed to ${step} message!`,
+            content: `Failed to ${step} channel!`,
             ephemeral: true
         });
     }
