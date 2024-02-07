@@ -1,5 +1,23 @@
-import { ChannelType, Events, PermissionsBitField } from 'discord.js';
+import { ChannelType, Events, PermissionFlagsBits } from 'discord.js';
 import { VoiceChannel } from '../../database.js';
+
+const vcPermissionOverwrites = [
+	PermissionFlagsBits.ManageRoles,
+	PermissionFlagsBits.ManageChannels,
+	PermissionFlagsBits.ViewChannel,
+	PermissionFlagsBits.ModerateMembers,
+	PermissionFlagsBits.SendMessages,
+	PermissionFlagsBits.SendMessagesInThreads,
+	PermissionFlagsBits.ManageMessages,
+	PermissionFlagsBits.ReadMessageHistory,
+	PermissionFlagsBits.AddReactions,
+	PermissionFlagsBits.Connect,
+	PermissionFlagsBits.Speak,
+	PermissionFlagsBits.MuteMembers,
+	PermissionFlagsBits.DeafenMembers,
+	PermissionFlagsBits.MoveMembers,
+	PermissionFlagsBits.UseVAD
+];
 
 const getchannel = async (member, channels) => {
 	// Check database for existing channel
@@ -21,9 +39,7 @@ const getchannel = async (member, channels) => {
 		permissionOverwrites: [
 			{
 				id: member.id,
-				allow: [
-					PermissionsBitField.All
-				]
+				allow: vcPermissionOverwrites
 			}
 		]
 	});
