@@ -1,8 +1,17 @@
 import { ChannelType, Events, PermissionsBitField } from 'discord.js';
+import { VoiceChannel } from '../../database.js';
 
 export const name = Events.VoiceStateUpdate;
 export async function execute(_, state) {
 	if (!state.channel) return;
+
+	// Find channel by id, return if not registered for customs
+	const channel = await VoiceChannel.findOne({
+		where: {
+			id: state.channel.id
+		}
+	});
+	if (channel === null) return;
 
 	// Extract user data
 	const member = state.member;
