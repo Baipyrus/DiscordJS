@@ -11,10 +11,13 @@ const sequelize = new Sequelize({
 	dialect: 'sqlite',
 	logging: false
 });
+
 const RoleEmojiPair = defineRoleEmojiPair(sequelize);
+
 const VoiceChannel = defineVoiceChannel(sequelize);
+
 const Message = defineMessage(sequelize);
+Message.hasMany(RoleEmojiPair, { foreignKey: 'message', onDelete: 'CASCADE' });
 
 sequelize.sync();
-
 export { sequelize, RoleEmojiPair, VoiceChannel, Message };
