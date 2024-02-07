@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
+import { VoiceChannel } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
     .setName('custom_vc')
@@ -27,14 +28,47 @@ export const data = new SlashCommandBuilder()
             )
     );
 export async function execute(interaction) {
-    const { options } = interaction;
+    const { guild, options } = interaction;
 
-    switch (options.getSubcommand()) {
-        case 'create':
-            const name = options.getString('name');
-            break;
-        case 'register':
-            const id = options.getString('id');
-            break;
+    let step;
+    try {
+        switch (options.getSubcommand()) {
+            case 'create': {
+                // Get channel name from user input
+                const name = options.getString('name');
+
+                step = 'create';
+                // Create new channel
+                const channel = await guild.create({
+                    name, type: ChannelType.GuildVoice
+                });
+
+                // Save channel data
+                step = 'save';
+                await VoiceChannel.create({ id: channel.id });
+                break;
+            }
+            case 'register': {
+                // Get channel id from user input
+                const id = options.getString('id');
+
+                step = 'fetch';
+                // Try fetching channel by id
+                await guild.channels.fetch(id);
+
+                // Save channel data
+                step = 'save';
+                await VoiceChannel.create({ id });
+                break;
+            }
+        }
+    } catch (error) {
+        console.error(error);
+
+        // Reply failed to acknowledge command
+        await interaction.reply({
+            content: `Failed to ${step} message!`,
+            ephemeral: true
+        });
     }
 }
