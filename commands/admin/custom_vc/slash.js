@@ -46,6 +46,12 @@ export async function execute(interaction) {
                 // Save channel data
                 step = 'save';
                 await VoiceChannel.create({ id: channel.id });
+
+                // Reply success to acknowledge command
+                await interaction.reply({
+                    content: `Successfully created channel!`,
+                    ephemeral: true
+                });
                 break;
             }
             case 'register': {
@@ -59,6 +65,12 @@ export async function execute(interaction) {
                 // Save channel data
                 step = 'save';
                 await VoiceChannel.create({ id });
+
+                // Reply success to acknowledge command
+                await interaction.reply({
+                    content: `Successfully registered channel!`,
+                    ephemeral: true
+                });
                 break;
             }
         }
