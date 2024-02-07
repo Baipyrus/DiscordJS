@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { ChannelType, SlashCommandBuilder } from 'discord.js';
 import { VoiceChannel } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
@@ -39,13 +39,16 @@ export async function execute(interaction) {
 
                 step = 'create';
                 // Create new channel
-                const channel = await guild.create({
+                const channel = await guild.channels.create({
                     name, type: ChannelType.GuildVoice
                 });
 
                 // Save channel data
                 step = 'save';
-                await VoiceChannel.create({ id: channel.id });
+                await VoiceChannel.create({
+                    id: channel.id,
+                    create: true
+                });
 
                 // Reply success to acknowledge command
                 await interaction.reply({
@@ -64,7 +67,7 @@ export async function execute(interaction) {
 
                 // Save channel data
                 step = 'save';
-                await VoiceChannel.create({ id });
+                await VoiceChannel.create({ id, create: true });
 
                 // Reply success to acknowledge command
                 await interaction.reply({
