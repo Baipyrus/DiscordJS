@@ -28,5 +28,13 @@ export const data = new SlashCommandBuilder()
     );
 export async function execute(interaction) {
     const { options } = interaction;
-    // const id = options.getString('id');
+
+    switch (options.getSubcommand()) {
+        case 'create':
+            const name = options.getString('name');
+            break;
+        case 'register':
+            const id = options.getString('id');
+            break;
+    }
 }
