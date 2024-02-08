@@ -1,4 +1,6 @@
+import { join } from 'path';
 import { Op } from 'sequelize';
+import { readdir } from 'fs/promises';
 import { Message, RoleEmojiPair } from './database.js';
 
 const saveMessageData = async (id, role, emoji) => {
@@ -62,8 +64,6 @@ export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 		});
 	}
 };
-import { join } from 'path';
-import { readdir } from 'fs/promises';
 
 const required = ['data', 'execute'];
 const optional = ['autocomplete', 'modalSubmit'];
