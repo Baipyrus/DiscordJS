@@ -3,6 +3,28 @@ import { Op } from 'sequelize';
 import { readdir } from 'fs/promises';
 import { Message, RoleEmojiPair } from './database.js';
 
+export const removeSelfRoles = async (interaction, id) => {
+	// Try deleting message from database
+	const count = await Message.destroy({
+		where: {
+			id: id
+		}
+	});
+
+	// Set reply based on result of deletion
+	let response = 'Successfully removed';
+	if (count === 0)
+		response = 'Failed to remove';
+
+	// Reply to acknowledge command
+	await interaction.reply({
+		content: `${response} self roles from message!`,
+		ephemeral: true
+	});
+
+	console.info(`[INFO] Removed self roles from message with ID '${id}'.`);
+};
+
 const saveMessageData = async (id, role, emoji) => {
 	// Try finding message
 	const msg = await Message.findOne({ where: { id } });
