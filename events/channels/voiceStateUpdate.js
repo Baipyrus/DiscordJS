@@ -63,6 +63,15 @@ const leftVoiceChat = async (state) => {
 	const members = Array.from(channel.members);
 	if (members.length > 0) return;
 
+	// Find channel by id, return if not registered as custom
+	const custom = await VoiceChannel.findOne({
+		where: {
+			id: channel.id,
+			create: false
+		}
+	});
+	if (custom === null) return;
+
 	// Delete channel from guild
 	await channel.guild.channels.delete(channel.id);
 	console.info(`[INFO] Custom VC with ID '${channel.id}' was empty and got deleted.`);
@@ -72,6 +81,18 @@ export const name = Events.VoiceStateUpdate;
 export async function execute(oldState, newState) {
 	if (!newState.channel)
 		return await leftVoiceChat(oldState);
+
+	console.log(
+		Array.from(
+			newState
+				.channel
+				.permissionOverwrites
+				.cache
+				.values()
+		).forEach(overwrite =>
+			console.log(overwrite.allow.toArray())
+		)
+	);
 
 	// Find channel by id, return if not registered for customs
 	const createCh = await VoiceChannel.findOne({
