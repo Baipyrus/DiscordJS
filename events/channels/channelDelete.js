@@ -9,6 +9,5 @@ export async function execute(channel) {
 			id: channel.id
 		}
 	});
-	if (count > 0)
-		console.info(`[INFO] Custom VC with ID '${channel.id}' was deleted.`);
+	if (count > 0) console.info(`[INFO] Custom VC with ID '${channel.id}' was deleted.`);
 }

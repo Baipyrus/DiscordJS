@@ -9,6 +9,5 @@ export async function execute(message) {
 			id: message.id
 		}
 	});
-	if (count > 0)
-		console.info(`[INFO] Reaction Roles Message with ID '${message.id}' was deleted.`);
+	if (count > 0) console.info(`[INFO] Reaction Roles Message with ID '${message.id}' was deleted.`);
 }

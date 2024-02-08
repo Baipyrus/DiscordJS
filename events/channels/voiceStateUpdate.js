@@ -47,7 +47,7 @@ const getChannel = async (member, channels) => {
 	await VoiceChannel.create({
 		id: privCh.id,
 		owner: member.user.id
-	})
+	});
 
 	return privCh;
 };
@@ -78,14 +78,13 @@ const leftVoiceChat = async (state) => {
 
 export const name = Events.VoiceStateUpdate;
 export async function execute(oldState, newState) {
-	if (!newState.channel)
-		return await leftVoiceChat(oldState);
+	if (!newState.channel) return await leftVoiceChat(oldState);
 
 	// Find channel by id, return if not registered for customs
 	const createCh = await VoiceChannel.findOne({
 		where: {
 			id: newState.channel.id,
-			create: true,
+			create: true
 		}
 	});
 	if (createCh === null) return;

@@ -13,8 +13,7 @@ export const removeSelfRoles = async (interaction, id) => {
 
 	// Set reply based on result of deletion
 	let response = 'Successfully removed';
-	if (count === 0)
-		response = 'Failed to remove';
+	if (count === 0) response = 'Failed to remove';
 
 	// Reply to acknowledge command
 	await interaction.reply({
