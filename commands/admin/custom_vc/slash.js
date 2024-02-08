@@ -20,11 +20,11 @@ export const data = new SlashCommandBuilder()
         subcommand
             .setName('register')
             .setDescription('Registers an existing voice channel.')
-            .addStringOption((option) =>
+            .addChannelOption((option) =>
                 option
-                    .setName('id')
                     .setRequired(true)
-                    .setDescription('The ID to reference the voice channel to be used.')
+                    .setName('channel')
+                    .setDescription('The voice channel to be used.')
             )
     );
 export async function execute(interaction) {
@@ -59,11 +59,7 @@ export async function execute(interaction) {
             }
             case 'register': {
                 // Get channel id from user input
-                const id = options.getString('id');
-
-                step = 'fetch';
-                // Try fetching channel by id
-                await guild.channels.fetch(id);
+                const id = options.getChannel('channel');
 
                 // Save channel data
                 step = 'save';
