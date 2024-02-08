@@ -24,6 +24,7 @@ export const data = new SlashCommandBuilder()
                 option
                     .setRequired(true)
                     .setName('channel')
+                    .addChannelTypes(ChannelType.GuildVoice)
                     .setDescription('The voice channel to be used.')
             )
     );
