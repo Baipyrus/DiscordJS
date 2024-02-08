@@ -68,6 +68,8 @@ export async function execute(interaction) {
                     content: `Successfully created channel!`,
                     ephemeral: true
                 });
+
+                console.info(`[INFO] New custom VC created with ID '${channel.id}'.`);
                 break;
             }
             case 'register': {
@@ -83,6 +85,8 @@ export async function execute(interaction) {
                     content: `Successfully registered channel!`,
                     ephemeral: true
                 });
+
+                console.info(`[INFO] New custom VC registered using ID '${id}'.`);
                 break;
             }
             case 'remove': {
@@ -108,6 +112,8 @@ export async function execute(interaction) {
                     content: `${response} channel from custom channel creation!`,
                     ephemeral: true
                 });
+
+                console.info(`[INFO] Removed custom VC with ID '${id}'.`);
                 break;
             }
         }
