@@ -19,7 +19,7 @@ const vcPermissionOverwrites = [
 	PermissionFlagsBits.UseVAD
 ];
 
-const getchannel = async (member, channels) => {
+const getChannel = async (member, channels) => {
 	// Check database for existing channel
 	const ownCh = await VoiceChannel.findOne({
 		where: {
@@ -73,7 +73,7 @@ export async function execute(_, state) {
 	const channels = state.guild.channels;
 	let step = 'create';
 	try {
-		const privCh = await getchannel(member, channels);
+		const privCh = await getChannel(member, channels);
 
 		step = 'move to';
 		// Move user to private channel
