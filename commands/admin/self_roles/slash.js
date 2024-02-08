@@ -50,6 +50,44 @@ const registerSelfRoles = async (interaction) => {
 	return response;
 };
 
+const removeSelfRoles = async (interaction, msgID) => {
+	const { channel } = interaction;
+
+	try {
+		// Try fetching message from channel
+		await channel.messages.fetch(msgID);
+	} catch (error) {
+		console.error(error);
+		// Reply to acknowledge command
+		await interaction.reply({
+			content: `Failed to fetch message!`,
+			ephemeral: true
+		});
+		return;
+	}
+
+	// Try deleting message from database
+	const count = await Message.destroy({
+		where: {
+			id: msgID
+		}
+	});
+
+	// Set reply based on result of deletion
+	let response = 'Successfully removed';
+	if (count === 0)
+		response = 'Failed to remove';
+
+	// Reply to acknowledge command
+	await interaction.reply({
+		content: `${response} self roles from message!`,
+		ephemeral: true
+	});
+
+	console.info(`[INFO] Removed self roles from message with ID '${msgID}'.`);
+
+};
+
 export const data = new SlashCommandBuilder()
 	.setName('self_roles')
 	.setDMPermission(false)
@@ -92,6 +130,17 @@ export const data = new SlashCommandBuilder()
 			.addStringOption((option) =>
 				option.setName('emoji').setRequired(true).setDescription('The emoji to be reacted with.')
 			)
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('remove')
+			.setDescription('Remove self roles from a message.')
+			.addStringOption((option) =>
+				option
+					.setName('id')
+					.setRequired(true)
+					.setDescription('The ID to reference the message to be removed.')
+			)
 	);
 export async function execute(interaction) {
 	const { options } = interaction;
@@ -118,6 +167,11 @@ export async function execute(interaction) {
 			const emoji = options.getString('emoji');
 			// Try adding self role pair
 			await addSelfRoles(interaction, msgID, role, emoji);
+			break;
+		}
+		case 'remove': {
+			const msgID = options.getString('id');
+			await removeSelfRoles(interaction, msgID);
 			break;
 		}
 	}
