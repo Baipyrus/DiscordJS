@@ -2,21 +2,20 @@ import { ChannelType, Events, PermissionFlagsBits } from 'discord.js';
 import { VoiceChannel } from '../../database.js';
 
 const vcPermissionOverwrites = [
-	PermissionFlagsBits.ManageRoles,
-	PermissionFlagsBits.ManageChannels,
-	PermissionFlagsBits.ViewChannel,
-	PermissionFlagsBits.ModerateMembers,
-	PermissionFlagsBits.SendMessages,
-	PermissionFlagsBits.SendMessagesInThreads,
-	PermissionFlagsBits.ManageMessages,
 	PermissionFlagsBits.ReadMessageHistory,
-	PermissionFlagsBits.AddReactions,
-	PermissionFlagsBits.Connect,
-	PermissionFlagsBits.Speak,
-	PermissionFlagsBits.MuteMembers,
+	PermissionFlagsBits.PrioritySpeaker,
+	PermissionFlagsBits.ManageMessages,
+	PermissionFlagsBits.ManageChannels,
 	PermissionFlagsBits.DeafenMembers,
+	PermissionFlagsBits.SendMessages,
+	PermissionFlagsBits.ViewChannel,
+	PermissionFlagsBits.MuteMembers,
 	PermissionFlagsBits.MoveMembers,
-	PermissionFlagsBits.UseVAD
+	PermissionFlagsBits.ManageRoles,
+	PermissionFlagsBits.Connect,
+	PermissionFlagsBits.Stream,
+	PermissionFlagsBits.UseVAD,
+	PermissionFlagsBits.Speak
 ];
 
 const getChannel = async (member, channels) => {
