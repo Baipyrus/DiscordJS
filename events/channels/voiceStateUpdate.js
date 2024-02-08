@@ -53,31 +53,47 @@ const getChannel = async (member, channels) => {
 	return privCh;
 };
 
+const leftVoiceChat = async (state) => {
+	const { channel } = state;
+
+	// Isn't this always false?
+	if (!channel) return;
+
+	// Get active members from channel
+	const members = Array.from(channel.members);
+	if (members.length > 0) return;
+
+	// Delete channel from guild
+	await channel.guild.channels.delete(channel.id);
+	console.info(`[INFO] Custom VC with ID '${channel.id}' was empty and got deleted.`);
+};
+
 export const name = Events.VoiceStateUpdate;
-export async function execute(_, state) {
-	if (!state.channel) return;
+export async function execute(oldState, newState) {
+	if (!newState.channel)
+		return await leftVoiceChat(oldState);
 
 	// Find channel by id, return if not registered for customs
 	const createCh = await VoiceChannel.findOne({
 		where: {
-			id: state.channel.id,
+			id: newState.channel.id,
 			create: true,
 		}
 	});
 	if (createCh === null) return;
 
 	// Extract user data
-	const member = state.member;
+	const member = newState.member;
 
 	// Extract channel data
-	const channels = state.guild.channels;
+	const channels = newState.guild.channels;
 	let step = 'create';
 	try {
 		const privCh = await getChannel(member, channels);
 
 		step = 'move to';
 		// Move user to private channel
-		await state.setChannel(privCh);
+		await newState.setChannel(privCh);
 		console.info(`[INFO] User '${name}' created private channel with ID ${privCh.id}.`);
 	} catch (error) {
 		console.error(error);
