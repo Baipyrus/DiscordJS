@@ -81,18 +81,6 @@ export async function execute(oldState, newState) {
 	if (!newState.channel)
 		return await leftVoiceChat(oldState);
 
-	console.log(
-		Array.from(
-			newState
-				.channel
-				.permissionOverwrites
-				.cache
-				.values()
-		).forEach(overwrite =>
-			console.log(overwrite.allow.toArray())
-		)
-	);
-
 	// Find channel by id, return if not registered for customs
 	const createCh = await VoiceChannel.findOne({
 		where: {
