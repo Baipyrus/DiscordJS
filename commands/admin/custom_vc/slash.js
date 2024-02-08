@@ -19,13 +19,25 @@ export const data = new SlashCommandBuilder()
     .addSubcommand((subcommand) =>
         subcommand
             .setName('register')
-            .setDescription('Registers an existing voice channel.')
+            .setDescription('Registers an existing voice channel for custom channel creation.')
             .addChannelOption((option) =>
                 option
                     .setRequired(true)
                     .setName('channel')
                     .addChannelTypes(ChannelType.GuildVoice)
                     .setDescription('The voice channel to be used.')
+            )
+    )
+    .addSubcommand((subcommand) =>
+        subcommand
+            .setName('remove')
+            .setDescription('Remove a voice channel from custom channel creation.')
+            .addChannelOption((option) =>
+                option
+                    .setRequired(true)
+                    .setName('channel')
+                    .addChannelTypes(ChannelType.GuildVoice)
+                    .setDescription('The voice channel to be unregistered.')
             )
     );
 export async function execute(interaction) {
@@ -60,7 +72,7 @@ export async function execute(interaction) {
             }
             case 'register': {
                 // Get channel id from user input
-                const id = options.getChannel('channel');
+                const { id } = options.getChannel('channel');
 
                 // Save channel data
                 step = 'save';
@@ -69,6 +81,31 @@ export async function execute(interaction) {
                 // Reply success to acknowledge command
                 await interaction.reply({
                     content: `Successfully registered channel!`,
+                    ephemeral: true
+                });
+                break;
+            }
+            case 'remove': {
+                // Get channel id from user input
+                const { id } = options.getChannel('channel');
+
+                // Remove channel from guild
+                step = 'remove';
+                const count = await VoiceChannel.destroy({
+                    where: {
+                        id,
+                        create: true
+                    }
+                });
+
+                // Set reply based on result of deletion
+                let response = 'Successfully removed';
+                if (count === 0)
+                    response = 'Failed to remove';
+
+                // Reply to acknowledge command
+                await interaction.reply({
+                    content: `${response} channel from custom channel creation!`,
                     ephemeral: true
                 });
                 break;
