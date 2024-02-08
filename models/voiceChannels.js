@@ -7,11 +7,11 @@ export default function(sequelize) {
 			primaryKey: true
 		},
 		create: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		owner: {
 			type: DataTypes.STRING,
-			defaultValue: false,
 			allowNull: true
 		}
 	});
