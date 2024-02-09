@@ -17,7 +17,7 @@ const vcPermissionOverwrites = [
 	PermissionFlagsBits.Speak
 ];
 
-const getChannel = async (member, channels) => {
+const getChannel = async (member, guildChs, channel) => {
 	// Check database for existing channel
 	const ownCh = await VoiceChannel.findOne({
 		where: {
@@ -25,14 +25,15 @@ const getChannel = async (member, channels) => {
 		}
 	});
 	if (ownCh !== null) {
-		return await channels.fetch(ownCh.id);
+		return await guildChs.fetch(ownCh.id);
 	}
 
 	// Create private channel with all permissions
 	const name = member.user.username;
 	const chName = `${name}${name.toLowerCase().endsWith('s') ? "'" : "'s"} channel`;
-	const privCh = await channels.create({
+	const privCh = await guildChs.create({
 		name: chName,
+		parent: channel.parent,
 		type: ChannelType.GuildVoice,
 		permissionOverwrites: [
 			{
@@ -77,13 +78,14 @@ const leftVoiceChat = async (state) => {
 
 export const name = Events.VoiceStateUpdate;
 export async function execute(oldState, newState) {
+	const { channel } = newState
 	await leftVoiceChat(oldState);
-	if (!newState.channel) return;
+	if (!channel) return;
 
 	// Find channel by id, return if not registered for customs
 	const createCh = await VoiceChannel.findOne({
 		where: {
-			id: newState.channel.id,
+			id: channel.id,
 			create: true
 		}
 	});
@@ -96,7 +98,7 @@ export async function execute(oldState, newState) {
 	const channels = newState.guild.channels;
 	let step = 'create';
 	try {
-		const privCh = await getChannel(member, channels);
+		const privCh = await getChannel(member, channels, channel);
 
 		step = 'move to';
 		// Move user to private channel
