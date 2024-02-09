@@ -159,7 +159,9 @@ Registered Voice Channels will automatically:
 
 # TO-DO List:
 
-**NOTE:** These lists can and will easily be appended to in the future. Feel free to give any feedback at all and add to the list of wanted features, since this could make for many great opportunities! The bot is being developed just for this one community after all!
+
+> **NOTE**
+> These lists can and will easily be appended to in the future. Any and all feedback is greatly appreciated!
 
 ## Planned features
 
