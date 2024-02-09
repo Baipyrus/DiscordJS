@@ -11,7 +11,6 @@ const vcPermissionOverwrites = [
 	PermissionFlagsBits.ViewChannel,
 	PermissionFlagsBits.MuteMembers,
 	PermissionFlagsBits.MoveMembers,
-	PermissionFlagsBits.ManageRoles,
 	PermissionFlagsBits.Connect,
 	PermissionFlagsBits.Stream,
 	PermissionFlagsBits.UseVAD,
@@ -78,7 +77,8 @@ const leftVoiceChat = async (state) => {
 
 export const name = Events.VoiceStateUpdate;
 export async function execute(oldState, newState) {
-	if (!newState.channel) return await leftVoiceChat(oldState);
+	await leftVoiceChat(oldState)
+	if (!newState.channel) return;
 
 	// Find channel by id, return if not registered for customs
 	const createCh = await VoiceChannel.findOne({
