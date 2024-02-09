@@ -1,5 +1,5 @@
 import { addSelfRoles } from '../../../shared.js';
-import { SlashCommandBuilder } from 'discord.js';
+import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { Message } from '../../../database.js';
 
 const createSelfRoles = async (interaction) => {
@@ -73,6 +73,7 @@ export const data = new SlashCommandBuilder()
 	.setName('self_roles')
 	.setDMPermission(false)
 	.setDescription('Manages reactions for self roles.')
+	.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('create')

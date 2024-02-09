@@ -1,10 +1,11 @@
-import { ChannelType, SlashCommandBuilder } from 'discord.js';
+import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { VoiceChannel } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('custom_vc')
 	.setDMPermission(false)
 	.setDescription('Manages reactions for self roles.')
+	.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('create')

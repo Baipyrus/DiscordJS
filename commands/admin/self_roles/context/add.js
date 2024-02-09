@@ -1,4 +1,4 @@
-import { TextInputBuilder, TextInputStyle } from 'discord.js';
+import { PermissionFlagsBits, TextInputBuilder, TextInputStyle } from 'discord.js';
 import {
 	ModalBuilder,
 	ActionRowBuilder,
@@ -10,7 +10,8 @@ import { addSelfRoles } from '../../../../shared.js';
 export const data = new ContextMenuCommandBuilder()
 	.setDMPermission(false)
 	.setName('Add role emoji pair')
-	.setType(ApplicationCommandType.Message);
+	.setType(ApplicationCommandType.Message)
+	.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
 export async function modalSubmit(interaction) {
 	const { fields, guild } = interaction;
 	// Get text inputs from modal
