@@ -77,7 +77,7 @@ const leftVoiceChat = async (state) => {
 
 export const name = Events.VoiceStateUpdate;
 export async function execute(oldState, newState) {
-	await leftVoiceChat(oldState)
+	await leftVoiceChat(oldState);
 	if (!newState.channel) return;
 
 	// Find channel by id, return if not registered for customs

@@ -66,8 +66,7 @@ const editMessage = async (message, role, emoji) => {
 
 	// Get old and build new content of message
 	const current = message.content;
-	const next = current + padding +
-		`React with ${emoji} to receive <@&${role.id}>!`;
+	const next = current + padding + `React with ${emoji} to receive <@&${role.id}>!`;
 
 	// Set message by editing
 	await message.edit(next);
