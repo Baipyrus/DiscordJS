@@ -1,7 +1,10 @@
 import { join } from 'path';
 import { Op } from 'sequelize';
+import { config } from 'dotenv';
 import { readdir } from 'fs/promises';
 import { Message, RoleEmojiPair } from './database.js';
+
+config();
 
 export const removeSelfRoles = async (interaction, id) => {
 	// Try deleting message from database
@@ -53,6 +56,23 @@ const saveMessageData = async (id, role, emoji) => {
 	await RoleEmojiPair.create({ message: id, role: role.id, emoji });
 };
 
+const editMessage = async (message, role, emoji) => {
+	if (message.author.id !== process.env.CLIENT) return;
+
+	// Find out whether to pad message or already present
+	let padding = '\n';
+	const reps = await RoleEmojiPair.findAll({ where: { message: message.id } });
+	if (reps.length === 0) padding += '\n';
+
+	// Get old and build new content of message
+	const current = message.content;
+	const next = current + padding +
+		`React with ${emoji} to receive <@&${role.id}>!`;
+
+	// Set message by editing
+	await message.edit(next);
+};
+
 export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 	const { channel } = interaction;
 
@@ -60,6 +80,10 @@ export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 	try {
 		// Get message by id
 		const message = await channel.messages.fetch(msgID);
+
+		step = 'edit';
+		// Try editing message to explain pair
+		await editMessage(message, role, emoji);
 
 		step = 'save data from';
 		await saveMessageData(msgID, role, emoji);
