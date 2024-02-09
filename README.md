@@ -37,6 +37,7 @@ Full names:
 - `/self_roles create`
 
 Description:
+
 The bot writes a message with the given contents in the current channel, and then registers said message for self roles
 
 Options:
@@ -51,6 +52,7 @@ Full names:
 - "Register self roles"
 
 Description:
+
 Fetches any existing message and registers it for self roles directly
 
 Options:
@@ -65,6 +67,7 @@ Full names:
 - "Remove self roles"
 
 Description:
+
 Fetches any existing message, looks if it is registered for self roles and then unregisters it
 
 Options:
@@ -79,6 +82,7 @@ Full names:
 - "Add role emoji pair"
 
 Description:
+
 Adds a new Role-Emoji-Pair to a given message. Reacting to said message with the given emoji yields the given role
 
 Options:
@@ -108,8 +112,9 @@ Enables users to create a custom, temporary voice chat with full control over it
 
 ### create
 
-Full name:
-`/custom_vc create`
+Full names:
+
+- `/custom_vc create`
 
 Description:
 The bot creates a new voice channel with the given name and registers said channel for custom VC creation
