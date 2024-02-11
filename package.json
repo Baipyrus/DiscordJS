@@ -9,7 +9,7 @@
 		"deploy": "node deploy.js",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"jsdoc": "jsdoc -c ./.jsdoc.conf.json -d docs/ -r ."
+		"jsdoc": "rm -rf docs/ && jsdoc -c ./.jsdoc.conf.json -d docs/ -r ."
 	},
 	"author": "",
 	"license": "ISC",
