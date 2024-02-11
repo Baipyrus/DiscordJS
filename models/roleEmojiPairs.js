@@ -16,7 +16,7 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  * @param {Sequelize} sequelize
  * @returns {RoleEmojiPair}
  */
-export default function(sequelize) {
+export default function (sequelize) {
 	return sequelize.define('RoleEmojiPairs', {
 		id: {
 			defaultValue: DataTypes.UUIDV4,

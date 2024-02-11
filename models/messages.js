@@ -13,7 +13,7 @@ import { DataTypes, Sequelize } from 'sequelize';
  * @param {Sequelize} sequelize
  * @returns {Message}
  */
-export default function(sequelize) {
+export default function (sequelize) {
 	return sequelize.define('Messages', {
 		id: {
 			type: DataTypes.STRING,

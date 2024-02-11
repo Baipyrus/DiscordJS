@@ -15,7 +15,7 @@ import { DataTypes, Sequelize } from 'sequelize';
  * @param {Sequelize} sequelize
  * @returns {VoiceChannel}
  */
-export default function(sequelize) {
+export default function (sequelize) {
 	return sequelize.define('VoiceChannel', {
 		id: {
 			type: DataTypes.STRING,
