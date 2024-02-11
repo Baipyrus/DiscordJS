@@ -3,8 +3,9 @@ import { DataTypes, Sequelize } from 'sequelize';
 /**
  * @typedef {Object} Message
  * @property {string} id A Discord message ID.
- * @method hasMany Defines an One-To-Many relationship.
- * @param {Object}
+ * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
+ * @property {(conditions: Object) => void} findOne Finds one instance in the database matching the provided condition(-s).
+ * @property {(conditions: Object) => void} findAll Finds all instances in the database matching the provided condition(-s).
  */
 
 /**

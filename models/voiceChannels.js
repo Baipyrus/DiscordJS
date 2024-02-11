@@ -5,6 +5,9 @@ import { DataTypes, Sequelize } from 'sequelize';
  * @property {string} id A Discord channel ID.
  * @property {boolean} create Whether or not this channel is registered to create customs when joined.
  * @property {(string|null)} owner The owner of this channel, if not registered for customs.
+ * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
+ * @property {(conditions: Object) => void} findOne Finds one instance in the database matching the provided condition(-s).
+ * @property {(conditions: Object) => void} findAll Finds all instances in the database matching the provided condition(-s).
  */
 
 /**
