@@ -159,7 +159,6 @@ Registered Voice Channels will automatically:
 
 # TO-DO List:
 
-
 > **NOTE**
 > These lists can and will easily be appended to in the future. Any and all feedback is greatly appreciated!
 

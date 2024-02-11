@@ -1,10 +1,7 @@
 {
-  "source": {
-    "include": ["."],
-    "exclude": [
-      "node_modules",
-      "commands/examples"
-    ],
-    "includePattern": ".+\\.js(doc|x)?$"
-  }
+	"source": {
+		"include": ["."],
+		"exclude": ["node_modules", "commands/examples"],
+		"includePattern": ".+\\.js(doc|x)?$"
+	}
 }
