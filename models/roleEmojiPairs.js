@@ -7,8 +7,8 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  * @property {string} role A Discord role ID.
  * @property {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
  * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
- * @property {(conditions: Object) => void} findOne Finds one instance in the database matching the provided condition(-s).
- * @property {(conditions: Object) => void} findAll Finds all instances in the database matching the provided condition(-s).
+ * @property {(conditions: Object) => Promise<RoleEmojiPair>} findOne Finds one instance in the database matching the provided condition(-s).
+ * @property {(conditions: Object) => Promise<Array<RoleEmojiPair>>} findAll Finds all instances in the database matching the provided condition(-s).
  */
 
 /**
@@ -16,7 +16,7 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  * @param {Sequelize} sequelize
  * @returns {RoleEmojiPair}
  */
-export default function (sequelize) {
+export default function(sequelize) {
 	return sequelize.define('RoleEmojiPairs', {
 		id: {
 			defaultValue: DataTypes.UUIDV4,
