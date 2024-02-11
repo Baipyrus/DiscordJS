@@ -3,6 +3,7 @@ import defineVoiceChannel from './models/voiceChannels.js';
 import defineMessage from './models/messages.js';
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
+
 config();
 
 const { DB_NAME } = process.env;
