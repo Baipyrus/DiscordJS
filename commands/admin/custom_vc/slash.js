@@ -1,4 +1,9 @@
-import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+	ChannelType,
+	PermissionFlagsBits,
+	SlashCommandBuilder,
+	ChatInputCommandInteraction
+} from 'discord.js';
 import { VoiceChannel } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
@@ -41,9 +46,11 @@ export const data = new SlashCommandBuilder()
 					.setDescription('The voice channel to be unregistered.')
 			)
 	);
+/** @param {ChatInputCommandInteraction} interaction */
 export async function execute(interaction) {
 	const { guild, options } = interaction;
 
+	/** @type {string} */
 	let step;
 	try {
 		switch (options.getSubcommand()) {

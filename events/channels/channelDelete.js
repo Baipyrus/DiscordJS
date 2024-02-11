@@ -1,7 +1,8 @@
-import { ChannelType, Events } from 'discord.js';
+import { ChannelType, Events, GuildChannel } from 'discord.js';
 import { VoiceChannel } from '../../database.js';
 
 export const name = Events.ChannelDelete;
+/** @param {GuildChannel} channel */
 export async function execute(channel) {
 	if (channel.type !== ChannelType.GuildVoice) return;
 

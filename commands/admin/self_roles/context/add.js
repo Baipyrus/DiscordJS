@@ -1,9 +1,13 @@
-import { PermissionFlagsBits, TextInputBuilder, TextInputStyle } from 'discord.js';
 import {
 	ModalBuilder,
+	TextInputStyle,
 	ActionRowBuilder,
+	TextInputBuilder,
+	PermissionFlagsBits,
+	ModalSubmitInteraction,
 	ApplicationCommandType,
-	ContextMenuCommandBuilder
+	ContextMenuCommandBuilder,
+	ContextMenuCommandInteraction
 } from 'discord.js';
 import { addSelfRoles } from '../../../../shared.js';
 
@@ -12,6 +16,7 @@ export const data = new ContextMenuCommandBuilder()
 	.setName('Add role emoji pair')
 	.setType(ApplicationCommandType.Message)
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
+/** @param {ModalSubmitInteraction} interaction */
 export async function modalSubmit(interaction) {
 	const { fields, guild } = interaction;
 	// Get text inputs from modal
@@ -32,6 +37,7 @@ export async function modalSubmit(interaction) {
 
 	await addSelfRoles(interaction, message, role, emoji);
 }
+/** @param {ContextMenuCommandInteraction} interaction */
 export async function execute(interaction) {
 	const modal = new ModalBuilder()
 		.setCustomId('Add role emoji pair-pair')

@@ -1,7 +1,8 @@
-import { Events } from 'discord.js';
 import { Message } from '../../database.js';
+import { Events } from 'discord.js';
 
 export const name = Events.MessageDelete;
+/** @param {import('discord.js').Message} message */
 export async function execute(message) {
 	// Delete message entry once message is deleted itself
 	const count = await Message.destroy({

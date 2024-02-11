@@ -1,11 +1,18 @@
-import { join } from 'path';
-import { Op } from 'sequelize';
-import { config } from 'dotenv';
-import { readdir } from 'fs/promises';
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Role } from 'discord.js';
 import { Message, RoleEmojiPair } from './database.js';
+import { readdir } from 'fs/promises';
+import { config } from 'dotenv';
+import { Op } from 'sequelize';
+import { join } from 'path';
+import Module from 'module';
 
 config();
 
+/**
+ * Main logic of the different 'Self Roles remove' commands to remove the functionality from a `Message`.
+ * @param {(ChatInputCommandInteraction|ContextMenuCommandInteraction)} interaction The interaction related to this command.
+ * @param {string} id A Discord message ID.
+ */
 export const removeSelfRoles = async (interaction, id) => {
 	// Try deleting message from database
 	const count = await Message.destroy({
@@ -27,6 +34,12 @@ export const removeSelfRoles = async (interaction, id) => {
 	console.info(`[INFO] Removed self roles from message with ID '${id}'.`);
 };
 
+/**
+ * Function to handle saving all the corresponding data for `Message` and `RoleEmojiPair` tables.
+ * @param {string} id A Discord message ID.
+ * @param {Role} role
+ * @param {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
+ */
 const saveMessageData = async (id, role, emoji) => {
 	// Try finding message
 	const msg = await Message.findOne({ where: { id } });
@@ -56,6 +69,12 @@ const saveMessageData = async (id, role, emoji) => {
 	await RoleEmojiPair.create({ message: id, role: role.id, emoji });
 };
 
+/**
+ * Function to handle editing messages in case the message that's getting a new `RoleEmojiPair`, is owned by the bot.
+ * @param {import('discord.js').Message} message
+ * @param {Role} role
+ * @param {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
+ */
 const editMessage = async (message, role, emoji) => {
 	if (message.author.id !== process.env.CLIENT) return;
 
@@ -72,6 +91,13 @@ const editMessage = async (message, role, emoji) => {
 	await message.edit(next);
 };
 
+/**
+ * Main logic of the different 'Self Roles add' commands to add a `RoleEmojiPair` to the database and the `Message`.
+ * @param {(ChatInputCommandInteraction|ContextMenuCommandInteraction)} interaction The interaction related to this command.
+ * @param {string} msgID A Discord message ID.
+ * @param {Role} role
+ * @param {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
+ */
 export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 	const { channel } = interaction;
 
@@ -109,9 +135,15 @@ export const addSelfRoles = async (interaction, msgID, role, emoji) => {
 	}
 };
 
+// Lists of required and optional attributes of command modules
 const required = ['data', 'execute'];
 const optional = ['autocomplete', 'modalSubmit'];
 
+/**
+ * Recursively scans a directory for all files in it.
+ * @param {string} dir
+ * @returns {Array<string>} Array of paths to the files within.
+ */
 export const getFiles = async (dir) => {
 	const dirents = await readdir(dir, { withFileTypes: true });
 	const files = await Promise.all(
@@ -123,6 +155,11 @@ export const getFiles = async (dir) => {
 	return Array.prototype.concat(...files);
 };
 
+/**
+ * Imports and checks a command from a path as a module.
+ * @param {string} filePath
+ * @returns {Promise<Module|0>}
+ */
 export const importAndCheck = async (filePath) => {
 	if (!filePath.endsWith('.js') || filePath.endsWith('.example.js')) {
 		// Skip this file

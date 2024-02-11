@@ -1,5 +1,11 @@
 import { Events } from 'discord.js';
+import Module from 'module';
 
+/**
+ * A more precise execution function specifically to call the main property of a module.
+ * @param {import('discord.js').Interaction} interaction
+ * @param {Module} command
+ */
 const executeCommand = async (interaction, command) => {
 	// Try executing command
 	try {
@@ -21,6 +27,14 @@ const executeCommand = async (interaction, command) => {
 	}
 };
 
+/**
+ * A generic execution function to call command methods.
+ * @param {import('discord.js').Interaction} interaction
+ * @param {Module} command
+ * @param {string} name
+ * @param {string=} description
+ * @param {string=} cmdName
+ */
 const genericExecute = async (interaction, command, name, description, cmdName) => {
 	try {
 		console.info(
@@ -35,7 +49,9 @@ const genericExecute = async (interaction, command, name, description, cmdName) 
 };
 
 export const name = Events.InteractionCreate;
+/** @param {import('discord.js').Interaction} interaction */
 export async function execute(interaction) {
+	/** @type {Module} */
 	let command = interaction.client.commands.get(interaction.commandName);
 
 	// Execute slash- and context-menu-commands

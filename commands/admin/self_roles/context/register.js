@@ -1,11 +1,17 @@
+import {
+	ApplicationCommandType,
+	ContextMenuCommandBuilder,
+	PermissionFlagsBits,
+	ContextMenuCommandInteraction
+} from 'discord.js';
 import { Message } from '../../../../database.js';
-import { ApplicationCommandType, ContextMenuCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 export const data = new ContextMenuCommandBuilder()
 	.setDMPermission(false)
 	.setName('Register self roles')
 	.setType(ApplicationCommandType.Message)
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
+/** @param {ContextMenuCommandInteraction} interaction */
 export async function execute(interaction) {
 	const id = interaction.targetMessage.id;
 

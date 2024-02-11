@@ -6,6 +6,7 @@ import { config } from 'dotenv';
 config();
 
 const { DB_NAME } = process.env;
+/** The database instance used as an ORM in this project. */
 const sequelize = new Sequelize({
 	storage: `${DB_NAME}.sqlite`,
 	dialect: 'sqlite',

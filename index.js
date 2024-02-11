@@ -1,12 +1,17 @@
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { getFiles, importAndCheck } from './shared.js';
-import { Partials } from 'discord.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
+import Module from 'module';
 
 config();
 
+/**
+ * Main entry point, the bot logs on to discord.
+ * @param {Array<Module>} commands
+ * @param {Array<Module>} events
+ */
 const runClient = (commands, events) => {
 	// Create a new client instance
 	const client = new Client({
@@ -18,8 +23,15 @@ const runClient = (commands, events) => {
 		],
 		partials: [Partials.Message, Partials.Reaction]
 	});
+
+	/**
+	 * The commands registered for this client.
+	 * @type {Collection}
+	 */
 	client.commands = new Collection();
 	commands.forEach((c) => client.commands.set(c.data.name, c));
+
+	// Register client events
 	events.forEach((e) =>
 		e.once
 			? client.once(e.name, (...args) => e.execute(...args))

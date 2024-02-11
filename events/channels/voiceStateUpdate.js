@@ -1,4 +1,12 @@
-import { ChannelType, Events, PermissionFlagsBits } from 'discord.js';
+import {
+	ChannelType,
+	Events,
+	PermissionFlagsBits,
+	GuildMember,
+	GuildChannelManager,
+	GuildChannel,
+	VoiceState
+} from 'discord.js';
 import { VoiceChannel } from '../../database.js';
 
 const vcPermissionOverwrites = [
@@ -17,6 +25,13 @@ const vcPermissionOverwrites = [
 	PermissionFlagsBits.Speak
 ];
 
+/**
+ * Function that either creates a new custom channel or gets an existing one registered in the database.
+ * @param {GuildMember} member The member that caused this event.
+ * @param {GuildChannelManager} guildChs All channels in this guild.
+ * @param {GuildChannel} channel The channel the member joined for this event to trigger.
+ * @returns {Promise<GuildChannel>} The channel, whether it's newly created or not.
+ */
 const getChannel = async (member, guildChs, channel) => {
 	// Check database for existing channel
 	const ownCh = await VoiceChannel.findOne({
@@ -52,6 +67,10 @@ const getChannel = async (member, guildChs, channel) => {
 	return privCh;
 };
 
+/**
+ * Function to delete the voice channel, if and only if the user is currently leaving and it was a custom channel.
+ * @param {VoiceState} state The previous voice state the user was in.
+ */
 const leftVoiceChat = async (state) => {
 	const { channel } = state;
 
@@ -77,8 +96,12 @@ const leftVoiceChat = async (state) => {
 };
 
 export const name = Events.VoiceStateUpdate;
+/**
+ * @param {VoiceState} oldState
+ * @param {VoiceState} newState
+ */
 export async function execute(oldState, newState) {
-	const { channel } = newState
+	const { channel } = newState;
 	await leftVoiceChat(oldState);
 	if (!channel) return;
 

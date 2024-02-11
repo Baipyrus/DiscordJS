@@ -1,7 +1,12 @@
-import { addSelfRoles } from '../../../shared.js';
-import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { PermissionFlagsBits, SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { addSelfRoles, removeSelfRoles } from '../../../shared.js';
 import { Message } from '../../../database.js';
 
+/**
+ * Sends a `Message` in the current channel and registers for self roles.
+ * @param {ChatInputCommandInteraction} interaction
+ * @returns {string}
+ */
 const createSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;
 
@@ -16,6 +21,17 @@ const createSelfRoles = async (interaction) => {
 	return id;
 };
 
+/**
+ * @typedef {Object} SelfRoleResponse
+ * @property {boolean} success Whether or not the operation was successful.
+ * @property {string|null} msgID A Discord message ID, if successful.
+ */
+
+/**
+ * Registers a `Message` for self roles.
+ * @param {ChatInputCommandInteraction} interaction
+ * @returns {Promise<SelfRoleResponse>}
+ */
 const registerSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;
 	const id = options.getString('id');
@@ -50,7 +66,12 @@ const registerSelfRoles = async (interaction) => {
 	return response;
 };
 
-const removeSelfRoles = async (interaction, msgID) => {
+/**
+ * Main logic of the 'Self Roles remove' slash command to remove the functionality from a `Message`.
+ * @param {ChatInputCommandInteraction} interaction
+ * @param {string} msgID A Discord message ID.
+ */
+const removeReactionRoles = async (interaction, msgID) => {
 	const { channel } = interaction;
 
 	try {
@@ -66,6 +87,7 @@ const removeSelfRoles = async (interaction, msgID) => {
 		return;
 	}
 
+	// Call shared method for further logic
 	await removeSelfRoles(interaction, msgID);
 };
 
@@ -124,11 +146,13 @@ export const data = new SlashCommandBuilder()
 					.setDescription('The ID to reference the message to be removed.')
 			)
 	);
+/** @param {ChatInputCommandInteraction} interaction */
 export async function execute(interaction) {
 	const { options } = interaction;
 
-	let createNew = false,
-		id;
+	/** @type {string=} */
+	let id;
+	let createNew = false;
 	switch (options.getSubcommand()) {
 		case 'create':
 			id = await createSelfRoles(interaction);
@@ -153,7 +177,7 @@ export async function execute(interaction) {
 		}
 		case 'remove': {
 			const msgID = options.getString('id');
-			await removeSelfRoles(interaction, msgID);
+			await removeReactionRoles(interaction, msgID);
 			break;
 		}
 	}

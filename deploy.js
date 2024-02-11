@@ -3,13 +3,17 @@ import { REST, Routes } from 'discord.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
+import Module from 'module';
 
 config();
 
 // Construct and prepare an instance of the REST module
 const rest = new REST().setToken(process.env.TOKEN);
 
-// and deploy your commands!
+/**
+ * Calls HTTP PUT to register commands in discord.
+ * @param {Array<Object>} commands
+ */
 const putCommands = async (commands) => {
 	try {
 		console.info(`[INFO] Started refreshing ${commands.length} application (/) commands.`);
@@ -32,7 +36,7 @@ getFiles(cmdPath)
 	// For each command file
 	.then(async (files) =>
 		(await Promise.all(files.map(importAndCheck)))
-			.filter((module) => module !== 0)
-			.map((module) => module.data.toJSON())
+			.filter(/** @param {(Module|0)} module */ (module) => module !== 0)
+			.map(/** @param {Module} module */ (module) => module.data.toJSON())
 	)
 	.then(putCommands);

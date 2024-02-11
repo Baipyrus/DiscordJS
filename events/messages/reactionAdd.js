@@ -1,10 +1,14 @@
-import { config } from 'dotenv';
-import { Events } from 'discord.js';
+import { Events, MessageReaction, User } from 'discord.js';
 import { Message, RoleEmojiPair } from '../../database.js';
+import { config } from 'dotenv';
 
 config();
 
 export const name = Events.MessageReactionAdd;
+/**
+ * @param {MessageReaction} reaction
+ * @param {User} user
+ */
 export async function execute(reaction, user) {
 	if (user.id === process.env.CLIENT) return;
 
