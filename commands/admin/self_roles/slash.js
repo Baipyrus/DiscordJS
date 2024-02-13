@@ -5,7 +5,7 @@ import { Message } from '../../../database.js';
 /**
  * Sends a `Message` in the current channel and registers for self roles.
  * @param {ChatInputCommandInteraction} interaction
- * @returns {string}
+ * @returns {Promise<string>}
  */
 const createSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;
