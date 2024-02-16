@@ -33,7 +33,13 @@ export async function execute(reaction, user) {
 	// Deny if unregistered
 	if (rep === null) {
 		// Remove reaction and quit
-		await reaction.remove();
+		try {
+			reaction.remove();
+		} catch (error) {
+			// Missing permissions
+			console.error(error)
+			await user.send('Unable to remove reaction. Please contact server staff.');
+		}
 		return;
 	}
 
