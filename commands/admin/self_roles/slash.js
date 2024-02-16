@@ -14,9 +14,11 @@ const createSelfRoles = async (interaction) => {
 	const text = options.getString('text');
 	const id = (await channel.send(text)).id;
 
-	// Reply and delete to acknowledge command
-	await interaction.deferReply();
-	await interaction.deleteReply();
+	// Reply successfully to acknowledge command
+	await interaction.reply({
+		content: `Successfully sent message! Add roles to it with reference ID '${id}'.`,
+		ephemeral: true
+	});
 
 	return id;
 };
