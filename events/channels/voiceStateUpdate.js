@@ -102,25 +102,26 @@ export const name = Events.VoiceStateUpdate;
  */
 export async function execute(oldState, newState) {
 	const { channel } = newState;
-	await leftVoiceChat(oldState);
-	if (!channel) return;
-
-	// Find channel by id, return if not registered for customs
-	const createCh = await VoiceChannel.findOne({
-		where: {
-			id: channel.id,
-			create: true
-		}
-	});
-	if (createCh === null) return;
-
-	// Extract user data
-	const member = newState.member;
-
-	// Extract channel data
-	const channels = newState.guild.channels;
-	let step = 'create';
+	let step = 'delete';
 	try {
+		await leftVoiceChat(oldState);
+		if (!channel) return;
+
+		// Find channel by id, return if not registered for customs
+		const createCh = await VoiceChannel.findOne({
+			where: {
+				id: channel.id,
+				create: true
+			}
+		});
+		if (createCh === null) return;
+
+		// Extract user data
+		const member = newState.member;
+
+		step = 'create';
+		// Extract channel data
+		const channels = newState.guild.channels;
 		const privCh = await getChannel(member, channels, channel);
 
 		step = 'move to';
