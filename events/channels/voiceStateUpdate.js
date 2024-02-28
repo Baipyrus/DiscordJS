@@ -1,29 +1,12 @@
 import {
 	ChannelType,
 	Events,
-	PermissionFlagsBits,
 	GuildMember,
 	GuildChannelManager,
 	GuildChannel,
 	VoiceState
 } from 'discord.js';
 import { VoiceChannel } from '../../database.js';
-
-const vcPermissionOverwrites = [
-	PermissionFlagsBits.ReadMessageHistory,
-	PermissionFlagsBits.PrioritySpeaker,
-	PermissionFlagsBits.ManageMessages,
-	PermissionFlagsBits.ManageChannels,
-	PermissionFlagsBits.DeafenMembers,
-	PermissionFlagsBits.SendMessages,
-	PermissionFlagsBits.ViewChannel,
-	PermissionFlagsBits.MuteMembers,
-	PermissionFlagsBits.MoveMembers,
-	PermissionFlagsBits.Connect,
-	PermissionFlagsBits.Stream,
-	PermissionFlagsBits.UseVAD,
-	PermissionFlagsBits.Speak
-];
 
 /**
  * Function that either creates a new custom channel or gets an existing one registered in the database.
@@ -46,16 +29,13 @@ const getChannel = async (member, guildChs, channel) => {
 	// Create private channel with all permissions
 	const name = member.user.username;
 	const chName = `${name}${name.toLowerCase().endsWith('s') ? "'" : "'s"} channel`;
+	// Get permissions from parent
+	const vcPermOver = channel.parent.permissionOverwrites.cache.get(member.id);
 	const privCh = await guildChs.create({
 		name: chName,
 		parent: channel.parent,
 		type: ChannelType.GuildVoice,
-		permissionOverwrites: [
-			{
-				id: member.id,
-				allow: vcPermissionOverwrites
-			}
-		]
+		permissionOverwrites: [vcPermOver]
 	});
 
 	// Save newly created channel
