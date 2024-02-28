@@ -4,7 +4,8 @@ import {
 	GuildMember,
 	GuildChannelManager,
 	GuildChannel,
-	VoiceState
+	VoiceState,
+	PermissionOverwrites
 } from 'discord.js';
 import { VoiceChannel } from '../../database.js';
 
@@ -28,12 +29,19 @@ const getChannel = async (member, guildChs, channel) => {
 	const name = member.user.username;
 	const chName = `${name}${name.toLowerCase().endsWith('s') ? "'" : "'s"} channel`;
 	// Get permissions from parent
-	const vcPermOver = channel.parent.permissionOverwrites.cache.get(member.id);
+	/** @type {PermissionOverwrites} */
+	const { allow, deny } = channel.parent.permissionOverwrites.cache.get(member.client.user.id);
 	const privCh = await guildChs.create({
 		name: chName,
 		parent: channel.parent,
 		type: ChannelType.GuildVoice,
-		permissionOverwrites: [vcPermOver]
+		permissionOverwrites: [
+			{
+				id: member.id,
+				allow,
+				deny
+			}
+		]
 	});
 
 	// Save newly created channel
