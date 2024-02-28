@@ -22,9 +22,7 @@ const getChannel = async (member, guildChs, channel) => {
 			owner: member.user.id
 		}
 	});
-	if (ownCh !== null) {
-		return await guildChs.fetch(ownCh.id);
-	}
+	if (ownCh !== null) return await guildChs.fetch(ownCh.id);
 
 	// Create private channel with all permissions
 	const name = member.user.username;
