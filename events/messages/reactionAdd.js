@@ -37,7 +37,7 @@ export async function execute(reaction, user) {
 			reaction.remove();
 		} catch (error) {
 			// Missing permissions
-			console.error(error)
+			console.error(error);
 			await user.send('Unable to remove reaction. Please contact server staff.');
 		}
 		return;
