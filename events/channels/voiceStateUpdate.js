@@ -19,7 +19,7 @@ const getChannel = async (member, guildChs, channel) => {
 	// Check database for existing channel
 	const ownCh = await VoiceChannel.findOne({
 		where: {
-			owner: member.user.id
+			owner: member.id
 		}
 	});
 	if (ownCh !== null) return await guildChs.fetch(ownCh.id);
@@ -39,7 +39,7 @@ const getChannel = async (member, guildChs, channel) => {
 	// Save newly created channel
 	await VoiceChannel.create({
 		id: privCh.id,
-		owner: member.user.id
+		owner: member.id
 	});
 
 	return privCh;
