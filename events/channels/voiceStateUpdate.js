@@ -81,7 +81,7 @@ export const name = Events.VoiceStateUpdate;
  * @param {VoiceState} newState
  */
 export async function execute(oldState, newState) {
-	const { channel } = newState;
+	const { channel, member } = newState;
 	let step = 'delete';
 	try {
 		await leftVoiceChat(oldState);
@@ -95,9 +95,6 @@ export async function execute(oldState, newState) {
 			}
 		});
 		if (createCh === null) return;
-
-		// Extract user data
-		const member = newState.member;
 
 		step = 'create';
 		// Extract channel data
