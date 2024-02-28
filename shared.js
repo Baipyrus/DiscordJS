@@ -66,7 +66,11 @@ const saveMessageData = async (id, role, emoji) => {
 		);
 
 	// Create database entry for pair
-	await RoleEmojiPair.create({ message: id, role: role.id, emoji: emoji.replace(/:(\s*[^:]*\s*):/, ":_:") });
+	await RoleEmojiPair.create({
+		message: id,
+		role: role.id,
+		emoji: emoji.replace(/:(\s*[^:]*\s*):/, ':_:')
+	});
 };
 
 /**
