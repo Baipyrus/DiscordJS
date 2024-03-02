@@ -17,6 +17,7 @@ const runClient = (commands, events) => {
 	const client = new Client({
 		intents: [
 			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMembers,
 			GatewayIntentBits.GuildMessages,
 			GatewayIntentBits.GuildVoiceStates,
 			GatewayIntentBits.GuildMessageReactions
