@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from 'sequelize';
+import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 
 /**
  * @typedef {Object} Role
