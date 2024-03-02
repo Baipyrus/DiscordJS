@@ -1,5 +1,5 @@
 import { Events, GuildMember } from 'discord.js';
-import { Role } from '../../../database.js';
+import { Role } from '../../database.js';
 
 export const name = Events.GuildMemberAdd;
 /** @param {GuildMember} member */
