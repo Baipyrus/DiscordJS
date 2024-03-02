@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { Role } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('member_roles')
@@ -31,4 +32,57 @@ export const data = new SlashCommandBuilder()
 /** @param {ChatInputCommandInteraction} interaction */
 export async function execute(interaction) {
 	const { options } = interaction;
+
+	// Get command options
+	const role = options.getRole('role');
+	switch (options.getSubcommand()) {
+		case 'add':
+			// Search for role in database
+			const found = await Role.findOne({
+				where: {
+					id: role.id
+				}
+			});
+
+			// Toggle role assignment if found
+			if (found) {
+				found.assign = true;
+				await found.save();
+				// Otherwise create new database entry
+			} else
+				await Role.create({
+					id: role.id,
+					assign: true
+				});
+
+			// Reply successfully to acknowledge command
+			await interaction.reply({
+				content: 'Successfully registered role.',
+				ephemeral: true
+			});
+
+			console.info(`[INFO] Registered role to be assigned with ID '${role.id}'.`);
+			break;
+		case 'remove':
+			// Remove role from database
+			const count = await Role.destroy({
+				where: {
+					id: role.id,
+					assign: true
+				}
+			});
+
+			// Set reply based on result of deletion
+			let response = 'Successfully removed';
+			if (count === 0) response = 'Failed to remove';
+
+			// Reply to acknowledge command
+			await interaction.reply({
+				content: `${response} role from new member assignment!`,
+				ephemeral: true
+			});
+
+			console.info(`[INFO] Removed role to be assigned with ID '${role.id}'.`);
+			break;
+	}
 }
