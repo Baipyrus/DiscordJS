@@ -5,6 +5,7 @@ import { DataTypes, Sequelize } from 'sequelize';
  * @property {string} id A Discord channel ID.
  * @property {boolean} create Whether or not this channel is registered to create customs when joined.
  * @property {(string|null)} owner The owner of this channel, if not registered for customs.
+ * @property {string} guild A Discord guild ID as a foreign key reference.
  * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
  * @property {(conditions: Object) => Promise<VoiceChannel>} findOne Finds one instance in the database matching the provided condition(-s).
  * @property {(conditions: Object) => Promise<Array<VoiceChannel>>} findAll Finds all instances in the database matching the provided condition(-s).
@@ -16,7 +17,7 @@ import { DataTypes, Sequelize } from 'sequelize';
  * @returns {VoiceChannel}
  */
 export default function (sequelize) {
-	return sequelize.define('VoiceChannel', {
+	return sequelize.define('VoiceChannels', {
 		id: {
 			type: DataTypes.STRING,
 			primaryKey: true
@@ -28,6 +29,14 @@ export default function (sequelize) {
 		owner: {
 			type: DataTypes.STRING,
 			allowNull: true
+		},
+		guild: {
+			type: DataTypes.STRING,
+			references: {
+				deferrable: Deferrable.INITIALLY_IMMEDIATE,
+				model: 'Guilds',
+				key: 'id'
+			}
 		}
 	});
 }

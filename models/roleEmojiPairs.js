@@ -32,7 +32,12 @@ export default function (sequelize) {
 			}
 		},
 		role: {
-			type: DataTypes.STRING
+			type: DataTypes.STRING,
+			references: {
+				deferrable: Deferrable.INITIALLY_IMMEDIATE,
+				model: 'Roles',
+				key: 'id'
+			}
 		},
 		emoji: {
 			type: DataTypes.STRING

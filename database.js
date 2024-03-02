@@ -1,6 +1,8 @@
 import defineRoleEmojiPair from './models/roleEmojiPairs.js';
 import defineVoiceChannel from './models/voiceChannels.js';
 import defineMessage from './models/messages.js';
+import defineGuild from './models/guilds.js';
+import defineRole from './models/roles.js';
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
 
@@ -14,6 +16,14 @@ const sequelize = new Sequelize({
 	logging: false
 });
 
+const Guild = defineGuild(sequelize);
+Guild.hasMany(VoiceChannel, { foreignKey: 'guild', onDelete: 'CASCADE' });
+Guild.hasMany(Message, { foreignKey: 'guild', onDelete: 'CASCADE' });
+Guild.hasMany(Role, { foreignKey: 'guild', onDelete: 'CASCADE' });
+
+const Role = defineRole(sequelize);
+Role.hasMany(RoleEmojiPair, { foreignKey: 'role', onDelete: 'CASCADE' });
+
 const RoleEmojiPair = defineRoleEmojiPair(sequelize);
 
 const VoiceChannel = defineVoiceChannel(sequelize);
@@ -22,4 +32,4 @@ const Message = defineMessage(sequelize);
 Message.hasMany(RoleEmojiPair, { foreignKey: 'message', onDelete: 'CASCADE' });
 
 sequelize.sync();
-export { sequelize, RoleEmojiPair, VoiceChannel, Message };
+export { sequelize, Guild, Role, RoleEmojiPair, VoiceChannel, Message };
