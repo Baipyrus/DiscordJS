@@ -146,7 +146,7 @@ const optional = ['autocomplete', 'modalSubmit'];
 /**
  * Recursively scans a directory for all files in it.
  * @param {string} dir
- * @returns {Array<string>} Array of paths to the files within.
+ * @returns {Promise<Array<string>>} Array of paths to the files within.
  */
 export const getFiles = async (dir) => {
 	const dirents = await readdir(dir, { withFileTypes: true });
