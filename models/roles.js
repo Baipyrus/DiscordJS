@@ -3,6 +3,7 @@ import { DataTypes, Sequelize } from 'sequelize';
 /**
  * @typedef {Object} Role
  * @property {string} id A Discord role ID.
+ * @property {boolean} assign Whether or not the role should be assigned to new members.
  * @property {string} guild A Discord guild ID as a foreign key reference.
  * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
  * @property {(conditions: Object) => Promise<Role>} findOne Finds one instance in the database matching the provided condition(-s).
@@ -19,6 +20,10 @@ export default function (sequelize) {
 		id: {
 			type: DataTypes.STRING,
 			primaryKey: true
+		},
+		assign: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		guild: {
 			type: DataTypes.STRING,
