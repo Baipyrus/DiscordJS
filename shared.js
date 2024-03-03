@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Role } from 'discord.js';
-import { Message, RoleEmojiPair } from './database.js';
+import { Message, RoleEmojiPair, Guild } from './database.js';
 import { readdir } from 'fs/promises';
 import { config } from 'dotenv';
 import { Op } from 'sequelize';
