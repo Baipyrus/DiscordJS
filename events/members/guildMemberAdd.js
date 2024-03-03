@@ -15,8 +15,13 @@ export async function execute(member) {
 	// Ignore if no none found
 	if (roles.length === 0) return;
 
-	// Add roles to member
-	await member.roles.add(roles.map((role) => role.id));
-
-	console.info(`[INFO] Added ${roles.length} roles to user with ID '${member.user.id}'.`);
+	try {
+		// Add roles to member
+		await member.roles.add(roles.map((role) => role.id));
+	} catch (error) {
+		// Missing permissions
+		console.error(error);
+		await member.user.send('Could not assign roles. Please contact server staff.');
+	}
+	console.info(`[INFO] Added ${roles.length} roles to new member with ID '${member.user.id}'.`);
 }

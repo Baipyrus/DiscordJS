@@ -1,5 +1,25 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
-import { Role } from '../../../database.js';
+import { Role, Guild } from '../../../database.js';
+
+/**
+ * @param {Guild} guild
+ * @param {Role} role
+ */
+const registerRole = async (guild, role) => {
+	// Check if guild exists in database, otherwise create it
+	const guildData = { id: guild.id };
+	await Guild.findOrCreate({
+		where: guildData,
+		defaults: guildData
+	});
+
+	// Register role in database
+	await Role.create({
+		guild: guild.id,
+		id: role.id,
+		assign: true
+	});
+};
 
 export const data = new SlashCommandBuilder()
 	.setName('member_roles')
@@ -49,12 +69,7 @@ export async function execute(interaction) {
 				found.assign = true;
 				await found.save();
 				// Otherwise create new database entry
-			} else
-				await Role.create({
-					id: role.id,
-					assign: true
-				});
-
+			} else await registerRole(interaction.guild, role);
 			// Reply successfully to acknowledge command
 			await interaction.reply({
 				content: 'Successfully registered role.',

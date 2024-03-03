@@ -65,10 +65,18 @@ const saveMessageData = async (id, role, emoji) => {
 			`Existing RoleEmojiPair entry with (partial) data {message:${id},role:${role.id},emoji:${emoji}}!`
 		);
 
+	// Create guild if not exists
+	const guildData = { id: role.guild.id };
+	await Guild.findOrCreate({
+		where: guildData,
+		defaults: guildData
+	});
+
 	// Create database entry for pair
 	await RoleEmojiPair.create({
 		message: id,
 		role: role.id,
+		guild: guildData.id,
 		emoji: emoji.replace(/:(\s*[^:]*\s*):/, ':_:')
 	});
 };

@@ -4,7 +4,7 @@ import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction
 } from 'discord.js';
-import { VoiceChannel } from '../../../database.js';
+import { Guild, VoiceChannel } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('custom_vc')
@@ -52,6 +52,7 @@ export async function execute(interaction) {
 
 	/** @type {string} */
 	let step;
+	const guildData = { id: guild.id };
 	try {
 		switch (options.getSubcommand()) {
 			case 'create': {
@@ -65,10 +66,16 @@ export async function execute(interaction) {
 					type: ChannelType.GuildVoice
 				});
 
-				// Save channel data
 				step = 'save';
+				// Create guild if not exists
+				await Guild.findOrCreate({
+					where: guildData,
+					defaults: guildData
+				});
+				// Save channel data
 				await VoiceChannel.create({
 					id: channel.id,
+					guild: guild.id,
 					create: true
 				});
 
@@ -85,9 +92,18 @@ export async function execute(interaction) {
 				// Get channel id from user input
 				const { id } = options.getChannel('channel');
 
-				// Save channel data
 				step = 'save';
-				await VoiceChannel.create({ id, create: true });
+				// Create guild if not exists
+				await Guild.findOrCreate({
+					where: guildData,
+					defaults: guildData
+				});
+				// Save channel data
+				await VoiceChannel.create({
+					id,
+					guild: guild.id,
+					create: true
+				});
 
 				// Reply success to acknowledge command
 				await interaction.reply({
