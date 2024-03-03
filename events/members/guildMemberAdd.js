@@ -16,5 +16,7 @@ export async function execute(member) {
 	if (roles.length === 0) return;
 
 	// Add roles to member
-	member.roles.add(roles.map((role) => role.id));
+	await member.roles.add(roles.map((role) => role.id));
+
+	console.info(`[INFO] Added ${roles.length} roles to user with ID '${member.user.id}'.`);
 }
