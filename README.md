@@ -1,4 +1,34 @@
-# Getting started
+# Setup
+
+## Requirements
+
+- NodeJS (LTS; including NPM): https://nodejs.org/en/download/
+- Git: https://git-scm.com/downloads
+
+## Download
+
+Download the current source code [here](https://git.baipyr.us/Baipyrus/DiscordJS-Example/archive/main.zip).
+
+Or clone the repository manually:
+```bash
+git clone https://git.baipyr.us/Baipyrus/DiscordJS-Example.git
+```
+
+## Installation
+
+Install the required dependencies:
+```bash
+npm install
+```
+
+## Running
+
+Start the bot with:
+```bash
+npm run start
+```
+
+# Usage
 
 Discord utilizes different types of commands to interface with bots. The following explanations aim to explain these types.
 
@@ -117,6 +147,7 @@ Full names:
 - `/custom_vc create`
 
 Description:
+
 The bot creates a new voice channel with the given name and registers said channel for custom VC creation
 
 Options:
@@ -130,11 +161,12 @@ Full names:
 - `/custom_vc register`
 
 Description:
+
 Fetches any existing voice channel and registers it for custom VC creation directly
 
 Options:
 
-- \_id: Discord Channel ID
+- \_channel: Discord Channel
 
 ### remove
 
@@ -143,11 +175,12 @@ Full names:
 - `/custom_vc remove`
 
 Description:
+
 Fetches any voice channel, looks if it is registered for custom VC creation and then unregisters it
 
 Options:
 
-- \_id: Discord Channel ID
+- \_channel: Discord Channel
 
 ## Automated tasks
 
