@@ -249,7 +249,7 @@ Registered roles will automatically be assigned to new members
 
 ## Quirks/Bugs
 
-- Users are currently unable to overwrite permissions of temporarily generated custom VCs
+None
 
 ## Changes
 
