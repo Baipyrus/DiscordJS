@@ -10,6 +10,7 @@
 Download the current source code [here](https://git.baipyr.us/Baipyrus/DiscordJS-Example/archive/main.zip).
 
 Or clone the repository manually:
+
 ```bash
 git clone https://git.baipyr.us/Baipyrus/DiscordJS-Example.git
 ```
@@ -17,6 +18,7 @@ git clone https://git.baipyr.us/Baipyrus/DiscordJS-Example.git
 ## Installation
 
 Install the required dependencies:
+
 ```bash
 npm install
 ```
@@ -24,6 +26,7 @@ npm install
 ## Running
 
 Start the bot with:
+
 ```bash
 npm run start
 ```
