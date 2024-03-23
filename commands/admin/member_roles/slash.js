@@ -56,7 +56,7 @@ export async function execute(interaction) {
 	// Get command options
 	const role = options.getRole('role');
 	switch (options.getSubcommand()) {
-		case 'add':
+		case 'add': {
 			// Search for role in database
 			const found = await Role.findOne({
 				where: {
@@ -78,7 +78,8 @@ export async function execute(interaction) {
 
 			console.info(`[INFO] Registered role to be assigned with ID '${role.id}'.`);
 			break;
-		case 'remove':
+		}
+		case 'remove': {
 			// Remove role from database
 			const count = await Role.destroy({
 				where: {
@@ -99,5 +100,6 @@ export async function execute(interaction) {
 
 			console.info(`[INFO] Removed role to be assigned with ID '${role.id}'.`);
 			break;
+		}
 	}
 }
