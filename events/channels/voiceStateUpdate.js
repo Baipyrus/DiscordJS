@@ -5,7 +5,7 @@ import {
 	GuildChannelManager,
 	GuildChannel,
 	VoiceState,
-	PermissionOverwrites
+	PermissionsBitField
 } from 'discord.js';
 import { VoiceChannel } from '../../database.js';
 
@@ -28,20 +28,10 @@ const getChannel = async (member, guildChs, channel) => {
 	// Create private channel with all permissions
 	const name = member.user.username;
 	const chName = `${name}${name.toLowerCase().endsWith('s') ? "'" : "'s"} channel`;
-	// Get permissions from parent
-	/** @type {PermissionOverwrites} */
-	const { allow, deny } = channel.parent.permissionOverwrites.cache.get(member.client.user.id);
 	const privCh = await guildChs.create({
 		name: chName,
 		parent: channel.parent,
-		type: ChannelType.GuildVoice,
-		permissionOverwrites: [
-			{
-				id: member.id,
-				allow,
-				deny
-			}
-		]
+		type: ChannelType.GuildVoice
 	});
 
 	// Save newly created channel
@@ -106,6 +96,19 @@ export async function execute(oldState, newState) {
 		// Extract channel data
 		const channels = newState.guild.channels;
 		const privCh = await getChannel(member, channels, channel);
+
+		step = 'edit permissions for';
+		// Edit permissionOverwrites on channel for user
+		await privCh.permissionOverwrites.set([
+			{
+				id: member.id,
+				allow: [
+					PermissionsBitField.Flags.ViewChannel,
+					PermissionsBitField.Flags.ManageChannels,
+					PermissionsBitField.Flags.ManageRoles
+				]
+			}
+		]);
 
 		step = 'move to';
 		// Move user to private channel
