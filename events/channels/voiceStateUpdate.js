@@ -113,7 +113,9 @@ export async function execute(oldState, newState) {
 		step = 'move to';
 		// Move user to private channel
 		await newState.setChannel(privCh);
-		console.info(`[INFO] User '${name}' created private channel with ID ${privCh.id}.`);
+		console.info(
+			`[INFO] User with ID '${member.id}' created private channel with ID ${privCh.id}.`
+		);
 	} catch (error) {
 		console.error(error);
 		await member.send(`Failed to ${step} channel! Please contact server staff.`);
