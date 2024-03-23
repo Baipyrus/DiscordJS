@@ -190,6 +190,50 @@ Registered Voice Channels will automatically:
 - be deleted once all users left said channel
 - grant full control over permissions, only within said channel, to the author
 
+# New member roles
+
+## Name
+
+`/member_roles`
+
+## Description
+
+Registers roles to be assigned to new members
+
+## Subcommands
+
+### add
+
+Full names:
+
+- `/member_roles add`
+
+Description:
+
+Adds a new Role to be assigned to new members
+
+Options:
+
+- role: Discord Role
+
+### remove
+
+Full names:
+
+- `/member_roles remove`
+
+Description:
+
+Removes a Role from being assigned to new members
+
+Options:
+
+- role: Discord Role
+
+## Automated tasks
+
+Registered roles will automatically be assigned to new members
+
 # TO-DO List:
 
 > **NOTE**
