@@ -48,7 +48,6 @@ export const data = new SlashCommandBuilder()
 					.setRequired(true)
 			)
 	);
-
 /** @param {ChatInputCommandInteraction} interaction */
 export async function execute(interaction) {
 	const { options } = interaction;
