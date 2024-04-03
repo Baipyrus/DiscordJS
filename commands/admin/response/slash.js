@@ -5,6 +5,30 @@ import {
 	ChatInputCommandInteraction
 } from 'discord.js';
 
+/** @param {ChatInputCommandInteraction} interaction */
+async function createResponse(interaction) {}
+
+/** @param {ChatInputCommandInteraction} interaction */
+async function addResponse(interaction) {}
+
+/** @param {ChatInputCommandInteraction} interaction */
+async function removeResponse(interaction) {}
+
+/** @param {ChatInputCommandInteraction} interaction */
+async function listResponse(interaction) {}
+
+/** @param {ChatInputCommandInteraction} interaction */
+async function infoResponse(interaction) {}
+
+/** @param {AutocompleteInteraction} interaction */
+async function addAutocomplete(interaction) {}
+
+/** @param {AutocompleteInteraction} interaction */
+async function removeAutocomplete(interaction) {}
+
+/** @param {AutocompleteInteraction} interaction */
+async function infoAutocomplete(interaction) {}
+
 export const data = new SlashCommandBuilder()
 	.setName('response')
 	.setDMPermission(false)
@@ -80,10 +104,13 @@ export async function autocomplete(interaction) {
 
 	switch (options.getSubcommand()) {
 		case 'add':
+			addAutocomplete(interaction);
 			break;
 		case 'remove':
+			removeAutocomplete(interaction);
 			break;
 		case 'info':
+			infoAutocomplete(interaction);
 			break;
 	}
 }
@@ -93,14 +120,19 @@ export async function execute(interaction) {
 
 	switch (options.getSubcommand()) {
 		case 'create':
+			createResponse(interaction);
 			break;
 		case 'add':
+			addResponse(interaction);
 			break;
 		case 'remove':
+			removeResponse(interaction);
 			break;
 		case 'list':
+			listResponse(interaction);
 			break;
 		case 'info':
+			infoResponse(interaction);
 			break;
 	}
 }
