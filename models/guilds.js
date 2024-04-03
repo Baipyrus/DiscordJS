@@ -12,7 +12,6 @@ import { DataTypes, Sequelize } from 'sequelize';
 /**
  * The definition of the `Guild` table in the database.
  * @param {Sequelize} sequelize
- * @returns {Guild}
  */
 export default function (sequelize) {
 	return sequelize.define('Guilds', {

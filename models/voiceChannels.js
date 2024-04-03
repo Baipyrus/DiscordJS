@@ -15,7 +15,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `VoiceChannel` table in the database.
  * @param {Sequelize} sequelize
- * @returns {VoiceChannel}
  */
 export default function (sequelize) {
 	return sequelize.define('VoiceChannels', {

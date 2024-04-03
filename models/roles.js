@@ -14,7 +14,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `Role` table in the database.
  * @param {Sequelize} sequelize
- * @returns {Role}
  */
 export default function (sequelize) {
 	return sequelize.define('Roles', {

@@ -13,7 +13,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `Message` table in the database.
  * @param {Sequelize} sequelize
- * @returns {Message}
  */
 export default function (sequelize) {
 	return sequelize.define('Messages', {

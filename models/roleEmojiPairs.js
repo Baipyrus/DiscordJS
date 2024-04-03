@@ -15,7 +15,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `RoleEmojiPair` table in the database.
  * @param {Sequelize} sequelize
- * @returns {RoleEmojiPair}
  */
 export default function (sequelize) {
 	return sequelize.define('RoleEmojiPairs', {
