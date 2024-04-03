@@ -6,10 +6,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  * @property {string} message A Discord message ID as a foreign key reference.
  * @property {string} role A Discord role ID.
  * @property {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
- * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
- * @property {(conditions: Object) => Promise<RoleEmojiPair>} findOne Finds one instance in the database matching the provided condition(-s).
- * @property {(conditions: Object) => Promise<Array<RoleEmojiPair>>} findAll Finds all instances in the database matching the provided condition(-s).
- * @property {(conditions: Object) => Promise<RoleEmojiPair>} findOrCreate Finds or creates an instance in the database matching the provided condition(-s) or default values.
  */
 
 /**

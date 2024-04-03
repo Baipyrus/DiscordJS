@@ -5,10 +5,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  * @property {string} id A Discord role ID.
  * @property {boolean} assign Whether or not the role should be assigned to new members.
  * @property {string} guild A Discord guild ID as a foreign key reference.
- * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
- * @property {(conditions: Object) => Promise<Role>} findOne Finds one instance in the database matching the provided condition(-s).
- * @property {(conditions: Object) => Promise<Array<Role>>} findAll Finds all instances in the database matching the provided condition(-s).
- * @property {(conditions: Object) => Promise<Role>} findOrCreate Finds or creates an instance in the database matching the provided condition(-s) or default values.
  */
 
 /**

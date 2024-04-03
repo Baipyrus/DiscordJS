@@ -6,10 +6,6 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  * @property {boolean} create Whether or not this channel is registered to create customs when joined.
  * @property {(string|null)} owner The owner of this channel, if not registered for customs.
  * @property {string} guild A Discord guild ID as a foreign key reference.
- * @property {(model: Object) => void} hasMany Defines an One-To-Many relationship.
- * @property {(conditions: Object) => Promise<VoiceChannel>} findOne Finds one instance in the database matching the provided condition(-s).
- * @property {(conditions: Object) => Promise<Array<VoiceChannel>>} findAll Finds all instances in the database matching the provided condition(-s).
- * @property {(conditions: Object) => Promise<VoiceChannel>} findOrCreate Finds or creates an instance in the database matching the provided condition(-s) or default values.
  */
 
 /**
