@@ -1,6 +1,7 @@
 import defineRoleEmojiPair from './models/roleEmojiPairs.js';
 import defineVoiceChannel from './models/voiceChannels.js';
 import defineMessage from './models/messages.js';
+import defineKeyword from './models/keywords.js';
 import defineGuild from './models/guilds.js';
 import defineRole from './models/roles.js';
 import { Sequelize } from 'sequelize';
@@ -16,6 +17,8 @@ const sequelize = new Sequelize({
 	logging: false
 });
 
+const Keyword = defineKeyword(sequelize);
+
 const RoleEmojiPair = defineRoleEmojiPair(sequelize);
 
 const VoiceChannel = defineVoiceChannel(sequelize);
@@ -27,6 +30,7 @@ const Role = defineRole(sequelize);
 Role.hasMany(RoleEmojiPair, { foreignKey: 'role', onDelete: 'CASCADE' });
 
 const Guild = defineGuild(sequelize);
+Guild.hasMany(Keyword, { foreignKey: 'guild', onDelete: 'CASCADE' });
 Guild.hasMany(VoiceChannel, { foreignKey: 'guild', onDelete: 'CASCADE' });
 Guild.hasMany(Message, { foreignKey: 'guild', onDelete: 'CASCADE' });
 Guild.hasMany(Role, { foreignKey: 'guild', onDelete: 'CASCADE' });
