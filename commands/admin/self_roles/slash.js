@@ -37,6 +37,7 @@ const createSelfRoles = async (interaction) => {
 const registerSelfRoles = async (interaction) => {
 	const { options, channel } = interaction;
 	const id = options.getString('id');
+	/** @type {SelfRoleResponse} */
 	const response = {
 		success: false,
 		msgID: null
