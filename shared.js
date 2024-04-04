@@ -42,10 +42,12 @@ export const removeSelfRoles = async (interaction, id) => {
  */
 const saveMessageData = async (id, role, emoji) => {
 	// Try finding message
+	/** @type {import('./models/messages.js').Message|null} */
 	const msg = await Messages.findOne({ where: { id } });
 	if (msg === null) throw new Error(`No message with ID '${id}' could be found!`);
 
 	// Try finding existing entry
+	/** @type {import('./models/roleEmojiPairs.js').RoleEmojiPair|null} */
 	const rep = await RoleEmojiPairs.findOne({
 		where: {
 			[Op.or]: [
@@ -92,6 +94,7 @@ const editMessage = async (message, role, emoji) => {
 
 	// Find out whether to pad message or already present
 	let padding = '\n';
+	/** @type {import('./models/roleEmojiPairs.js').RoleEmojiPair[]} */
 	const reps = await RoleEmojiPairs.findAll({ where: { message: message.id } });
 	if (reps.length === 0) padding += '\n';
 

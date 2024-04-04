@@ -5,6 +5,7 @@ export const name = Events.GuildMemberAdd;
 /** @param {GuildMember} member */
 export async function execute(member) {
 	// Find roles to be assigned in guild from database
+	/** @type {import('../../models/roles.js').Role[]} */
 	const roles = await Roles.findAll({
 		where: {
 			guild: member.guild.id,

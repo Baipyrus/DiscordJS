@@ -14,6 +14,7 @@ export async function execute(reaction, user) {
 
 	// Get message
 	const msgID = reaction.message.id;
+	/** @type {import('../../models/messages.js').Message|null} */
 	const message = await Messages.findOne({
 		where: {
 			id: msgID
@@ -24,6 +25,7 @@ export async function execute(reaction, user) {
 
 	// Get emoji
 	const emoji = reaction.emoji.toString();
+	/** @type {import('../../models/roleEmojiPairs.js').RoleEmojiPair|null} */
 	const rep = await RoleEmojiPairs.findOne({
 		where: {
 			message: msgID,

@@ -57,6 +57,7 @@ export async function execute(interaction) {
 	switch (options.getSubcommand()) {
 		case 'add': {
 			// Search for role in database
+			/** @type {import('../../../models/roles.js').Role|null} */
 			const found = await Roles.findOne({
 				where: {
 					id: role.id

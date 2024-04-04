@@ -48,6 +48,7 @@ const registerSelfRoles = async (interaction) => {
 		await channel.messages.fetch(id);
 
 		// Check if message is already registered
+		/** @type {import('../../../models/messages.js').Message|null} */
 		const found = await Messages.findOne({
 			where: { id }
 		});
