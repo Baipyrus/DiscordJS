@@ -26,9 +26,6 @@ async function listResponse(interaction) {}
 /** @param {ChatInputCommandInteraction} interaction */
 async function infoResponse(interaction) {}
 
-/** @param {AutocompleteInteraction} interaction */
-async function removeAutocomplete(interaction) {}
-
 /**
  * @param {string} guildId
  * @param {string} focused
@@ -50,6 +47,24 @@ async function keywordAutocomplete(guildId, focused) {
 }
 
 /** @param {AutocompleteInteraction} interaction */
+async function removeAutocomplete(interaction) {
+	const { options } = interaction;
+
+	const type = options.getString('type');
+
+	switch (type) {
+		case 'keyword':
+			await keywordAutocomplete(interaction.guildId, options.getFocused());
+			break;
+		case 'response':
+			await responseAutocomplete(
+				interaction.guildId,
+				options.getFocused(),
+				options.getString('keyword')
+			);
+			break;
+	}
+}
 
 export const data = new SlashCommandBuilder()
 	.setName('response')
