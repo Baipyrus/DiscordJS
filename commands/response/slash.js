@@ -146,7 +146,33 @@ async function removeResponse(interaction) {
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
-async function listResponse(interaction) {}
+async function listResponse(interaction) {
+	// Get list of keywords from database
+	/** @type {import('../../models/keywords.js').Keyword[]} */
+	const keywords = await Keywords.findAll({
+		where: {
+			guild: interaction.guildId
+		}
+	});
+
+	// Abort if no keywords registered
+	if (keywords.length === 0) {
+		await interaction.reply({
+			content: 'No keywords have been registered yet!',
+			ephemeral: true
+		});
+		return;
+	}
+
+	// Join list of keyword names
+	const joined = keywords.map((keyword) => keyword.name).join('\n- ');
+
+	// Reply with list of keywords
+	await interaction.reply({
+		content: `List of known keywords:\n- ${joined}`,
+		ephemeral: true
+	});
+}
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function infoResponse(interaction) {}
