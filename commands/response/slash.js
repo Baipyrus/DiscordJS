@@ -361,7 +361,23 @@ export const data = new SlashCommandBuilder()
 	);
 /** @param {ModalSubmitInteraction} interaction */
 export async function modalSubmit(interaction) {
-	// Only executable in 'add' subcommand
+	const { fields } = interaction;
+
+	// Get text inputs from modal
+	const name = fields.getTextInputValue('name');
+	const keyword = fields.getTextInputValue('keyword');
+	const response = fields.getTextInputValue('response');
+
+	// Get id of keyword
+	/** @type {import('../../models/keywords.js').Keyword} */
+	const found = await Keywords.findOne({
+		where: {
+			name: keyword
+		}
+	});
+
+	// Create new response data with keyword attached
+	await Responses.create({ keyword: found.id, name, response });
 }
 /** @param {AutocompleteInteraction} interaction */
 export async function autocomplete(interaction) {
