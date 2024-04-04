@@ -1,10 +1,15 @@
 import {
+	ModalBuilder,
+	TextInputBuilder,
+	ActionRowBuilder,
 	SlashCommandBuilder,
 	PermissionFlagsBits,
 	ModalSubmitInteraction,
 	AutocompleteInteraction,
-	ChatInputCommandInteraction
+	ChatInputCommandInteraction,
+	TextInputStyle
 } from 'discord.js';
+import { Guilds, Keywords, Responses } from '../../database.js';
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function createResponse(interaction) {}
