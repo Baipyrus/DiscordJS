@@ -34,7 +34,7 @@ export async function execute(reaction, user) {
 	if (rep === null) {
 		// Remove reaction and quit
 		try {
-			reaction.remove();
+			await reaction.remove();
 		} catch (error) {
 			// Missing permissions
 			console.error(error);
