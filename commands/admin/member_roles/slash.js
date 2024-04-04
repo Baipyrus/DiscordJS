@@ -64,11 +64,12 @@ export async function execute(interaction) {
 			});
 
 			// Toggle role assignment if found
-			if (found) {
+			if (found !== null) {
 				found.assign = true;
 				await found.save();
 				// Otherwise create new database entry
 			} else await registerRole(interaction.guild, role);
+
 			// Reply successfully to acknowledge command
 			await interaction.reply({
 				content: 'Successfully registered role.',

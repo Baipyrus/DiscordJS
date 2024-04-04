@@ -52,7 +52,7 @@ const registerSelfRoles = async (interaction) => {
 			where: { id }
 		});
 
-		if (found) throw new Error('Messages already registered!');
+		if (found !== null) throw new Error('Messages already registered!');
 
 		// Reply successfully to acknowledge command
 		await interaction.reply({
