@@ -12,7 +12,51 @@ import {
 import { Guilds, Keywords, Responses } from '../../database.js';
 
 /** @param {ChatInputCommandInteraction} interaction */
-async function createResponse(interaction) {}
+async function createResponse(interaction) {
+	const { options } = interaction;
+
+	// Get command options
+	const keyword = options.getString('keyword');
+
+	// Abort if keyword already exists or is empty
+	/** @type {import('../../models/keywords.js').Keyword|null} */
+	const found = await Keywords.findOne({
+		where: {
+			guild: interaction.guildId,
+			name: keyword
+		}
+	});
+
+	// Reply with error
+	if (found !== null || !keyword) {
+		await interaction.reply({
+			content: 'Invalid parameters or keyword already exists!',
+			ephemeral: true
+		});
+		return;
+	}
+
+	// Create guild if not exists
+	const guildData = { id: interaction.guildId };
+	await Guilds.findOrCreate({
+		where: guildData,
+		defaults: guildData
+	});
+
+	// Create new keyword
+	await Keywords.create({
+		guild: interaction.guildId,
+		name: keyword
+	});
+
+	// Reply successfully to acknowledge command
+	await interaction.reply({
+		content: `Keyword for '${keyword}' successfully created!`,
+		ephemeral: true
+	});
+
+	console.info(`[INFO] Keyword for '${keyword}' successfully created.`);
+}
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function addResponse(interaction) {}
