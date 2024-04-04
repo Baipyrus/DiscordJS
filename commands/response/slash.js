@@ -175,7 +175,48 @@ async function listResponse(interaction) {
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
-async function infoResponse(interaction) {}
+async function infoResponse(interaction) {
+	const { options } = interaction;
+
+	// Get command options
+	const keyword = options.getString('keyword');
+
+	// Find keyword in database
+	/** @type {import('../../models/keywords.js').Keyword|null} */
+	const found = await Keywords.findOne({
+		where: {
+			guild: interaction.guildId,
+			name: keyword
+		}
+	});
+
+	// Abort if keyword not found
+	if (found === null) {
+		await interaction.reply({
+			content: 'Unknown keyword was specified!',
+			ephemeral: true
+		});
+		return;
+	}
+
+	// Get list of responses from database
+	/** @type {import('../../models/responses.js').Response[]} */
+	const responses = await Responses.findAll({
+		where: {
+			guild: interaction.guildId,
+			name: found.id
+		}
+	});
+
+	// Join list of responses
+	const joined = responses.map((response) => response.response).join('\n- ');
+
+	// Reply with list of responses
+	await interaction.reply({
+		content: `List of responses for ${keyword}:\n- ${joined}`,
+		ephemeral: true
+	});
+}
 
 /**
  * @param {string} guildId
