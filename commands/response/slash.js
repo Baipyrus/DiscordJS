@@ -27,13 +27,29 @@ async function listResponse(interaction) {}
 async function infoResponse(interaction) {}
 
 /** @param {AutocompleteInteraction} interaction */
-async function addAutocomplete(interaction) {}
-
-/** @param {AutocompleteInteraction} interaction */
 async function removeAutocomplete(interaction) {}
 
+/**
+ * @param {string} guildId
+ * @param {string} focused
+ */
+async function keywordAutocomplete(guildId, focused) {
+	// Get list of keywords from database
+	/** @type {import('../../models/keywords.js').Keyword[]} */
+	const keywords = await Keywords.findAll({
+		where: {
+			guild: guildId
+		}
+	});
+
+	// Filter total list of keywords
+	const filtered = keywords.filter((choice) => choice.name.startsWith(focused));
+
+	// Respond with possible suggestions
+	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
+}
+
 /** @param {AutocompleteInteraction} interaction */
-async function infoAutocomplete(interaction) {}
 
 export const data = new SlashCommandBuilder()
 	.setName('response')
@@ -91,7 +107,7 @@ export const data = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('info')
-			.setDescription('Shows information about a registered keyword.')
+			.setDescription('Shows responses of a registered keyword.')
 			.addStringOption((option) =>
 				option
 					.setName('keyword')
@@ -109,14 +125,12 @@ export async function autocomplete(interaction) {
 	const { options } = interaction;
 
 	switch (options.getSubcommand()) {
-		case 'add':
-			addAutocomplete(interaction);
-			break;
 		case 'remove':
 			removeAutocomplete(interaction);
 			break;
+		case 'add':
 		case 'info':
-			infoAutocomplete(interaction);
+			keywordAutocomplete(interaction.guildId, interaction.options.getFocused());
 			break;
 	}
 }
