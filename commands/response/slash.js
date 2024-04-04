@@ -59,7 +59,61 @@ async function createResponse(interaction) {
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
-async function addResponse(interaction) {}
+async function addResponse(interaction) {
+	const { options } = interaction;
+
+	// Get command options
+	const current = options.getString('keyword');
+
+	// Abort if keyword doesn't exist
+	/** @type {import('../../models/keywords.js').Keyword|null} */
+	const found = await Keywords.findOne({
+		where: {
+			guild: interaction.guildId,
+			name: current
+		}
+	});
+
+	// Reply with error
+	if (found === null) {
+		await interaction.reply({
+			content: 'Keyword has not been registered yet!',
+			ephemeral: true
+		});
+		return;
+	}
+
+	const modal = new ModalBuilder().setCustomId('response-pair').setTitle('Response Content');
+
+	const keyword = new ActionRowBuilder().addComponents(
+		new TextInputBuilder()
+			.setLabel('The keyword this command is run for.')
+			.setStyle(TextInputStyle.Short)
+			.setCustomId('keyword')
+			.setRequired(true)
+			.setValue(current)
+	);
+
+	const name = new ActionRowBuilder().addComponents(
+		new TextInputBuilder()
+			.setLabel('The name of the response.')
+			.setStyle(TextInputStyle.Short)
+			.setCustomId('name')
+			.setRequired(true)
+	);
+
+	const response = new ActionRowBuilder().addComponents(
+		new TextInputBuilder()
+			.setLabel('The data to respond with.')
+			.setStyle(TextInputStyle.Paragraph)
+			.setCustomId('response')
+			.setRequired(true)
+	);
+
+	modal.addComponents(keyword, name, response);
+
+	await interaction.showModal(modal);
+}
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function removeResponse(interaction) {}
