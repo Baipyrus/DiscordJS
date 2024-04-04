@@ -4,7 +4,7 @@ import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction
 } from 'discord.js';
-import { Guild, VoiceChannel } from '../../../database.js';
+import { Guilds, VoiceChannels } from '../../../database.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('custom_vc')
@@ -68,12 +68,12 @@ export async function execute(interaction) {
 
 				step = 'save';
 				// Create guild if not exists
-				await Guild.findOrCreate({
+				await Guilds.findOrCreate({
 					where: guildData,
 					defaults: guildData
 				});
 				// Save channel data
-				await VoiceChannel.create({
+				await VoiceChannels.create({
 					id: channel.id,
 					guild: guild.id,
 					create: true
@@ -94,12 +94,12 @@ export async function execute(interaction) {
 
 				step = 'save';
 				// Create guild if not exists
-				await Guild.findOrCreate({
+				await Guilds.findOrCreate({
 					where: guildData,
 					defaults: guildData
 				});
 				// Save channel data
-				await VoiceChannel.create({
+				await VoiceChannels.create({
 					id,
 					guild: guild.id,
 					create: true
@@ -120,7 +120,7 @@ export async function execute(interaction) {
 
 				// Remove channel from guild
 				step = 'remove';
-				const count = await VoiceChannel.destroy({
+				const count = await VoiceChannels.destroy({
 					where: {
 						id,
 						create: true

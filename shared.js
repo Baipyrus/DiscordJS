@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Role } from 'discord.js';
-import { Message, RoleEmojiPair, Guild } from './database.js';
+import { Messages, RoleEmojiPairs, Guilds } from './database.js';
 import { readdir } from 'fs/promises';
 import { config } from 'dotenv';
 import { Op } from 'sequelize';
@@ -15,7 +15,7 @@ config();
  */
 export const removeSelfRoles = async (interaction, id) => {
 	// Try deleting message from database
-	const count = await Message.destroy({
+	const count = await Messages.destroy({
 		where: {
 			id: id
 		}
@@ -35,18 +35,18 @@ export const removeSelfRoles = async (interaction, id) => {
 };
 
 /**
- * Function to handle saving all the corresponding data for `Message` and `RoleEmojiPair` tables.
+ * Function to handle saving all the corresponding data for `Messages` and `RoleEmojiPairs` tables.
  * @param {string} id A Discord message ID.
  * @param {Role} role
  * @param {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
  */
 const saveMessageData = async (id, role, emoji) => {
 	// Try finding message
-	const msg = await Message.findOne({ where: { id } });
+	const msg = await Messages.findOne({ where: { id } });
 	if (msg === null) throw new Error(`No message with ID '${id}' could be found!`);
 
 	// Try finding existing entry
-	const rep = await RoleEmojiPair.findOne({
+	const rep = await RoleEmojiPairs.findOne({
 		where: {
 			[Op.or]: [
 				{
@@ -67,13 +67,13 @@ const saveMessageData = async (id, role, emoji) => {
 
 	// Create guild if not exists
 	const guildData = { id: role.guild.id };
-	await Guild.findOrCreate({
+	await Guilds.findOrCreate({
 		where: guildData,
 		defaults: guildData
 	});
 
 	// Create database entry for pair
-	await RoleEmojiPair.create({
+	await RoleEmojiPairs.create({
 		message: id,
 		role: role.id,
 		guild: guildData.id,
@@ -92,7 +92,7 @@ const editMessage = async (message, role, emoji) => {
 
 	// Find out whether to pad message or already present
 	let padding = '\n';
-	const reps = await RoleEmojiPair.findAll({ where: { message: message.id } });
+	const reps = await RoleEmojiPairs.findAll({ where: { message: message.id } });
 	if (reps.length === 0) padding += '\n';
 
 	// Get old and build new content of message

@@ -18,26 +18,26 @@ const sequelize = new Sequelize({
 	logging: false
 });
 
-const Response = defineResponse(sequelize);
+const Responses = defineResponse(sequelize);
 
-const Keyword = defineKeyword(sequelize);
-Keyword.hasMany(Response, { foreignKey: 'keyword', onDelete: 'CASCADE' });
+const Keywords = defineKeyword(sequelize);
+Keywords.hasMany(Responses, { foreignKey: 'keyword', onDelete: 'CASCADE' });
 
-const RoleEmojiPair = defineRoleEmojiPair(sequelize);
+const RoleEmojiPairs = defineRoleEmojiPair(sequelize);
 
-const VoiceChannel = defineVoiceChannel(sequelize);
+const VoiceChannels = defineVoiceChannel(sequelize);
 
-const Message = defineMessage(sequelize);
-Message.hasMany(RoleEmojiPair, { foreignKey: 'message', onDelete: 'CASCADE' });
+const Messages = defineMessage(sequelize);
+Messages.hasMany(RoleEmojiPairs, { foreignKey: 'message', onDelete: 'CASCADE' });
 
-const Role = defineRole(sequelize);
-Role.hasMany(RoleEmojiPair, { foreignKey: 'role', onDelete: 'CASCADE' });
+const Roles = defineRole(sequelize);
+Roles.hasMany(RoleEmojiPairs, { foreignKey: 'role', onDelete: 'CASCADE' });
 
-const Guild = defineGuild(sequelize);
-Guild.hasMany(Keyword, { foreignKey: 'guild', onDelete: 'CASCADE' });
-Guild.hasMany(VoiceChannel, { foreignKey: 'guild', onDelete: 'CASCADE' });
-Guild.hasMany(Message, { foreignKey: 'guild', onDelete: 'CASCADE' });
-Guild.hasMany(Role, { foreignKey: 'guild', onDelete: 'CASCADE' });
+const Guilds = defineGuild(sequelize);
+Guilds.hasMany(Keywords, { foreignKey: 'guild', onDelete: 'CASCADE' });
+Guilds.hasMany(VoiceChannels, { foreignKey: 'guild', onDelete: 'CASCADE' });
+Guilds.hasMany(Messages, { foreignKey: 'guild', onDelete: 'CASCADE' });
+Guilds.hasMany(Roles, { foreignKey: 'guild', onDelete: 'CASCADE' });
 
 sequelize.sync();
-export { sequelize, Guild, Role, RoleEmojiPair, VoiceChannel, Message };
+export { sequelize, Guilds, Roles, Messages, VoiceChannels, RoleEmojiPairs, Keywords, Responses };

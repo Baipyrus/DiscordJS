@@ -1,11 +1,11 @@
 import { Events, GuildMember } from 'discord.js';
-import { Role } from '../../database.js';
+import { Roles } from '../../database.js';
 
 export const name = Events.GuildMemberAdd;
 /** @param {GuildMember} member */
 export async function execute(member) {
 	// Find roles to be assigned in guild from database
-	const roles = await Role.findAll({
+	const roles = await Roles.findAll({
 		where: {
 			guild: member.guild.id,
 			assign: true

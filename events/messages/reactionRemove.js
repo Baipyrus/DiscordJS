@@ -1,5 +1,5 @@
 import { Events, MessageReaction, User } from 'discord.js';
-import { Message, RoleEmojiPair } from '../../database.js';
+import { Messages, RoleEmojiPairs } from '../../database.js';
 import { config } from 'dotenv';
 
 config();
@@ -14,7 +14,7 @@ export async function execute(reaction, user) {
 
 	// Get message
 	const msgID = reaction.message.id;
-	const message = await Message.findOne({
+	const message = await Messages.findOne({
 		where: {
 			id: msgID
 		}
@@ -24,7 +24,7 @@ export async function execute(reaction, user) {
 
 	// Get emoji
 	const emoji = reaction.emoji.toString();
-	const rep = await RoleEmojiPair.findOne({
+	const rep = await RoleEmojiPairs.findOne({
 		where: {
 			message: msgID,
 			emoji

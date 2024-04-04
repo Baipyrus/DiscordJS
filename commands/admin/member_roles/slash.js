@@ -1,20 +1,20 @@
 import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
-import { Role, Guild } from '../../../database.js';
+import { Roles, Guilds } from '../../../database.js';
 
 /**
- * @param {Guild} guild
- * @param {Role} role
+ * @param {Guilds} guild
+ * @param {Roles} role
  */
 const registerRole = async (guild, role) => {
 	// Check if guild exists in database, otherwise create it
 	const guildData = { id: guild.id };
-	await Guild.findOrCreate({
+	await Guilds.findOrCreate({
 		where: guildData,
 		defaults: guildData
 	});
 
 	// Register role in database
-	await Role.create({
+	await Roles.create({
 		guild: guild.id,
 		id: role.id,
 		assign: true
@@ -57,7 +57,7 @@ export async function execute(interaction) {
 	switch (options.getSubcommand()) {
 		case 'add': {
 			// Search for role in database
-			const found = await Role.findOne({
+			const found = await Roles.findOne({
 				where: {
 					id: role.id
 				}
@@ -80,7 +80,7 @@ export async function execute(interaction) {
 		}
 		case 'remove': {
 			// Remove role from database
-			const count = await Role.destroy({
+			const count = await Roles.destroy({
 				where: {
 					id: role.id,
 					assign: true

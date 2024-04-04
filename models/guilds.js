@@ -6,7 +6,7 @@ import { DataTypes, Sequelize } from 'sequelize';
  */
 
 /**
- * The definition of the `Guild` table in the database.
+ * The definition of the `Guilds` table in the database.
  * @param {Sequelize} sequelize
  */
 export default function (sequelize) {

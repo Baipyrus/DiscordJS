@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { addSelfRoles, removeSelfRoles } from '../../../shared.js';
-import { Guild, Message } from '../../../database.js';
+import { Guilds, Messages } from '../../../database.js';
 
 /**
  * Sends a `Message` in the current channel and registers for self roles.
@@ -48,11 +48,11 @@ const registerSelfRoles = async (interaction) => {
 		await channel.messages.fetch(id);
 
 		// Check if message is already registered
-		const found = await Message.findOne({
+		const found = await Messages.findOne({
 			where: { id }
 		});
 
-		if (found) throw new Error('Message already registered!');
+		if (found) throw new Error('Messages already registered!');
 
 		// Reply successfully to acknowledge command
 		await interaction.reply({
@@ -196,13 +196,13 @@ export async function execute(interaction) {
 		try {
 			// Create guild if not exists
 			const guildData = { id: interaction.guild.id };
-			await Guild.findOrCreate({
+			await Guilds.findOrCreate({
 				where: guildData,
 				defaults: guildData
 			});
 
 			// Create database entry
-			await Message.create({
+			await Messages.create({
 				id,
 				guild: interaction.guild.id
 			});

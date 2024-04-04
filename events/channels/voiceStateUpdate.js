@@ -7,7 +7,7 @@ import {
 	VoiceState,
 	PermissionsBitField
 } from 'discord.js';
-import { VoiceChannel } from '../../database.js';
+import { VoiceChannels } from '../../database.js';
 
 /**
  * Function that either creates a new custom channel or gets an existing one registered in the database.
@@ -18,7 +18,7 @@ import { VoiceChannel } from '../../database.js';
  */
 const getChannel = async (member, guildChs, channel) => {
 	// Check database for existing channel
-	const ownCh = await VoiceChannel.findOne({
+	const ownCh = await VoiceChannels.findOne({
 		where: {
 			owner: member.id
 		}
@@ -35,7 +35,7 @@ const getChannel = async (member, guildChs, channel) => {
 	});
 
 	// Save newly created channel
-	await VoiceChannel.create({
+	await VoiceChannels.create({
 		id: privCh.id,
 		owner: member.id
 	});
@@ -58,7 +58,7 @@ const leftVoiceChat = async (state) => {
 	if (members.length > 0) return;
 
 	// Find channel by id, return if not registered as custom
-	const custom = await VoiceChannel.findOne({
+	const custom = await VoiceChannels.findOne({
 		where: {
 			id: channel.id,
 			create: false
@@ -84,7 +84,7 @@ export async function execute(oldState, newState) {
 		if (!channel) return;
 
 		// Find channel by id, return if not registered for customs
-		const createCh = await VoiceChannel.findOne({
+		const createCh = await VoiceChannels.findOne({
 			where: {
 				id: channel.id,
 				create: true

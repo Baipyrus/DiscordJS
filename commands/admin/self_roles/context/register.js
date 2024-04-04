@@ -4,7 +4,7 @@ import {
 	PermissionFlagsBits,
 	ContextMenuCommandInteraction
 } from 'discord.js';
-import { Message } from '../../../../database.js';
+import { Messages } from '../../../../database.js';
 
 export const data = new ContextMenuCommandBuilder()
 	.setDMPermission(false)
@@ -17,7 +17,7 @@ export async function execute(interaction) {
 
 	try {
 		// Create database entry
-		await Message.create({ id });
+		await Messages.create({ id });
 
 		// Reply successfully to acknowledge command
 		await interaction.reply({

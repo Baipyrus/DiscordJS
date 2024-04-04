@@ -1,5 +1,5 @@
 import { ChannelType, Events, GuildChannel } from 'discord.js';
-import { VoiceChannel } from '../../database.js';
+import { VoiceChannels } from '../../database.js';
 
 export const name = Events.ChannelDelete;
 /** @param {GuildChannel} channel */
@@ -7,7 +7,7 @@ export async function execute(channel) {
 	if (channel.type !== ChannelType.GuildVoice) return;
 
 	// Delete channel entry once channel is deleted itself
-	const count = await VoiceChannel.destroy({
+	const count = await VoiceChannels.destroy({
 		where: {
 			id: channel.id
 		}

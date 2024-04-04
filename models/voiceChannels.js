@@ -9,7 +9,7 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
  */
 
 /**
- * The definition of the `VoiceChannel` table in the database.
+ * The definition of the `VoiceChannels` table in the database.
  * @param {Sequelize} sequelize
  */
 export default function (sequelize) {
