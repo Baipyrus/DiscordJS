@@ -238,6 +238,42 @@ async function keywordAutocomplete(guildId, focused) {
 	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
 }
 
+/**
+ * @param {string} guildId
+ * @param {string} focused
+ * @param {string} keyword
+ */
+async function responseAutocomplete(guildId, focused, keyword) {
+	// Get keyword
+	/** @type {import('../../models/keywords.js').Keyword} */
+	const found = await Keywords.findOne({
+		where: {
+			guild: guildId,
+			name: keyword
+		}
+	});
+
+	// Get list of responses from database
+	/** @type {import('../../models/responses.js').Response[]} */
+	const responses =
+		found === null
+			? []
+			: await Responses.findAll({
+					where: {
+						guild: guildId,
+						keyword: found.id
+					}
+				});
+
+	// Filter total list of responses
+	const filtered = responses.filter((choice) => choice.name.startsWith(focused));
+
+	// Respond with possible suggestions
+	await interaction.respond(
+		filtered.map((choice) => ({ name: choice.name, value: choice.response }))
+	);
+}
+
 /** @param {AutocompleteInteraction} interaction */
 async function removeAutocomplete(interaction) {
 	const { options } = interaction;
