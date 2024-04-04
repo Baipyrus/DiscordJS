@@ -196,7 +196,7 @@ export async function execute(interaction) {
 	if (createNew) {
 		try {
 			// Create guild if not exists
-			const guildData = { id: interaction.guild.id };
+			const guildData = { id: interaction.guildId };
 			await Guilds.findOrCreate({
 				where: guildData,
 				defaults: guildData
@@ -205,7 +205,7 @@ export async function execute(interaction) {
 			// Create database entry
 			await Messages.create({
 				id,
-				guild: interaction.guild.id
+				guild: interaction.guildId
 			});
 		} catch (error) {
 			console.error(error);
