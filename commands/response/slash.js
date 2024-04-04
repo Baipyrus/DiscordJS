@@ -116,7 +116,34 @@ async function addResponse(interaction) {
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
-async function removeResponse(interaction) {}
+async function removeResponse(interaction) {
+	const { options } = interaction;
+
+	// Get command options
+	/** @type {'keyword'|'response'} */
+	const type = options.getString('type');
+	const name = options.getString('name');
+
+	switch (type) {
+		case 'keyword':
+			// Try removing keyword
+			await Keywords.destroy({
+				where: {
+					guild: interaction.guildId,
+					name
+				}
+			});
+			break;
+		case 'response':
+			// Try removing response
+			await Responses.destroy({
+				where: {
+					guild: interaction.guildId,
+					name
+				}
+			});
+	}
+}
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function listResponse(interaction) {}
