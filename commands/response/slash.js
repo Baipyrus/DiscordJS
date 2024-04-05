@@ -218,11 +218,13 @@ async function infoResponse(interaction) {
 	});
 }
 
-/**
- * @param {string} guildId
- * @param {string} focused
- */
-async function keywordAutocomplete(guildId, focused) {
+/** @param {AutocompleteInteraction} interaction */
+async function keywordAutocomplete(interaction) {
+	const { options, guildId } = interaction;
+
+	// Get command options
+	const focused = options.getFocused();
+
 	// Get list of keywords from database
 	/** @type {import('../../models/keywords.js').Keyword[]} */
 	const keywords = await Keywords.findAll({
@@ -238,12 +240,14 @@ async function keywordAutocomplete(guildId, focused) {
 	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
 }
 
-/**
- * @param {string} guildId
- * @param {string} focused
- * @param {string} keyword
- */
-async function responseAutocomplete(guildId, focused, keyword) {
+/** @param {AutocompleteInteraction} interaction */
+async function responseAutocomplete(interaction) {
+	const { options, guildId } = interaction;
+
+	// Get command options
+	const keyword = options.getString('keyword');
+	const focused = options.getFocused();
+
 	// Get keyword
 	/** @type {import('../../models/keywords.js').Keyword} */
 	const found = await Keywords.findOne({
