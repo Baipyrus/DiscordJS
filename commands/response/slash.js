@@ -398,6 +398,22 @@ export async function modalSubmit(interaction) {
 		}
 	});
 
+	// Abort if response exists
+	if (
+		(await Responses.findOne({
+			where: {
+				keyword: found.id,
+				name
+			}
+		})) !== null
+	) {
+		await interaction.reply({
+			content: `Response with name '${name}' already exists!`,
+			ephemeral: true
+		});
+		return;
+	}
+
 	// Create new response data with keyword attached
 	await Responses.create({ keyword: found.id, name, response });
 
