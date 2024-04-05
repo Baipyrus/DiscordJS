@@ -248,13 +248,15 @@ async function keywordAutocomplete(interaction) {
 	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
 }
 
-/** @param {AutocompleteInteraction} interaction */
-async function responseAutocomplete(interaction) {
+/**
+ * @param {AutocompleteInteraction} interaction
+ * @param {string} focused
+ */
+async function completeResponses(interaction, focused) {
 	const { options, guildId } = interaction;
 
 	// Get command options
 	const keyword = options.getString('keyword');
-	const focused = options.getFocused();
 
 	// Get keyword
 	/** @type {import('../../models/keywords.js').Keyword} */
@@ -285,18 +287,41 @@ async function responseAutocomplete(interaction) {
 	);
 }
 
+/**
+ * @param {AutocompleteInteraction} interaction
+ * @param {string} focused
+ */
+async function completeKeywords(interaction, focused) {
+	const { guildId } = interaction;
+
+	// Get list of keywords from database
+	/** @type {import('../../models/keywords.js').Keyword[]} */
+	const keywords = await Keywords.findAll({
+		where: {
+			guild: guildId
+		}
+	});
+
+	// Filter total list of keywords
+	const filtered = keywords.filter((choice) => choice.name.startsWith(focused));
+
+	// Respond with possible suggestions
+	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
+}
+
 /** @param {AutocompleteInteraction} interaction */
-async function removeAutocomplete(interaction) {
+async function responseAutocomplete(interaction) {
 	const { options } = interaction;
 
-	const type = options.getString('type');
-
-	switch (type) {
+	// Get command options
+	const focused = options.getFocused(true);
+	const { value } = focused;
+	switch (focused.name) {
 		case 'keyword':
-			await keywordAutocomplete(interaction);
+			completeKeywords(interaction, value);
 			break;
-		case 'response':
-			await responseAutocomplete(interaction);
+		case 'name':
+			completeResponses(interaction, value);
 			break;
 	}
 }
@@ -426,9 +451,16 @@ export async function modalSubmit(interaction) {
 export async function autocomplete(interaction) {
 	const { options } = interaction;
 
-	switch (options.getSubcommand()) {
-		case 'remove':
-			removeAutocomplete(interaction);
+	const command = options.getSubcommand();
+	const group = options.getSubcommandGroup();
+	const joined = group === null ? command : `${group} ${command}`;
+
+	switch (joined) {
+		case 'remove keyword':
+			await keywordAutocomplete(interaction);
+			break;
+		case 'remove response':
+			await responseAutocomplete(interaction);
 			break;
 		case 'add':
 		case 'info':
