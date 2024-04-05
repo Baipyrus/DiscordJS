@@ -146,13 +146,22 @@ async function removeResponse(interaction) {
 	const name = options.getString('name');
 
 	// Find keyword in database
-	/** @type {import('../../models/keywords.js').Keyword} */
+	/** @type {import('../../models/keywords.js').Keyword|null} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: interaction.guildId,
 			name: keyword
 		}
 	});
+
+	// Abort if keyword not found
+	if (found === null) {
+		await interaction.reply({
+			content: 'Unknown keyword was specified!',
+			ephemeral: true
+		});
+		return;
+	}
 
 	// Try deleting response from database
 	await Responses.destroy({
