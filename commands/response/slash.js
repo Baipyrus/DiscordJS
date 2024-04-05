@@ -217,7 +217,7 @@ async function infoResponse(interaction) {
 	}
 
 	// Join list of responses
-	const joined = responses.map((response) => response.response).join('\n- ');
+	const joined = responses.map((response) => response.name).join('\n- ');
 
 	// Reply with list of responses
 	await interaction.reply({
