@@ -386,6 +386,12 @@ export async function modalSubmit(interaction) {
 
 	// Create new response data with keyword attached
 	await Responses.create({ keyword: found.id, name, response });
+
+	// Reply with success
+	await interaction.reply({
+		content: `Successfully registered '${name}' as response to '${keyword}'!`,
+		ephemeral: true
+	});
 }
 /** @param {AutocompleteInteraction} interaction */
 export async function autocomplete(interaction) {
