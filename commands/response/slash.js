@@ -272,7 +272,6 @@ async function responseAutocomplete(interaction) {
 			? []
 			: await Responses.findAll({
 					where: {
-						guild: guildId,
 						keyword: found.id
 					}
 				});
