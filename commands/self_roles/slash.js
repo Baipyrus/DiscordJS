@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
-import { addSelfRoles, removeSelfRoles } from '../../../shared.js';
-import { Guilds, Messages } from '../../../database.js';
+import { addSelfRoles, removeSelfRoles } from '../../shared.js';
+import { Guilds, Messages } from '../../database.js';
 
 /**
  * Sends a `Message` in the current channel and registers for self roles.

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
-import { Roles, Guilds } from '../../../database.js';
+import { Roles, Guilds } from '../../database.js';
 
 /**
  * @param {Guilds} guild

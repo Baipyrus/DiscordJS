@@ -9,7 +9,7 @@ import {
 	ContextMenuCommandBuilder,
 	ContextMenuCommandInteraction
 } from 'discord.js';
-import { addSelfRoles } from '../../../../shared.js';
+import { addSelfRoles } from '../../../shared.js';
 
 export const data = new ContextMenuCommandBuilder()
 	.setDMPermission(false)
