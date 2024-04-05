@@ -129,6 +129,12 @@ async function removeKeyword(interaction) {
 			name: keyword
 		}
 	});
+
+	// Reply with success
+	await interaction.reply({
+		content: `Keyword '${keyword}' was successfully deleted!`,
+		ephemeral: true
+	});
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
@@ -154,6 +160,12 @@ async function removeResponse(interaction) {
 			keyword: found.id,
 			name
 		}
+	});
+
+	// Reply with success
+	await interaction.reply({
+		content: `Response with name '${name}' was successfully deleted!`,
+		ephemeral: true
 	});
 }
 
