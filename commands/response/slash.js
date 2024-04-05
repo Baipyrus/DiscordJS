@@ -306,30 +306,6 @@ async function completeResponses(interaction, focused) {
 	const filtered = responses.filter((choice) => choice.name.startsWith(focused));
 
 	// Respond with possible suggestions
-	await interaction.respond(
-		filtered.map((choice) => ({ name: choice.name, value: choice.response }))
-	);
-}
-
-/**
- * @param {AutocompleteInteraction} interaction
- * @param {string} focused
- */
-async function completeKeywords(interaction, focused) {
-	const { guildId } = interaction;
-
-	// Get list of keywords from database
-	/** @type {import('../../models/keywords.js').Keyword[]} */
-	const keywords = await Keywords.findAll({
-		where: {
-			guild: guildId
-		}
-	});
-
-	// Filter total list of keywords
-	const filtered = keywords.filter((choice) => choice.name.startsWith(focused));
-
-	// Respond with possible suggestions
 	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
 }
 
@@ -339,10 +315,10 @@ async function responseAutocomplete(interaction) {
 
 	// Get command options
 	const focused = options.getFocused(true);
-	const { value } = focused;
-	switch (focused.name) {
+	const { name, value } = focused;
+	switch (name) {
 		case 'keyword':
-			completeKeywords(interaction, value);
+			keywordAutocomplete(interaction, value);
 			break;
 		case 'name':
 			completeResponses(interaction, value);
