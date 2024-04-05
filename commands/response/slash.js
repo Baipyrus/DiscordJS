@@ -207,6 +207,15 @@ async function infoResponse(interaction) {
 		}
 	});
 
+	// Abort if no responses registered
+	if (responses.length === 0) {
+		await interaction.reply({
+			content: 'No responses have been registered yet!',
+			ephemeral: true
+		});
+		return;
+	}
+
 	// Join list of responses
 	const joined = responses.map((response) => response.response).join('\n- ');
 
