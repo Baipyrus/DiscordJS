@@ -251,11 +251,11 @@ async function infoResponse(interaction) {
 }
 
 /** @param {AutocompleteInteraction} interaction */
-async function keywordAutocomplete(interaction) {
+async function keywordAutocomplete(interaction, focused) {
 	const { options, guildId } = interaction;
 
 	// Get command options
-	const focused = options.getFocused();
+	if (!focused) focused = options.getFocused();
 
 	// Get list of keywords from database
 	/** @type {import('../../models/keywords.js').Keyword[]} */
