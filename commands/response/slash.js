@@ -116,33 +116,45 @@ async function addResponse(interaction) {
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
+async function removeKeyword(interaction) {
+	const { options } = interaction;
+
+	// Get command options
+	const keyword = options.getString('name');
+
+	// Try deleting keyword from database
+	await Keywords.destroy({
+		where: {
+			guild: interaction.guildId,
+			name: keyword
+		}
+	});
+}
+
+/** @param {ChatInputCommandInteraction} interaction */
 async function removeResponse(interaction) {
 	const { options } = interaction;
 
 	// Get command options
-	/** @type {'keyword'|'response'} */
-	const type = options.getString('type');
+	const keyword = options.getString('keyword');
 	const name = options.getString('name');
 
-	switch (type) {
-		case 'keyword':
-			// Try removing keyword
-			await Keywords.destroy({
-				where: {
-					guild: interaction.guildId,
-					name
-				}
-			});
-			break;
-		case 'response':
-			// Try removing response
-			await Responses.destroy({
-				where: {
-					guild: interaction.guildId,
-					name
-				}
-			});
-	}
+	// Find keyword in database
+	/** @type {import('../../models/keywords.js').Keyword} */
+	const found = await Keywords.findOne({
+		where: {
+			guild: interaction.guildId,
+			name: keyword
+		}
+	});
+
+	// Try deleting response from database
+	await Responses.destroy({
+		where: {
+			keyword: found.id,
+			name
+		}
+	});
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
@@ -364,7 +376,7 @@ export const data = new SlashCommandBuilder()
 					.setDescription('Deletes a keyword completely.')
 					.addStringOption((option) =>
 						option
-							.setName('keyword')
+							.setName('name')
 							.setDescription('The keyword to be deleted.')
 							.setAutocomplete(true)
 							.setRequired(true)
@@ -472,14 +484,21 @@ export async function autocomplete(interaction) {
 export async function execute(interaction) {
 	const { options } = interaction;
 
-	switch (options.getSubcommand()) {
+	const command = options.getSubcommand();
+	const group = options.getSubcommandGroup();
+	const joined = group === null ? command : `${group} ${command}`;
+
+	switch (joined) {
 		case 'create':
 			createResponse(interaction);
 			break;
 		case 'add':
 			addResponse(interaction);
 			break;
-		case 'remove':
+		case 'remove keyword':
+			removeKeyword(interaction);
+			break;
+		case 'remove response':
 			removeResponse(interaction);
 			break;
 		case 'list':
