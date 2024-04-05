@@ -208,11 +208,62 @@ async function listResponse(interaction) {
 }
 
 /** @param {ChatInputCommandInteraction} interaction */
-async function infoResponse(interaction) {
+async function responseInfos(interaction) {
 	const { options } = interaction;
 
 	// Get command options
 	const keyword = options.getString('keyword');
+	const name = options.getString('name');
+
+	// Find keyword in database
+	/** @type {import('../../models/keywords.js').Keyword|null} */
+	const found = await Keywords.findOne({
+		where: {
+			guild: interaction.guildId,
+			name: keyword
+		}
+	});
+
+	// Abort if keyword not found
+	if (found === null) {
+		await interaction.reply({
+			content: 'Unknown keyword was specified!',
+			ephemeral: true
+		});
+		return;
+	}
+
+	// Find response in database
+	/** @type {import('../../models/responses.js').Response|null} */
+	const response = await Responses.findOne({
+		where: {
+			keyword: found.id,
+			name
+		}
+	});
+
+	// Abort if response not found
+	if (response === null) {
+		await interaction.reply({
+			content: 'Unknown response was specified!',
+			ephemeral: true
+		});
+		return;
+	}
+
+	// Reply with success
+	await interaction.reply({
+		content: `Response with name '${name}' has data of \`${response.response}\`!`,
+		ephemeral: true
+	});
+}
+
+/** @param {ChatInputCommandInteraction} interaction */
+async function keywordInfos(interaction) {
+	const { options } = interaction;
+
+	// Get command options
+	const keyword = options.getString('name');
 
 	// Find keyword in database
 	/** @type {import('../../models/keywords.js').Keyword|null} */
@@ -402,16 +453,40 @@ export const data = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand.setName('list').setDescription('Lists all registered keywords.')
 	)
-	.addSubcommand((subcommand) =>
-		subcommand
+	.addSubcommandGroup((group) =>
+		group
 			.setName('info')
-			.setDescription('Shows responses of a registered keyword.')
-			.addStringOption((option) =>
-				option
+			.setDescription('Lists information about a response or a keyword.')
+			.addSubcommand((subcommand) =>
+				subcommand
 					.setName('keyword')
-					.setDescription('The keyword to show the details of.')
-					.setAutocomplete(true)
-					.setRequired(true)
+					.setDescription('Lists registered responses of a keyword.')
+					.addStringOption((option) =>
+						option
+							.setName('name')
+							.setDescription('The keyword to be shown the details of.')
+							.setAutocomplete(true)
+							.setRequired(true)
+					)
+			)
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName('response')
+					.setDescription('Lists the data being sent by a response.')
+					.addStringOption((option) =>
+						option
+							.setName('keyword')
+							.setDescription('The keyword that would trigger the response.')
+							.setAutocomplete(true)
+							.setRequired(true)
+					)
+					.addStringOption((option) =>
+						option
+							.setName('name')
+							.setDescription('The name of the data to be listed.')
+							.setAutocomplete(true)
+							.setRequired(true)
+					)
 			)
 	);
 /** @param {ModalSubmitInteraction} interaction */
@@ -465,14 +540,15 @@ export async function autocomplete(interaction) {
 	const joined = group === null ? command : `${group} ${command}`;
 
 	switch (joined) {
+		case 'info keyword':
 		case 'remove keyword':
 			await keywordAutocomplete(interaction);
 			break;
+		case 'info response':
 		case 'remove response':
 			await responseAutocomplete(interaction);
 			break;
 		case 'add':
-		case 'info':
 			keywordAutocomplete(interaction);
 			break;
 	}
@@ -501,8 +577,11 @@ export async function execute(interaction) {
 		case 'list':
 			listResponse(interaction);
 			break;
-		case 'info':
-			infoResponse(interaction);
+		case 'info keyword':
+			keywordInfos(interaction);
+			break;
+		case 'info response':
+			responseInfos(interaction);
 			break;
 	}
 }
