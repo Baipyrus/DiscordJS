@@ -286,7 +286,7 @@ async function removeAutocomplete(interaction) {
 
 	switch (type) {
 		case 'keyword':
-			await keywordAutocomplete(interaction.guildId, options.getFocused());
+			await keywordAutocomplete(interaction);
 			break;
 		case 'response':
 			await responseAutocomplete(
@@ -393,7 +393,7 @@ export async function autocomplete(interaction) {
 			break;
 		case 'add':
 		case 'info':
-			keywordAutocomplete(interaction.guildId, interaction.options.getFocused());
+			keywordAutocomplete(interaction);
 			break;
 	}
 }
