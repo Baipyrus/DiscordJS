@@ -494,9 +494,9 @@ export async function modalSubmit(interaction) {
 	const { fields } = interaction;
 
 	// Get text inputs from modal
-	const name = fields.getTextInputValue('name');
 	const keyword = fields.getTextInputValue('keyword');
 	const response = fields.getTextInputValue('response');
+	const name = fields.getTextInputValue('name').toLowerCase();
 
 	// Get id of keyword
 	/** @type {import('../../models/keywords.js').Keyword} */
