@@ -330,26 +330,40 @@ export const data = new SlashCommandBuilder()
 					.setRequired(true)
 			)
 	)
-	.addSubcommand((subcommand) =>
-		subcommand
+	.addSubcommandGroup((group) =>
+		group
 			.setName('remove')
-			.setDescription('Unregisters a response to a keyword.')
-			.addStringOption((option) =>
-				option
-					.setName('type')
-					.setDescription('The type of data to be removed.')
-					.setRequired(true)
-					.addChoices(
-						{ name: 'Keyword', value: 'keyword' },
-						{ name: 'Response', value: 'response' }
+			.setDescription('Unregisters a response or a keyword.')
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName('keyword')
+					.setDescription('Deletes a keyword completely.')
+					.addStringOption((option) =>
+						option
+							.setName('keyword')
+							.setDescription('The keyword to be deleted.')
+							.setAutocomplete(true)
+							.setRequired(true)
 					)
 			)
-			.addStringOption((option) =>
-				option
-					.setName('name')
-					.setDescription('The name of the data to be removed.')
-					.setAutocomplete(true)
-					.setRequired(true)
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName('response')
+					.setDescription('Unregisters a response of a keyword.')
+					.addStringOption((option) =>
+						option
+							.setName('keyword')
+							.setDescription('The keyword that would trigger the response.')
+							.setAutocomplete(true)
+							.setRequired(true)
+					)
+					.addStringOption((option) =>
+						option
+							.setName('name')
+							.setDescription('The name of the data to be removed.')
+							.setAutocomplete(true)
+							.setRequired(true)
+					)
 			)
 	)
 	.addSubcommand((subcommand) =>
