@@ -9,7 +9,7 @@ import Module from 'module';
 const executeCommand = async (interaction, command) => {
 	// Try executing command
 	try {
-		console.info(`[INFO] Command ${interaction.commandName} was executed.`);
+		console.info(`[INFO] Command '${interaction.commandName}' was executed.`);
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
@@ -38,7 +38,7 @@ const executeCommand = async (interaction, command) => {
 const genericExecute = async (interaction, command, name, description, cmdName) => {
 	try {
 		console.info(
-			`[INFO] Command ${cmdName ?? interaction.commandName ?? 'anonymous'} ${
+			`[INFO] Command '${cmdName ?? interaction.commandName ?? 'anonymous'}' ${
 				description ?? `used "${name}"`
 			}.`
 		);
