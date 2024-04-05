@@ -297,11 +297,7 @@ async function removeAutocomplete(interaction) {
 			await keywordAutocomplete(interaction);
 			break;
 		case 'response':
-			await responseAutocomplete(
-				interaction.guildId,
-				options.getFocused(),
-				options.getString('keyword')
-			);
+			await responseAutocomplete(interaction);
 			break;
 	}
 }
