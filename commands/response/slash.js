@@ -203,8 +203,7 @@ async function infoResponse(interaction) {
 	/** @type {import('../../models/responses.js').Response[]} */
 	const responses = await Responses.findAll({
 		where: {
-			guild: interaction.guildId,
-			name: found.id
+			keyword: found.id
 		}
 	});
 
