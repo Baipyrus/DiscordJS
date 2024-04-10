@@ -15,7 +15,8 @@ export async function execute(message) {
 		.flatMap((word) => {
 			const without = word.replace(/[^\w\s]/g, '');
 			return without !== word ? [word, without] : word;
-		});
+		})
+		.filter((w, i, a) => a.indexOf(w) === i);
 
 	// Get guild keywords
 	/** @type {import('../../models/keywords.js').Keyword[]} */
