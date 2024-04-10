@@ -9,7 +9,7 @@ export async function execute(message) {
 	if (!message.inGuild() || message.author.id === process.env.CLIENT) return;
 
 	// Split message content into words
-	const words = message.content.split(/\s+/);
+	const words = message.content.toLowerCase().split(/\s+/);
 
 	// Get guild keywords
 	/** @type {import('../../models/keywords.js').Keyword[]} */
