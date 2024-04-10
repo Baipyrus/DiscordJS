@@ -5,8 +5,8 @@ import { Op } from 'sequelize';
 export const name = Events.MessageCreate;
 /** @param {Message} message */
 export async function execute(message) {
-	// Ignore direct messages
-	if (!message.inGuild()) return;
+	// Ignore direct messages and own messages
+	if (!message.inGuild() || message.author.id === process.env.CLIENT) return;
 
 	// Split message content into words
 	const words = message.content.split(/\s+/);
