@@ -1,5 +1,6 @@
 import {
 	ChannelType,
+	GuildChannel,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 	ChatInputCommandInteraction
@@ -90,6 +91,7 @@ export async function execute(interaction) {
 			}
 			case 'register': {
 				// Get channel id from user input
+				/** @type {GuildChannel} */
 				const { id } = options.getChannel('channel');
 
 				step = 'save';
