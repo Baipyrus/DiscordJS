@@ -249,7 +249,8 @@ Registered roles will automatically be assigned to new members
 
 ## Quirks/Bugs
 
-None
+- Custom VC not working in global space
+- Categories with Custom VC channel in them need explicit permissions
 
 ## Changes
 
