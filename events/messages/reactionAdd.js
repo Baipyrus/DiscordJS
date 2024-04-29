@@ -1,8 +1,5 @@
 import { Events, MessageReaction, User } from 'discord.js';
 import { Messages, RoleEmojiPairs } from '../../database.js';
-import { config } from 'dotenv';
-
-config();
 
 export const name = Events.MessageReactionAdd;
 /**
@@ -10,7 +7,7 @@ export const name = Events.MessageReactionAdd;
  * @param {User} user
  */
 export async function execute(reaction, user) {
-	if (user.id === process.env.CLIENT) return;
+	if (user.id === user.client.user.id) return;
 
 	// Get message
 	const msgID = reaction.message.id;

@@ -6,7 +6,7 @@ export const name = Events.MessageCreate;
 /** @param {Message} message */
 export async function execute(message) {
 	// Ignore direct messages and own messages
-	if (!message.inGuild() || message.author.id === process.env.CLIENT) return;
+	if (!message.inGuild() || message.author.id === message.client.user.id) return;
 
 	// Split message content into words
 	const words = message.content

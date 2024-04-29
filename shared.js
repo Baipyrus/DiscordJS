@@ -1,12 +1,9 @@
 import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Role } from 'discord.js';
 import { Messages, RoleEmojiPairs, Guilds } from './database.js';
 import { readdir } from 'fs/promises';
-import { config } from 'dotenv';
 import { Op } from 'sequelize';
 import { join } from 'path';
 import Module from 'module';
-
-config();
 
 /**
  * Main logic of the different 'Self Roles remove' commands to remove the functionality from a `Message`.
@@ -90,7 +87,7 @@ const saveMessageData = async (id, role, emoji) => {
  * @param {string} emoji Either a unicode emoji or a string representation in Discord custom emoji format.
  */
 const editMessage = async (message, role, emoji) => {
-	if (message.author.id !== process.env.CLIENT) return;
+	if (message.author.id !== message.client.user.id) return;
 
 	// Find out whether to pad message or already present
 	let padding = '\n';
