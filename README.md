@@ -246,6 +246,7 @@ Registered roles will automatically be assigned to new members
 
 - Automated alerts/reminders
 - Removing pairs on reaction/self roles
+- Autocomplete on ID input in slash commands
 
 ## Quirks/Bugs
 
