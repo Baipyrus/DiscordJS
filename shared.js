@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Role } from 'discord.js';
-import { Messages, RoleEmojiPairs, Guilds } from './database.js';
+import { Messages, RoleEmojiPairs, Guilds, Roles } from './database.js';
 import { readdir } from 'fs/promises';
 import { Op } from 'sequelize';
 import { join } from 'path';
@@ -69,6 +69,16 @@ const saveMessageData = async (id, role, emoji) => {
 	await Guilds.findOrCreate({
 		where: guildData,
 		defaults: guildData
+	});
+
+	// Create role if not exists
+	const roleData = {
+		id: role.id,
+		guild: guildData.id
+	};
+	await Roles.findOrCreate({
+		where: roleData,
+		defaults: roleData
 	});
 
 	// Create database entry for pair
