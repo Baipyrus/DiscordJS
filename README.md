@@ -263,9 +263,13 @@ Registered roles will automatically be assigned to new members
 - Automated alerts/reminders
 - Removing pairs on reaction/self roles
 - Autocomplete on ID input in slash commands
+- Replace Sequelize with Drizzle
+- Replace custom logging with Winston
+- Replace JSDoc with TypeScript
 
 ### Quirks/Bugs
 
+- Missing error handling (see permission errors)
 - Custom VC not working in global space
 - Categories with Custom VC channel in them need explicit permissions
 
