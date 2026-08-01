@@ -2,12 +2,12 @@
 
 ## Requirements
 
-- NodeJS (LTS; including NPM): https://nodejs.org/en/download/
-- Git: https://git-scm.com/downloads
+- NodeJS (LTS; including NPM): <https://nodejs.org/en/download/>
+- Git: <https://git-scm.com/downloads>
 
 ## Download
 
-Download the current source code [here](https://git.baipyr.us/Baipyrus/DiscordJS-Example/archive/main.zip).
+Download the current [source code here](https://git.baipyr.us/Baipyrus/DiscordJS-Example/archive/main.zip).
 
 Or clone the repository manually:
 
@@ -31,39 +31,48 @@ Start the bot with:
 npm run start
 ```
 
-# Usage
+## Usage
 
-Discord utilizes different types of commands to interface with bots. The following explanations aim to explain these types.
+Discord utilizes different types of commands to interface with bots.
+The following explanations aim to explain these types.
 
-## Slash Commands
+### Slash Commands
 
 Simple text-based commands. Can be entered in any Text-Based-Channel.
 
-Prefix message with a "Slash" (`/`) and begin typing the name of the command! This prefix and the styling as a code snippet will be used to highlight Slash Commands in this message.
+Prefix message with a "Slash" (`/`) and begin typing the name of the command!
+This prefix and the styling as a code snippet will be used to highlight
+Slash Commands in this message.
 
-For clarification, this will also highlight command options as "Slash Command only" by prefixing them with an underscore (`_`)
+For clarification, this will also highlight command options as
+"Slash Command only" by prefixing them with an underscore (`_`)
 
-## Context Menu Commands
+### Context Menu Commands
 
-"One click" commands. Listed under context (right click) menus, under the group "Apps".
+"One click" commands. Listed under context (right click) menus,
+under the group "Apps".
 
-Ideally, clicking on Users or Messages, you can apply any type of command with the press of a button. Comes with the downside of lacking further input capabilities.
+Ideally, clicking on Users or Messages, you can apply any type of command with the
+press of a button. Comes with the downside of lacking further input capabilities.
 
-Under the list of names of any given command, there may be a quoted string. These are meant to highlight context menu capabilities for the current command, by showcasing the commands name in the quote.
+Under the list of names of any given command, there may be a quoted string.
+These are meant to highlight context menu capabilities for the current command,
+by showcasing the commands name in the quote.
 
-# Reaction/Self Roles
+## Reaction/Self Roles
 
-## Name
+### Name
 
 `/self_roles`
 
-## Description
+### Description
 
-Enables users to self assign roles by reacting to a message, utilizing a bot for automated tasks
+Enables users to self assign roles by reacting to a message,
+utilizing a bot for automated tasks
 
-## Subcommands
+### Subcommands
 
-### create
+#### create
 
 Full names:
 
@@ -71,13 +80,14 @@ Full names:
 
 Description:
 
-The bot writes a message with the given contents in the current channel, and then registers said message for self roles
+The bot writes a message with the given contents in the current channel,
+and then registers said message for self roles
 
 Options:
 
 - \_text: String
 
-### register
+#### register
 
 Full names:
 
@@ -92,7 +102,7 @@ Options:
 
 - \_id: Discord Message ID
 
-### remove
+#### remove
 
 Full names:
 
@@ -101,13 +111,14 @@ Full names:
 
 Description:
 
-Fetches any existing message, looks if it is registered for self roles and then unregisters it
+Fetches any existing message, looks if it is registered for self roles and
+then unregisters it
 
 Options:
 
 - \_id: Discord Message ID
 
-### add
+#### add
 
 Full names:
 
@@ -116,7 +127,8 @@ Full names:
 
 Description:
 
-Adds a new Role-Emoji-Pair to a given message. Reacting to said message with the given emoji yields the given role
+Adds a new Role-Emoji-Pair to a given message. Reacting to said message with
+the given emoji yields the given role
 
 Options:
 
@@ -124,26 +136,27 @@ Options:
 - role: Discord Role
 - emoji: Unicode [or if accessible, a custom] Emoji
 
-## Automated tasks
+### Automated tasks
 
 Registered Messages will automatically:
 
 - be unregistered during deletion
-- be edited in case the bot owns said message. It will explain the given Role-Emoji-Pairs every time a new pair is added.
+- be edited in case the bot owns said message. It will explain the given
+  Role-Emoji-Pairs every time a new pair is added.
 
-# Custom Voice Chat
+## Custom Voice Chat
 
-## Name
+### Name
 
 `/custom_vc`
 
-## Description
+### Description
 
 Enables users to create a custom, temporary voice chat with full control over it
 
-## Subcommands
+### Subcommands
 
-### create
+#### create
 
 Full names:
 
@@ -151,13 +164,14 @@ Full names:
 
 Description:
 
-The bot creates a new voice channel with the given name and registers said channel for custom VC creation
+The bot creates a new voice channel with the given name and
+registers said channel for custom VC creation
 
 Options:
 
 - \_name: String
 
-### register
+#### register
 
 Full names:
 
@@ -171,7 +185,7 @@ Options:
 
 - \_channel: Discord Channel
 
-### remove
+#### remove
 
 Full names:
 
@@ -179,13 +193,14 @@ Full names:
 
 Description:
 
-Fetches any voice channel, looks if it is registered for custom VC creation and then unregisters it
+Fetches any voice channel, looks if it is registered for custom VC creation and
+then unregisters it
 
 Options:
 
 - \_channel: Discord Channel
 
-## Automated tasks
+### Automated tasks
 
 Registered Voice Channels will automatically:
 
@@ -193,19 +208,19 @@ Registered Voice Channels will automatically:
 - be deleted once all users left said channel
 - grant full control over permissions, only within said channel, to the author
 
-# New member roles
+## New member roles
 
-## Name
+### Name
 
 `/member_roles`
 
-## Description
+### Description
 
 Registers roles to be assigned to new members
 
-## Subcommands
+### Subcommands
 
-### add
+#### add
 
 Full names:
 
@@ -219,7 +234,7 @@ Options:
 
 - role: Discord Role
 
-### remove
+#### remove
 
 Full names:
 
@@ -233,26 +248,27 @@ Options:
 
 - role: Discord Role
 
-## Automated tasks
+### Automated tasks
 
 Registered roles will automatically be assigned to new members
 
-# TO-DO List:
+## TO-DO List
 
 > **NOTE**
-> These lists can and will easily be appended to in the future. Any and all feedback is greatly appreciated!
+> These lists can and will easily be appended to in the future.
+> Any and all feedback is greatly appreciated!
 
-## Planned features
+### Planned features
 
 - Automated alerts/reminders
 - Removing pairs on reaction/self roles
 - Autocomplete on ID input in slash commands
 
-## Quirks/Bugs
+### Quirks/Bugs
 
 - Custom VC not working in global space
 - Categories with Custom VC channel in them need explicit permissions
 
-## Changes
+### Changes
 
 None
