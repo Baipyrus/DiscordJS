@@ -4,8 +4,35 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
 import Module from 'module';
+import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from './constants.js';
 
 config();
+
+let isShuttingDown = false;
+/**
+ * @param {Client} client
+ * @param {'SIGINT' | 'SIGTERM'} signal
+ */
+const handleShutdown = (client, signal) => {
+	process.on(signal, async () => {
+		if (isShuttingDown) return;
+		isShuttingDown = true;
+
+		console.info(`[INFO] Received ${signal}. Shutting down gracefully...`);
+
+		// Force-kill if connection lingers for too long
+		setTimeout(() => {
+			console.error('[ERROR] Could not close connection in time. Forcing shutdown.');
+			process.exit(EXIT_ERROR);
+		}, SHUTDOWN_TIMEOUT_MS);
+
+		// Try closing Discord API connection
+		await client.destroy();
+		console.info('[INFO] Client shut down successfully.');
+
+		process.exit(EXIT_SUCCESS);
+	});
+};
 
 /**
  * Main entry point, the bot logs on to discord.
@@ -40,6 +67,10 @@ const runClient = (commands, events) => {
 			? client.once(e.name, (...args) => e.execute(...args))
 			: client.on(e.name, (...args) => e.execute(...args))
 	);
+
+	// Prepare graceful shutdown handlers
+	handleShutdown(client, 'SIGINT');
+	handleShutdown(client, 'SIGTERM');
 
 	// Log in to Discord with your client's token
 	client.login(process.env.TOKEN);
