@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
 import { Roles, Guilds } from '../../database.js';
+import { EMPTY } from '../../constants.js';
 
 /**
  * @param {Guilds} guild
@@ -57,19 +58,20 @@ export async function execute(interaction) {
 	switch (options.getSubcommand()) {
 		case 'add': {
 			// Search for role in database
-			/** @type {import('../../../models/roles.js').Role|null} */
+			/** @type {import('../../models/roles.js').Role|null} */
 			const found = await Roles.findOne({
 				where: {
 					id: role.id
 				}
 			});
 
-			// Toggle role assignment if found
-			if (found !== null) {
+			// Create new database entry if empty
+			if (found === null) await registerRole(interaction.guild, role);
+			else {
+				// Toggle role assignment if found
 				found.assign = true;
 				await found.save();
-				// Otherwise create new database entry
-			} else await registerRole(interaction.guild, role);
+			}
 
 			// Reply successfully to acknowledge command
 			await interaction.reply({
@@ -91,7 +93,7 @@ export async function execute(interaction) {
 
 			// Set reply based on result of deletion
 			let response = 'Successfully removed';
-			if (count === 0) response = 'Failed to remove';
+			if (count === EMPTY) response = 'Failed to remove';
 
 			// Reply to acknowledge command
 			await interaction.reply({
@@ -102,5 +104,7 @@ export async function execute(interaction) {
 			console.info(`[INFO] Removed role to be assigned with ID '${role.id}'.`);
 			break;
 		}
+		default:
+			throw new Error('Unexpected user subcommand!');
 	}
 }

@@ -3,7 +3,6 @@ import { REST, Routes } from 'discord.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
-import Module from 'module';
 
 config();
 
@@ -12,7 +11,7 @@ const rest = new REST().setToken(process.env.TOKEN);
 
 /**
  * Calls HTTP PUT to register commands in discord.
- * @param {Array<Object>} commands
+ * @param {Array<object>} commands
  */
 const putCommands = async (commands) => {
 	try {
@@ -36,7 +35,7 @@ getFiles(cmdPath)
 	// For each command file
 	.then(async (files) =>
 		(await Promise.all(files.map(importAndCheck)))
-			.filter(/** @param {(Module|0)} module */ (module) => module !== 0)
-			.map(/** @param {Module} module */ (module) => module.data.toJSON())
+			.filter((module) => module !== null)
+			.map((module) => module.data.toJSON())
 	)
 	.then(putCommands);

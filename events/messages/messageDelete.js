@@ -1,3 +1,4 @@
+import { EMPTY } from '../../constants.js';
 import { Messages } from '../../database.js';
 import { Events } from 'discord.js';
 
@@ -10,5 +11,6 @@ export async function execute(message) {
 			id: message.id
 		}
 	});
-	if (count > 0) console.info(`[INFO] Reaction Roles Message with ID '${message.id}' was deleted.`);
+	if (count > EMPTY)
+		console.info(`[INFO] Reaction Roles Message with ID '${message.id}' was deleted.`);
 }

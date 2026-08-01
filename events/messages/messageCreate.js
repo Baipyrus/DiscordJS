@@ -1,6 +1,7 @@
 import { Keywords, Responses, sequelize } from '../../database.js';
 import { Events, Message } from 'discord.js';
 import { Op } from 'sequelize';
+import { EMPTY } from '../../constants.js';
 
 export const name = Events.MessageCreate;
 /** @param {Message} message */
@@ -14,7 +15,7 @@ export async function execute(message) {
 		.split(/\s+/)
 		.flatMap((word) => {
 			const without = word.replace(/[^\w\s]/g, '');
-			return without !== word ? [word, without] : word;
+			return without === word ? word : [word, without];
 		})
 		.filter((w, i, a) => a.indexOf(w) === i);
 
@@ -30,7 +31,7 @@ export async function execute(message) {
 	});
 
 	// Ignore if no keywords found
-	if (keywords.length === 0) return;
+	if (keywords.length === EMPTY) return;
 
 	// Get guild responses
 	/** @type {import('../../models/responses.js').Response|null} */

@@ -1,7 +1,7 @@
 import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 
 /**
- * @typedef {Object} Message
+ * @typedef {object} Message
  * @property {string} id A Discord message ID.
  * @property {string} guild A Discord guild ID as a foreign key reference.
  */
@@ -9,6 +9,7 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `Messages` table in the database.
  * @param {Sequelize} sequelize
+ * @returns {ReturnType<typeof Sequelize.prototype.define>}
  */
 export default function (sequelize) {
 	return sequelize.define('Messages', {

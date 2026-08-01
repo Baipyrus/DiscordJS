@@ -1,7 +1,7 @@
 import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 
 /**
- * @typedef {Object} Role
+ * @typedef {object} Role
  * @property {string} id A Discord role ID.
  * @property {boolean} assign Whether or not the role should be assigned to new members.
  * @property {string} guild A Discord guild ID as a foreign key reference.
@@ -10,6 +10,7 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `Roles` table in the database.
  * @param {Sequelize} sequelize
+ * @returns {ReturnType<typeof Sequelize.prototype.define>}
  */
 export default function (sequelize) {
 	return sequelize.define('Roles', {

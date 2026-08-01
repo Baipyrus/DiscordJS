@@ -4,6 +4,7 @@ import { readdir } from 'fs/promises';
 import { Op } from 'sequelize';
 import { join } from 'path';
 import Module from 'module';
+import { EMPTY } from './constants.js';
 
 /**
  * Main logic of the different 'Self Roles remove' commands to remove the functionality from a `Message`.
@@ -14,13 +15,13 @@ export const removeSelfRoles = async (interaction, id) => {
 	// Try deleting message from database
 	const count = await Messages.destroy({
 		where: {
-			id: id
+			id
 		}
 	});
 
 	// Set reply based on result of deletion
 	let response = 'Successfully removed';
-	if (count === 0) response = 'Failed to remove';
+	if (count === EMPTY) response = 'Failed to remove';
 
 	// Reply to acknowledge command
 	await interaction.reply({
@@ -103,11 +104,11 @@ const editMessage = async (message, role, emoji) => {
 	let padding = '\n';
 	/** @type {import('./models/roleEmojiPairs.js').RoleEmojiPair[]} */
 	const reps = await RoleEmojiPairs.findAll({ where: { message: message.id } });
-	if (reps.length === 0) padding += '\n';
+	if (reps.length === EMPTY) padding += '\n';
 
 	// Get old and build new content of message
 	const current = message.content;
-	const next = current + padding + `React with ${emoji} to receive <@&${role.id}>!`;
+	const next = `${current + padding}React with ${emoji} to receive <@&${role.id}>!`;
 
 	// Set message by editing
 	await message.edit(next);
@@ -180,23 +181,22 @@ export const getFiles = async (dir) => {
 /**
  * Imports and checks a command from a path as a module.
  * @param {string} filePath
- * @returns {Promise<Module|0>}
+ * @returns {Promise<Module?>}
  */
 export const importAndCheck = async (filePath) => {
-	if (!filePath.endsWith('.js') || filePath.endsWith('.example.js')) {
-		// Skip this file
-		return 0;
-	}
+	// Skip non-js or example files
+	if (!filePath.endsWith('.js') || filePath.endsWith('.example.js')) return null;
+	/** @type {Module} */
 	const command = await import(filePath);
 	// Warn incomplete commands
 	if (!required.every((name) => name in command)) {
 		console.error(
 			`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`
 		);
-		return 0;
+		return null;
 	}
 	const properties = optional.filter((name) => !(name in command));
-	if (properties.length > 0)
+	if (properties.length > EMPTY)
 		properties.forEach((name) =>
 			console.warn(
 				`[WARNING] The command at ${filePath} is missing an optional "${name}" property.`

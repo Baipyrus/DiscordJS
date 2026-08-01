@@ -74,8 +74,6 @@ export async function execute(interaction) {
 	}
 
 	// Check if command exists
-	if (interaction.commandName && !command) {
+	if (interaction.commandName && !command)
 		console.warn(`[WARNING] No command matching ${interaction.commandName} was found.`);
-		return;
-	}
 }

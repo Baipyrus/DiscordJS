@@ -6,6 +6,7 @@ import {
 	ChatInputCommandInteraction
 } from 'discord.js';
 import { Guilds, VoiceChannels } from '../../database.js';
+import { EMPTY } from '../../constants.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('custom_vc')
@@ -51,19 +52,20 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
 	const { guild, options } = interaction;
 
+	const name = options.getString('name');
+	/** @type {GuildChannel?} */
+	const selected = options.getChannel('channel');
+
 	/** @type {string} */
-	let step;
+	let step = '';
 	const guildData = { id: guild.id };
 	try {
 		switch (options.getSubcommand()) {
 			case 'create': {
-				// Get channel name from user input
-				const name = options.getString('name');
-
 				step = 'create';
 				// Create new channel
 				const channel = await guild.channels.create({
-					name,
+					name: name ?? 'Join to create',
 					type: ChannelType.GuildVoice
 				});
 
@@ -90,19 +92,18 @@ export async function execute(interaction) {
 				break;
 			}
 			case 'register': {
-				// Get channel id from user input
-				/** @type {GuildChannel} */
-				const { id } = options.getChannel('channel');
-
 				step = 'save';
 				// Create guild if not exists
 				await Guilds.findOrCreate({
 					where: guildData,
 					defaults: guildData
 				});
+
+				if (!selected?.id) throw new Error('User did not specify a channel to register!');
+
 				// Save channel data
 				await VoiceChannels.create({
-					id,
+					id: selected.id,
 					guild: guild.id,
 					create: true
 				});
@@ -117,21 +118,21 @@ export async function execute(interaction) {
 				break;
 			}
 			case 'remove': {
-				// Get channel id from user input
-				const { id } = options.getChannel('channel');
-
 				// Remove channel from guild
 				step = 'remove';
+
+				if (!selected?.id) throw new Error('User did not specify a channel to register!');
+
 				const count = await VoiceChannels.destroy({
 					where: {
-						id,
+						id: selected.id,
 						create: true
 					}
 				});
 
 				// Set reply based on result of deletion
 				let response = 'Successfully removed';
-				if (count === 0) response = 'Failed to remove';
+				if (count === EMPTY) response = 'Failed to remove';
 
 				// Reply to acknowledge command
 				await interaction.reply({
@@ -142,6 +143,8 @@ export async function execute(interaction) {
 				console.info(`[INFO] Removed custom VC with ID '${id}'.`);
 				break;
 			}
+			default:
+				throw new Error('Unexpected user subcommand!');
 		}
 	} catch (error) {
 		console.error(error);

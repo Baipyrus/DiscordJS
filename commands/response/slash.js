@@ -10,6 +10,7 @@ import {
 	TextInputStyle
 } from 'discord.js';
 import { Guilds, Keywords, Responses } from '../../database.js';
+import { EMPTY } from '../../constants.js';
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function createResponse(interaction) {
@@ -189,7 +190,7 @@ async function listResponse(interaction) {
 	});
 
 	// Abort if no keywords registered
-	if (keywords.length === 0) {
+	if (keywords.length === EMPTY) {
 		await interaction.reply({
 			content: 'No keywords have been registered yet!',
 			ephemeral: true
@@ -292,7 +293,7 @@ async function keywordInfos(interaction) {
 	});
 
 	// Abort if no responses registered
-	if (responses.length === 0) {
+	if (responses.length === EMPTY) {
 		await interaction.reply({
 			content: 'No responses have been registered yet!',
 			ephemeral: true
@@ -310,7 +311,10 @@ async function keywordInfos(interaction) {
 	});
 }
 
-/** @param {AutocompleteInteraction} interaction */
+/**
+ * @param {AutocompleteInteraction} interaction
+ * @param {string?} focused
+ */
 async function keywordAutocomplete(interaction, focused) {
 	const { options, guildId } = interaction;
 
@@ -370,7 +374,7 @@ async function completeResponses(interaction, focused) {
 }
 
 /** @param {AutocompleteInteraction} interaction */
-async function responseAutocomplete(interaction) {
+function responseAutocomplete(interaction) {
 	const { options } = interaction;
 
 	// Get command options
@@ -383,6 +387,8 @@ async function responseAutocomplete(interaction) {
 		case 'name':
 			completeResponses(interaction, value);
 			break;
+		default:
+			throw new Error('Unexpected user subcommand option!');
 	}
 }
 
@@ -537,9 +543,9 @@ export async function autocomplete(interaction) {
 
 	const command = options.getSubcommand();
 	const group = options.getSubcommandGroup();
-	const joined = group === null ? command : `${group} ${command}`;
+	const jointStr = group === null ? command : `${group} ${command}`;
 
-	switch (joined) {
+	switch (jointStr) {
 		case 'info keyword':
 		case 'remove keyword':
 			await keywordAutocomplete(interaction);
@@ -551,17 +557,19 @@ export async function autocomplete(interaction) {
 		case 'add':
 			keywordAutocomplete(interaction);
 			break;
+		default:
+			throw new Error('Unexpected user subcommand!');
 	}
 }
 /** @param {ChatInputCommandInteraction} interaction */
-export async function execute(interaction) {
+export function execute(interaction) {
 	const { options } = interaction;
 
 	const command = options.getSubcommand();
 	const group = options.getSubcommandGroup();
-	const joined = group === null ? command : `${group} ${command}`;
+	const jointStr = group === null ? command : `${group} ${command}`;
 
-	switch (joined) {
+	switch (jointStr) {
 		case 'create':
 			createResponse(interaction);
 			break;
@@ -583,5 +591,7 @@ export async function execute(interaction) {
 		case 'info response':
 			responseInfos(interaction);
 			break;
+		default:
+			throw new Error('Unexpected user subcommand!');
 	}
 }

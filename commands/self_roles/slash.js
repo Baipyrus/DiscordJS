@@ -24,7 +24,7 @@ const createSelfRoles = async (interaction) => {
 };
 
 /**
- * @typedef {Object} SelfRoleResponse
+ * @typedef {object} SelfRoleResponse
  * @property {boolean} success Whether or not the operation was successful.
  * @property {string|null} msgID A Discord message ID, if successful.
  */
@@ -48,7 +48,7 @@ const registerSelfRoles = async (interaction) => {
 		await channel.messages.fetch(id);
 
 		// Check if message is already registered
-		/** @type {import('../../../models/messages.js').Message|null} */
+		/** @type {import('../../models/messages.js').Message|null} */
 		const found = await Messages.findOne({
 			where: { id }
 		});
@@ -161,8 +161,13 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
 	const { options } = interaction;
 
-	/** @type {string=} */
-	let id;
+	// Get command options
+	const msgID = options.getString('id');
+	const role = options.getRole('role');
+	const emoji = options.getString('emoji');
+
+	/** @type {string?} */
+	let id = null;
 	let createNew = false;
 	switch (options.getSubcommand()) {
 		case 'create':
@@ -177,46 +182,40 @@ export async function execute(interaction) {
 			createNew = response.success;
 			break;
 		}
-		case 'add': {
-			// Get command options
-			const msgID = options.getString('id');
-			const role = options.getRole('role');
-			const emoji = options.getString('emoji');
+		case 'add':
 			// Try adding self role pair
 			await addSelfRoles(interaction, msgID, role, emoji);
 			break;
-		}
-		case 'remove': {
-			const msgID = options.getString('id');
+		case 'remove':
 			await removeReactionRoles(interaction, msgID);
 			break;
-		}
+		default:
+			throw new Error('Unexpected user subcommand!');
 	}
 
-	if (createNew) {
-		try {
-			// Create guild if not exists
-			const guildData = { id: interaction.guildId };
-			await Guilds.findOrCreate({
-				where: guildData,
-				defaults: guildData
-			});
+	// Create guild if not exists
+	if (!createNew) return;
+	try {
+		const guildData = { id: interaction.guildId };
+		await Guilds.findOrCreate({
+			where: guildData,
+			defaults: guildData
+		});
 
-			// Create database entry
-			await Messages.create({
-				id,
-				guild: interaction.guildId
-			});
-		} catch (error) {
-			console.error(error);
+		// Create database entry
+		await Messages.create({
+			id,
+			guild: interaction.guildId
+		});
+	} catch (error) {
+		console.error(error);
 
-			// Reply failed to acknowledge command
-			await interaction.followUp({
-				content: 'Failed to save data from message!',
-				ephemeral: true
-			});
-		}
-
-		console.info(`[INFO] New self roles on message with ID: '${id}'.`);
+		// Reply failed to acknowledge command
+		await interaction.followUp({
+			content: 'Failed to save data from message!',
+			ephemeral: true
+		});
 	}
+
+	console.info(`[INFO] New self roles on message with ID: '${id}'.`);
 }

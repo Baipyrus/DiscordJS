@@ -11,6 +11,7 @@ config();
  * Main entry point, the bot logs on to discord.
  * @param {Array<Module>} commands
  * @param {Array<Module>} events
+ * @returns {never}
  */
 const runClient = (commands, events) => {
 	// Create a new client instance
@@ -51,7 +52,7 @@ const evtPath = join(__dirname, 'events');
 getFiles(cmdPath)
 	// For each command file
 	.then(async (files) =>
-		(await Promise.all(files.map(importAndCheck))).filter((module) => module !== 0)
+		(await Promise.all(files.map(importAndCheck))).filter((module) => module !== null)
 	)
 	.then(async (commands) => {
 		const files = await getFiles(evtPath);

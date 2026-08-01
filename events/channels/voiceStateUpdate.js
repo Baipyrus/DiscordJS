@@ -8,6 +8,7 @@ import {
 	PermissionsBitField
 } from 'discord.js';
 import { VoiceChannels } from '../../database.js';
+import { EMPTY } from '../../constants.js';
 
 /**
  * Function that either creates a new custom channel or gets an existing one registered in the database.
@@ -56,7 +57,7 @@ const leftVoiceChat = async (state) => {
 
 	// Get active members from channel
 	const members = Array.from(channel.members);
-	if (members.length > 0) return;
+	if (members.length > EMPTY) return;
 
 	// Find channel by id, return if not registered as custom
 	/** @type {import('../../models/voiceChannels.js').VoiceChannel|null} */

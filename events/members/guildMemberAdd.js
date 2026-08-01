@@ -1,5 +1,6 @@
 import { Events, GuildMember } from 'discord.js';
 import { Roles } from '../../database.js';
+import { EMPTY } from '../../constants.js';
 
 export const name = Events.GuildMemberAdd;
 /** @param {GuildMember} member */
@@ -14,7 +15,7 @@ export async function execute(member) {
 	});
 
 	// Ignore if no none found
-	if (roles.length === 0) return;
+	if (roles.length === EMPTY) return;
 
 	try {
 		// Add roles to member

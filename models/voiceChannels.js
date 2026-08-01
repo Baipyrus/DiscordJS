@@ -1,7 +1,7 @@
 import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 
 /**
- * @typedef {Object} VoiceChannel
+ * @typedef {object} VoiceChannel
  * @property {string} id A Discord channel ID.
  * @property {boolean} create Whether or not this channel is registered to create customs when joined.
  * @property {(string|null)} owner The owner of this channel, if not registered for customs.
@@ -11,6 +11,7 @@ import { DataTypes, Deferrable, Sequelize } from 'sequelize';
 /**
  * The definition of the `VoiceChannels` table in the database.
  * @param {Sequelize} sequelize
+ * @returns {ReturnType<typeof Sequelize.prototype.define>}
  */
 export default function (sequelize) {
 	return sequelize.define('VoiceChannels', {
