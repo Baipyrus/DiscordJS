@@ -1,0 +1,34 @@
+{
+	"name": "discordjs",
+	"version": "0.0.1",
+	"description": "",
+	"private": true,
+	"type": "module",
+	"bin": {
+		"discordjs": "./build/index.js"
+	},
+	"scripts": {
+		"dev": "tsx src/index.ts",
+		"dev:watch": "tsx watch src/index.ts",
+		"build": "tsc && chmod +x build/index.js",
+		"prod": "node build/index.js",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^14.27.0",
+		"winston": "^3.19.0"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@types/node": "^26.1.2",
+		"eslint": "^10.8.0",
+		"eslint-config-prettier": "^10.1.8",
+		"prettier": "^3.9.6",
+		"tsx": "^4.23.5",
+		"typescript": "^7.0.2"
+	}
+}
