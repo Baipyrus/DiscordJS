@@ -8,25 +8,32 @@
 		"discordjs": "./build/index.js"
 	},
 	"scripts": {
-		"deploy": "tsx src/lib/deploy.ts",
-		"dev": "tsx src/index.ts",
-		"dev:watch": "tsx watch src/index.ts",
+		"deploy": "tsx --env-file=.env src/lib/deploy.ts",
+		"dev": "tsx --env-file=.env src/index.ts",
+		"dev:watch": "tsx watch --env-file=.env src/index.ts",
 		"build": "tsc && chmod +x build/index.js && rm build/lib/deploy*",
-		"prod": "node build/index.js",
+		"prod": "node --env-file=.env build/index.js",
 		"typecheck": "tsc --noEmit",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"db:push": "drizzle-kit push",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
+		"db:studio": "drizzle-kit studio"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@libsql/client": "^0.17.4",
 		"discord.js": "^14.27.0",
+		"drizzle-orm": "^1.0.0-rc.4",
 		"winston": "^3.19.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^26.1.2",
+		"drizzle-kit": "^1.0.0-rc.4",
 		"eslint": "^10.8.0",
 		"eslint-config-prettier": "^10.1.8",
 		"prettier": "^3.9.6",

@@ -22,11 +22,19 @@ const putCommands = async (commands: unknown[]) => {
 			body: commands
 		})) as { length: number };
 
-		console.info(`[INFO] Successfully reloaded ${data.length} application (/) commands.`);
+		logger.info(`Successfully reloaded ${data.length} application (/) commands.`, {
+			label: 'DEPLOY'
+		});
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
-		console.error('[ERROR] Uncaught error:');
-		console.error(error);
+		logger.error('Uncaught error:', {
+			label: 'DEPLOY'
+		});
+
+		const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
+		logger.error(errorMessage, { label: 'ERR_MSG' });
+
+		if (error instanceof Error && error.stack) logger.debug(error.stack, { label: 'ERR_STACK' });
 	}
 };
 

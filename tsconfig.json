@@ -18,6 +18,7 @@
 
 		"paths": {
 			"lib/*": ["./src/lib/*"]
+			"models/*": ["./src/lib/db/models/*"]
 		},
 
 		// Other Outputs
