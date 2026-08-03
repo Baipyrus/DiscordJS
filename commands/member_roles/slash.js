@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
-import { Roles, Guilds } from '../../database.js';
-import { EMPTY } from '../../constants.js';
+import { Roles, Guilds } from '#lib/database.js';
+import { EMPTY } from '#lib/constants.js';
 
 /**
  * @param {Guilds} guild
@@ -58,7 +58,7 @@ export async function execute(interaction) {
 	switch (options.getSubcommand()) {
 		case 'add': {
 			// Search for role in database
-			/** @type {import('../../models/roles.js').Role|null} */
+			/** @type {import('#models/roles.js').Role|null} */
 			const found = await Roles.findOne({
 				where: {
 					id: role.id

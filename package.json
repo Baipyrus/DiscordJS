@@ -12,6 +12,10 @@
 		"jsdoc": "rm -rf docs/ && jsdoc -c ./.jsdoc.conf.json -d docs/ -r .",
 		"docs": "npm run-script jsdoc && serve docs/"
 	},
+	"imports": {
+		"#lib/*": "./lib/*",
+		"#models/*": "./models/*"
+	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {

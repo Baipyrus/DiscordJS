@@ -1,7 +1,7 @@
-import { Keywords, Responses, sequelize } from '../../database.js';
+import { Keywords, Responses, sequelize } from '#lib/database.js';
 import { Events, Message } from 'discord.js';
 import { Op } from 'sequelize';
-import { EMPTY } from '../../constants.js';
+import { EMPTY } from '#lib/constants.js';
 
 export const name = Events.MessageCreate;
 /** @param {Message} message */
@@ -20,7 +20,7 @@ export async function execute(message) {
 		.filter((w, i, a) => a.indexOf(w) === i);
 
 	// Get guild keywords
-	/** @type {import('../../models/keywords.js').Keyword[]} */
+	/** @type {import('#models/keywords.js').Keyword[]} */
 	const keywords = await Keywords.findAll({
 		where: {
 			guild: message.guildId,
@@ -34,7 +34,7 @@ export async function execute(message) {
 	if (keywords.length === EMPTY) return;
 
 	// Get guild responses
-	/** @type {import('../../models/responses.js').Response|null} */
+	/** @type {import('#models/responses.js').Response|null} */
 	const response = await Responses.findOne({
 		where: {
 			keyword: {

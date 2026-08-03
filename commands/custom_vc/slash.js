@@ -5,8 +5,8 @@ import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction
 } from 'discord.js';
-import { Guilds, VoiceChannels } from '../../database.js';
-import { EMPTY } from '../../constants.js';
+import { Guilds, VoiceChannels } from '#lib/database.js';
+import { EMPTY } from '#lib/constants.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('custom_vc')

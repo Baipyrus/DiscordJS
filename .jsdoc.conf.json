@@ -1,8 +1,8 @@
 {
 	"source": {
 		"include": ["."],
-		"exclude": ["node_modules", "commands/examples", "jsdoc-ts-fixups.js"],
+		"exclude": ["node_modules", "commands/examples", "lib/jsdoc-ts-fixups.js"],
 		"includePattern": ".+\\.js(doc|x)?$"
 	},
-	"plugins": ["node_modules/jsdoc-tsimport-plugin/index.js", "./jsdoc-ts-fixups.js"]
+	"plugins": ["node_modules/jsdoc-tsimport-plugin/index.js", "./lib/jsdoc-ts-fixups.js"]
 }

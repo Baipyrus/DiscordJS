@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
-import { addSelfRoles, removeSelfRoles } from '../../shared.js';
-import { Guilds, Messages } from '../../database.js';
+import { addSelfRoles, removeSelfRoles } from '#lib/shared.js';
+import { Guilds, Messages } from '#lib/database.js';
 
 /**
  * Sends a `Message` in the current channel and registers for self roles.
@@ -48,7 +48,7 @@ const registerSelfRoles = async (interaction) => {
 		await channel.messages.fetch(id);
 
 		// Check if message is already registered
-		/** @type {import('../../models/messages.js').Message|null} */
+		/** @type {import('#models/messages.js').Message|null} */
 		const found = await Messages.findOne({
 			where: { id }
 		});

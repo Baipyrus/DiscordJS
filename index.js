@@ -1,10 +1,10 @@
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
-import { getFiles, importAndCheck } from './shared.js';
+import { getFiles, importAndCheck } from './lib/shared.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
 import Module from 'module';
-import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from './constants.js';
+import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from './lib/constants.js';
 
 config();
 

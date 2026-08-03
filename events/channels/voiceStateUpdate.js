@@ -7,8 +7,8 @@ import {
 	VoiceState,
 	PermissionsBitField
 } from 'discord.js';
-import { VoiceChannels } from '../../database.js';
-import { EMPTY } from '../../constants.js';
+import { VoiceChannels } from '#lib/database.js';
+import { EMPTY } from '#lib/constants.js';
 
 /**
  * Function that either creates a new custom channel or gets an existing one registered in the database.
@@ -19,7 +19,7 @@ import { EMPTY } from '../../constants.js';
  */
 const getChannel = async (member, guildChs, channel) => {
 	// Check database for existing channel
-	/** @type {import('../../models/voiceChannels.js').VoiceChannel|null} */
+	/** @type {import('#models/voiceChannels.js').VoiceChannel|null} */
 	const ownCh = await VoiceChannels.findOne({
 		where: {
 			owner: member.id
@@ -60,7 +60,7 @@ const leftVoiceChat = async (state) => {
 	if (members.length > EMPTY) return;
 
 	// Find channel by id, return if not registered as custom
-	/** @type {import('../../models/voiceChannels.js').VoiceChannel|null} */
+	/** @type {import('#models/voiceChannels.js').VoiceChannel|null} */
 	const custom = await VoiceChannels.findOne({
 		where: {
 			id: channel.id,
@@ -87,7 +87,7 @@ export async function execute(oldState, newState) {
 		if (!channel) return;
 
 		// Find channel by id, return if not registered for customs
-		/** @type {import('../../models/voiceChannels.js').VoiceChannel|null} */
+		/** @type {import('#models/voiceChannels.js').VoiceChannel|null} */
 		const createCh = await VoiceChannels.findOne({
 			where: {
 				id: channel.id,

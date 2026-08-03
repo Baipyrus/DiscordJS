@@ -1,5 +1,5 @@
-import { EMPTY } from '../../constants.js';
-import { Messages } from '../../database.js';
+import { EMPTY } from '#lib/constants.js';
+import { Messages } from '#lib/database.js';
 import { Events } from 'discord.js';
 
 export const name = Events.MessageDelete;

@@ -4,7 +4,7 @@ import {
 	PermissionFlagsBits,
 	ContextMenuCommandInteraction
 } from 'discord.js';
-import { Messages } from '../../../database.js';
+import { Messages } from '#lib/database.js';
 
 export const data = new ContextMenuCommandBuilder()
 	.setDMPermission(false)

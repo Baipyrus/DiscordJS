@@ -9,8 +9,8 @@ import {
 	ChatInputCommandInteraction,
 	TextInputStyle
 } from 'discord.js';
-import { Guilds, Keywords, Responses } from '../../database.js';
-import { EMPTY } from '../../constants.js';
+import { Guilds, Keywords, Responses } from '#lib/database.js';
+import { EMPTY } from '#lib/constants.js';
 
 /** @param {ChatInputCommandInteraction} interaction */
 async function createResponse(interaction) {
@@ -20,7 +20,7 @@ async function createResponse(interaction) {
 	const keyword = options.getString('keyword');
 
 	// Abort if keyword already exists or is empty
-	/** @type {import('../../models/keywords.js').Keyword|null} */
+	/** @type {import('#models/keywords.js').Keyword|null} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: interaction.guildId,
@@ -67,7 +67,7 @@ async function addResponse(interaction) {
 	const current = options.getString('keyword');
 
 	// Abort if keyword doesn't exist
-	/** @type {import('../../models/keywords.js').Keyword|null} */
+	/** @type {import('#models/keywords.js').Keyword|null} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: interaction.guildId,
@@ -147,7 +147,7 @@ async function removeResponse(interaction) {
 	const name = options.getString('name');
 
 	// Find keyword in database
-	/** @type {import('../../models/keywords.js').Keyword|null} */
+	/** @type {import('#models/keywords.js').Keyword|null} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: interaction.guildId,
@@ -182,7 +182,7 @@ async function removeResponse(interaction) {
 /** @param {ChatInputCommandInteraction} interaction */
 async function listResponse(interaction) {
 	// Get list of keywords from database
-	/** @type {import('../../models/keywords.js').Keyword[]} */
+	/** @type {import('#models/keywords.js').Keyword[]} */
 	const keywords = await Keywords.findAll({
 		where: {
 			guild: interaction.guildId
@@ -217,7 +217,7 @@ async function responseInfos(interaction) {
 	const name = options.getString('name');
 
 	// Find keyword in database
-	/** @type {import('../../models/keywords.js').Keyword|null} */
+	/** @type {import('#models/keywords.js').Keyword|null} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: interaction.guildId,
@@ -235,7 +235,7 @@ async function responseInfos(interaction) {
 	}
 
 	// Find response in database
-	/** @type {import('../../models/responses.js').Response|null} */
+	/** @type {import('#models/responses.js').Response|null} */
 	const response = await Responses.findOne({
 		where: {
 			keyword: found.id,
@@ -267,7 +267,7 @@ async function keywordInfos(interaction) {
 	const keyword = options.getString('name');
 
 	// Find keyword in database
-	/** @type {import('../../models/keywords.js').Keyword|null} */
+	/** @type {import('#models/keywords.js').Keyword|null} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: interaction.guildId,
@@ -285,7 +285,7 @@ async function keywordInfos(interaction) {
 	}
 
 	// Get list of responses from database
-	/** @type {import('../../models/responses.js').Response[]} */
+	/** @type {import('#models/responses.js').Response[]} */
 	const responses = await Responses.findAll({
 		where: {
 			keyword: found.id
@@ -322,7 +322,7 @@ async function keywordAutocomplete(interaction, focused) {
 	if (!focused) focused = options.getFocused();
 
 	// Get list of keywords from database
-	/** @type {import('../../models/keywords.js').Keyword[]} */
+	/** @type {import('#models/keywords.js').Keyword[]} */
 	const keywords = await Keywords.findAll({
 		where: {
 			guild: guildId
@@ -347,7 +347,7 @@ async function completeResponses(interaction, focused) {
 	const keyword = options.getString('keyword');
 
 	// Get keyword
-	/** @type {import('../../models/keywords.js').Keyword} */
+	/** @type {import('#models/keywords.js').Keyword} */
 	const found = await Keywords.findOne({
 		where: {
 			guild: guildId,
@@ -356,7 +356,7 @@ async function completeResponses(interaction, focused) {
 	});
 
 	// Get list of responses from database
-	/** @type {import('../../models/responses.js').Response[]} */
+	/** @type {import('#models/responses.js').Response[]} */
 	const responses =
 		found === null
 			? []
@@ -505,7 +505,7 @@ export async function modalSubmit(interaction) {
 	const name = fields.getTextInputValue('name').toLowerCase();
 
 	// Get id of keyword
-	/** @type {import('../../models/keywords.js').Keyword} */
+	/** @type {import('#models/keywords.js').Keyword} */
 	const found = await Keywords.findOne({
 		where: {
 			name: keyword

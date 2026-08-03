@@ -1,6 +1,6 @@
 import { ChannelType, Events, GuildChannel } from 'discord.js';
-import { VoiceChannels } from '../../database.js';
-import { EMPTY } from '../../constants.js';
+import { VoiceChannels } from '#lib/database.js';
+import { EMPTY } from '#lib/constants.js';
 
 export const name = Events.ChannelDelete;
 /** @param {GuildChannel} channel */

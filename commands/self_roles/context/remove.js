@@ -4,7 +4,7 @@ import {
 	PermissionFlagsBits,
 	ContextMenuCommandInteraction
 } from 'discord.js';
-import { removeSelfRoles } from '../../../shared.js';
+import { removeSelfRoles } from '#lib/shared.js';
 
 export const data = new ContextMenuCommandBuilder()
 	.setDMPermission(false)
