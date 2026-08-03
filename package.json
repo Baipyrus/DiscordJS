@@ -8,9 +8,10 @@
 		"discordjs": "./build/index.js"
 	},
 	"scripts": {
+		"deploy": "tsx src/lib/deploy.ts",
 		"dev": "tsx src/index.ts",
 		"dev:watch": "tsx watch src/index.ts",
-		"build": "tsc && chmod +x build/index.js",
+		"build": "tsc && chmod +x build/index.js && rm build/lib/deploy*",
 		"prod": "node build/index.js",
 		"typecheck": "tsc --noEmit",
 		"lint": "prettier --check . && eslint .",
