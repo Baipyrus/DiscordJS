@@ -12,6 +12,7 @@
 		"dev:watch": "tsx watch src/index.ts",
 		"build": "tsc && chmod +x build/index.js",
 		"prod": "node build/index.js",
+		"typecheck": "tsc --noEmit",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},

@@ -16,6 +16,10 @@
 		"lib": ["esnext"],
 		"types": ["node"],
 
+		"paths": {
+			"lib/*": ["./src/lib/*"]
+		},
+
 		// Other Outputs
 		"sourceMap": true,
 		"declaration": true,
