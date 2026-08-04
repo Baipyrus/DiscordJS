@@ -1,9 +1,9 @@
-import { keywords, responses } from 'lib/db/schema.js';
+import { keywords, responses } from '$lib/db/schema.js';
 import { Events, Message } from 'discord.js';
-import { EMPTY } from 'lib/constants.js';
-import { db } from 'lib/db/index.js';
+import { EMPTY } from '$lib/constants.js';
+import { db } from '$lib/db/index.js';
 import { and, eq, inArray } from 'drizzle-orm';
-import { logger } from 'lib/Logger.js';
+import { logger } from '$lib/Logger.js';
 
 export const name = Events.MessageCreate;
 export async function execute(message: Message) {

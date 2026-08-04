@@ -8,11 +8,11 @@
 		"discordjs": "./build/index.js"
 	},
 	"scripts": {
-		"deploy": "tsx --env-file=.env src/lib/deploy.ts",
-		"dev": "tsx --env-file=.env src/index.ts",
-		"dev:watch": "tsx watch --env-file=.env src/index.ts",
+		"deploy": "NODE_ENV=development tsx --env-file=.env src/lib/deploy.ts",
+		"dev": "NODE_ENV=development tsx --env-file=.env src/index.ts",
+		"dev:watch": "NODE_ENV=development tsx watch --env-file=.env src/index.ts",
 		"build": "tsc && chmod +x build/index.js",
-		"prod": "node --env-file=.env build/index.js",
+		"prod": "NODE_ENV=production node --env-file=.env build/index.js",
 		"typecheck": "tsc --noEmit",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",

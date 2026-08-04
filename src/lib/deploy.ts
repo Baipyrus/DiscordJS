@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { CommandModule, importAndCheck } from 'lib/modules.js';
+import { CommandModule, importAndCheck } from '$lib/modules.js';
 import { REST, Routes } from 'discord.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { logger } from 'lib/Logger.js';
+import { logger } from '$lib/Logger.js';
 import { readdir } from 'fs/promises';
 
 // Construct and prepare an instance of the REST module

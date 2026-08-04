@@ -9,11 +9,11 @@ import {
 	ChatInputCommandInteraction,
 	TextInputStyle
 } from 'discord.js';
-import { guilds, keywords, responses } from 'lib/db/schema.js';
-import { EMPTY } from 'lib/constants.js';
-import { db } from 'lib/db/index.js';
+import { guilds, keywords, responses } from '$lib/db/schema.js';
+import { EMPTY } from '$lib/constants.js';
+import { db } from '$lib/db/index.js';
 import { and, eq } from 'drizzle-orm';
-import { logger } from 'lib/Logger.js';
+import { logger } from '$lib/Logger.js';
 
 async function createResponse(interaction: ChatInputCommandInteraction) {
 	const { options } = interaction;

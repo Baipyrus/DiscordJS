@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
-import { CommandModule, EventModule, importAndCheck } from 'lib/modules.js';
+import { CommandModule, EventModule, importAndCheck } from '$lib/modules.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from 'lib/constants.js';
+import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from '$lib/constants.js';
 import { readdir } from 'fs/promises';
-import { logger } from 'lib/Logger.js';
+import { logger } from '$lib/Logger.js';
 
 let isShuttingDown = false;
 const handleShutdown = (client: Client, signal: 'SIGINT' | 'SIGTERM') => {

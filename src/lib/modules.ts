@@ -1,6 +1,6 @@
 import Module from 'module';
-import { EMPTY } from 'lib/constants.js';
-import { logger } from 'lib/Logger.js';
+import { EMPTY } from '$lib/constants.js';
+import { logger } from '$lib/Logger.js';
 import type { ContextMenuCommandBuilder, SlashCommandBuilder } from 'discord.js';
 
 export class CommandModule extends Module {
