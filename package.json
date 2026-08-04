@@ -11,7 +11,7 @@
 		"deploy": "NODE_ENV=development tsx --env-file=.env src/lib/deploy.ts",
 		"dev": "NODE_ENV=development tsx --env-file=.env src/index.ts",
 		"dev:watch": "NODE_ENV=development tsx watch --env-file=.env src/index.ts",
-		"build": "tsc && chmod +x build/index.js",
+		"build": "tsup && chmod +x build/index.js",
 		"prod": "NODE_ENV=production node --env-file=.env build/index.js",
 		"typecheck": "tsc --noEmit",
 		"lint": "prettier --check . && eslint .",
@@ -37,6 +37,7 @@
 		"eslint": "^10.8.0",
 		"eslint-config-prettier": "^10.1.8",
 		"prettier": "^3.9.6",
+		"tsup": "^8.5.1",
 		"tsx": "^4.23.5",
 		"typescript": "^7.0.2"
 	}
