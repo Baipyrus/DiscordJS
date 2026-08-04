@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from '$lib/constants.js';
 import { readdir } from 'fs/promises';
 import { logger } from '$lib/Logger.js';
+import type { ModifiedClient } from '$lib/Client.js';
 
 let isShuttingDown = false;
 const handleShutdown = (client: Client, signal: 'SIGINT' | 'SIGTERM') => {
@@ -40,7 +41,7 @@ const runClient = (commands: CommandModule[], events: EventModule[]) => {
 			GatewayIntentBits.MessageContent
 		],
 		partials: [Partials.Message]
-	}) as Client & { commands: Collection<string, CommandModule> };
+	}) as ModifiedClient;
 
 	// The commands registered for this client.
 	client.commands = new Collection();
