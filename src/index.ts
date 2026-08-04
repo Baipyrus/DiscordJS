@@ -36,13 +36,10 @@ const runClient = (commands: CommandModule[], events: EventModule[]) => {
 	const client = new Client({
 		intents: [
 			GatewayIntentBits.Guilds,
-			GatewayIntentBits.GuildMembers,
 			GatewayIntentBits.GuildMessages,
-			GatewayIntentBits.MessageContent,
-			GatewayIntentBits.GuildVoiceStates,
-			GatewayIntentBits.GuildMessageReactions
+			GatewayIntentBits.MessageContent
 		],
-		partials: [Partials.Message, Partials.Reaction]
+		partials: [Partials.Message]
 	}) as Client & { commands: Collection<string, CommandModule> };
 
 	// The commands registered for this client.
