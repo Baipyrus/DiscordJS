@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node .",
-		"deploy": "node deploy.js",
+		"deploy": "node lib/deploy.js",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"jsdoc": "rm -rf docs/ && jsdoc -c ./.jsdoc.conf.json -d docs/ -r .",
