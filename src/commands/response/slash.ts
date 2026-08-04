@@ -310,7 +310,7 @@ async function completeResponses(interaction: AutocompleteInteraction, focused: 
 	await interaction.respond(filtered.map((choice) => ({ name: choice.name, value: choice.name })));
 }
 
-function responseAutocomplete(interaction: AutocompleteInteraction) {
+async function responseAutocomplete(interaction: AutocompleteInteraction) {
 	const { options } = interaction;
 
 	// Get command options
@@ -318,10 +318,10 @@ function responseAutocomplete(interaction: AutocompleteInteraction) {
 	const { name, value } = focused;
 	switch (name) {
 		case 'keyword':
-			keywordAutocomplete(interaction, value);
+			await keywordAutocomplete(interaction, value);
 			break;
 		case 'name':
-			completeResponses(interaction, value);
+			await completeResponses(interaction, value);
 			break;
 		default:
 			throw new Error('Unexpected user subcommand option!');
