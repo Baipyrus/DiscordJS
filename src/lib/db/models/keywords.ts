@@ -7,5 +7,5 @@ export const keywords = sqliteTable('keywords', {
 	guild: text()
 		.references(() => guilds.id)
 		.notNull(),
-	name: text().notNull()
+	word: text().notNull().unique()
 });

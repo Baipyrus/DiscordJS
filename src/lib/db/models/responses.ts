@@ -7,6 +7,6 @@ export const responses = sqliteTable('respones', {
 	keyword: text()
 		.references(() => keywords.id)
 		.notNull(),
-	name: text().notNull(),
-	response: text().notNull()
+	name: text().notNull().unique(),
+	message: text().notNull()
 });

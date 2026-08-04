@@ -1,5 +1,5 @@
 {
-	"include": ["**/*.ts"],
+	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "build"],
 
 	// Visit https://aka.ms/tsconfig to read more about this file
@@ -17,7 +17,7 @@
 		"types": ["node"],
 
 		"paths": {
-			"lib/*": ["./src/lib/*"]
+			"lib/*": ["./src/lib/*"],
 			"models/*": ["./src/lib/db/models/*"]
 		},
 
