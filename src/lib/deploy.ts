@@ -48,7 +48,9 @@ readdir(cmdPath, { withFileTypes: true, recursive: true })
 		// Try importing the command, see if all implementation requirements are met
 		(
 			await Promise.all(
-				files.map((entry) => importAndCheck(join(entry.parentPath, entry.name), CommandModule))
+				files.map((entry) =>
+					importAndCheck(join(entry.parentPath, entry.name), CommandModule, true)
+				)
 			)
 		)
 			.filter((module) => module !== null)

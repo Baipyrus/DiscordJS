@@ -60,6 +60,7 @@ const runClient = (commands: CommandModule[], events: EventModule[]) => {
 	handleShutdown(client, 'SIGINT');
 	handleShutdown(client, 'SIGTERM');
 
+	logger.info('Logging in to Discord ...', { label: 'STARTUP' });
 	// Log in to Discord with your client's token
 	client.login(process.env['TOKEN']);
 };
@@ -68,6 +69,7 @@ const runClient = (commands: CommandModule[], events: EventModule[]) => {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const cmdPath = join(__dirname, 'commands');
 const evtPath = join(__dirname, 'events');
+const isDevMode = process.env['NODE_ENV'] === 'development';
 
 // For each command file
 readdir(cmdPath, { withFileTypes: true, recursive: true })
@@ -75,7 +77,9 @@ readdir(cmdPath, { withFileTypes: true, recursive: true })
 		// Try importing the command, see if all implementation requirements are met
 		(
 			await Promise.all(
-				files.map((entry) => importAndCheck(join(entry.parentPath, entry.name), CommandModule))
+				files.map((entry) =>
+					importAndCheck(join(entry.parentPath, entry.name), CommandModule, isDevMode)
+				)
 			)
 		).filter((module) => module !== null)
 	)
@@ -85,7 +89,9 @@ readdir(cmdPath, { withFileTypes: true, recursive: true })
 		// Try importing the event, see if all implementation requirements are met
 		const events = (
 			await Promise.all(
-				files.map((entry) => importAndCheck(join(entry.parentPath, entry.name), EventModule))
+				files.map((entry) =>
+					importAndCheck(join(entry.parentPath, entry.name), EventModule, isDevMode)
+				)
 			)
 		).filter((module) => module !== null);
 
