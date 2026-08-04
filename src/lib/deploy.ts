@@ -4,7 +4,7 @@ import { CommandModule, importAndCheck } from '$lib/modules.js';
 import { REST, Routes } from 'discord.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { logger } from '$lib/Logger.js';
+import { logger, unknownErrorLogger } from '$lib/Logger.js';
 import { readdir } from 'fs/promises';
 
 // Construct and prepare an instance of the REST module
@@ -27,14 +27,7 @@ const putCommands = async (commands: unknown[]) => {
 		});
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
-		logger.error('Uncaught error:', {
-			label: 'DEPLOY'
-		});
-
-		const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
-		logger.error(errorMessage, { label: 'ERR_MSG' });
-
-		if (error instanceof Error && error.stack) logger.debug(error.stack, { label: 'ERR_STACK' });
+		unknownErrorLogger(error, 'DEPLOY');
 	}
 };
 

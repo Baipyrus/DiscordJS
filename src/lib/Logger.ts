@@ -58,6 +58,16 @@ export const logger = createLogger({
 	]
 });
 
+export const unknownErrorLogger = (error: unknown, label: string) => {
+	// Log error message and stack trace
+	logger.error('Caught unknown error:', { label });
+
+	const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
+	logger.error(errorMessage, { label: 'ERR_MSG' });
+
+	if (error instanceof Error && error.stack) logger.debug(error.stack, { label: 'ERR_STACK' });
+};
+
 export const consoleTransport = new transports.Console({
 	format: combine(colorize(), timestamp(), customFormat)
 });
