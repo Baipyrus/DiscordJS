@@ -89,7 +89,7 @@ export const importAndCheck = async <T extends CommandModule | EventModule>(
 		const missingOptional = optional.filter((prop) => !(prop in command));
 		if (missingOptional.length > EMPTY)
 			logger.warn(
-				`The module is missing at least one optional property (${propsTrimmedStr(missingOptional)}).`,
+				`The module '${name}' is missing at least one optional property (${propsTrimmedStr(missingOptional)}).`,
 				{
 					label: 'IMPORT'
 				}

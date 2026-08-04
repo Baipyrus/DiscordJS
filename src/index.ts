@@ -6,7 +6,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { EXIT_ERROR, EXIT_SUCCESS, SHUTDOWN_TIMEOUT_MS } from '$lib/constants.js';
 import { readdir } from 'fs/promises';
-import { logger } from '$lib/Logger.js';
+import { logger, unknownErrorLogger } from '$lib/Logger.js';
 import type { ModifiedClient } from '$lib/Client.js';
 
 let isShuttingDown = false;
@@ -32,7 +32,7 @@ const handleShutdown = (client: Client, signal: 'SIGINT' | 'SIGTERM') => {
 };
 
 // Main entry point, the bot logs on to Discord.
-const runClient = (commands: CommandModule[], events: EventModule[]) => {
+const runClient = async (commands: CommandModule[], events: EventModule[]) => {
 	// Create a new client instance
 	const client = new Client({
 		intents: [
@@ -58,9 +58,14 @@ const runClient = (commands: CommandModule[], events: EventModule[]) => {
 	handleShutdown(client, 'SIGINT');
 	handleShutdown(client, 'SIGTERM');
 
-	logger.info('Logging in to Discord ...', { label: 'STARTUP' });
-	// Log in to Discord with your client's token
-	client.login(process.env['TOKEN']);
+	try {
+		logger.info('Logging in to Discord ...', { label: 'STARTUP' });
+		// Log in to Discord with your client's token
+		await client.login(process.env['TOKEN']);
+	} catch (error) {
+		unknownErrorLogger(error, 'STARTUP');
+		logger.error('Failed to log in to Discord. Exiting.', { label: 'STARTUP' });
+	}
 };
 
 // Register commands from sub-directories
@@ -94,5 +99,5 @@ readdir(cmdPath, { withFileTypes: true, recursive: true })
 		).filter((module) => module !== null);
 
 		// Finally, run the main entry point for the client
-		runClient(commands, events);
+		await runClient(commands, events);
 	});
