@@ -1,10 +1,13 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig((options) => ({
-	entry: ['src/index.ts'],
+	entry: ['src/index.ts', 'src/**/*.ts', '!src/lib/deploy.ts'],
 	format: ['esm'],
 	target: 'esnext',
 	outDir: 'build',
 	clean: true,
-	minify: !options.watch
+	bundle: false,
+	splitting: false,
+	minify: !options.watch,
+	onSuccess: 'tsc-alias'
 }));

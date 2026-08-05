@@ -38,8 +38,8 @@ export const importAndCheck = async <T extends CommandModule | EventModule>(
 	type: new (...args: any[]) => T,
 	verbose?: boolean
 ): Promise<T | null> => {
-	// Skip non-js or example files
-	if (!filePath.endsWith('.ts') || filePath.endsWith('.example.ts')) return null;
+	// Skip non js/ts or example files
+	if (!/(\.js|\.ts)$/.test(filePath) || /\.example(\.js|\.ts)$/.test(filePath)) return null;
 
 	// Load module from file path
 	const command = (await import(filePath)) as T;
