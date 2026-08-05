@@ -2,7 +2,8 @@ import {
 	SlashCommandBuilder,
 	PermissionFlagsBits,
 	type ChatInputCommandInteraction,
-	type AutocompleteInteraction
+	type AutocompleteInteraction,
+	InteractionContextType
 } from 'discord.js';
 import {
 	findKeyword,
@@ -17,7 +18,7 @@ import { EMPTY } from '$lib/constants.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('keyword')
-	.setDMPermission(false)
+	.setContexts(InteractionContextType.Guild)
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 	.setDescription('Manage keywords for randomized responses on mention.')
 	.addSubcommand((subcommand) =>

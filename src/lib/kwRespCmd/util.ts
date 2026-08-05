@@ -1,18 +1,19 @@
 import { logger } from '$lib/Logger.js';
-import type {
-	AutocompleteInteraction,
-	ChatInputCommandInteraction,
-	Interaction,
-	RepliableInteraction
+import {
+	MessageFlags,
+	type AutocompleteInteraction,
+	type ChatInputCommandInteraction,
+	type Interaction,
+	type RepliableInteraction
 } from 'discord.js';
 import { findResponsesWithKeyword } from '$lib/kwRespCmd/queries.js';
 import { EMPTY } from '$lib/constants.js';
 
 export async function replyOrFollowUp(interaction: RepliableInteraction, content: string) {
 	if (interaction.replied || interaction.deferred)
-		await interaction.followUp({ content, ephemeral: true });
+		await interaction.followUp({ content, flags: MessageFlags.Ephemeral });
 
-	await interaction.reply({ content, ephemeral: true });
+	await interaction.reply({ content, flags: MessageFlags.Ephemeral });
 }
 
 export function autocompleteError(interaction: AutocompleteInteraction) {

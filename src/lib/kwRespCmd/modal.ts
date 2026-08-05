@@ -1,33 +1,33 @@
-import { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } from 'discord.js';
+import { ModalBuilder, TextInputBuilder, TextInputStyle, LabelBuilder } from 'discord.js';
 
 export function buildResponseModal(keyword: string): ModalBuilder {
 	const modal = new ModalBuilder().setCustomId('response-add').setTitle('Add Response');
 
-	const keywordInput = new ActionRowBuilder<TextInputBuilder>().addComponents(
-		new TextInputBuilder()
-			.setLabel('Keyword')
-			.setStyle(TextInputStyle.Short)
-			.setCustomId('keyword')
-			.setRequired(true)
-			.setValue(keyword)
-	);
+	const keywordLabel = new LabelBuilder()
+		.setLabel('Keyword')
+		.setTextInputComponent(
+			new TextInputBuilder()
+				.setStyle(TextInputStyle.Short)
+				.setCustomId('keyword')
+				.setRequired(true)
+				.setValue(keyword)
+		);
 
-	const nameInput = new ActionRowBuilder<TextInputBuilder>().addComponents(
-		new TextInputBuilder()
-			.setLabel('Response Name')
-			.setStyle(TextInputStyle.Short)
-			.setCustomId('name')
-			.setRequired(true)
-	);
+	const nameLabel = new LabelBuilder()
+		.setLabel('Response Name')
+		.setTextInputComponent(
+			new TextInputBuilder().setStyle(TextInputStyle.Short).setCustomId('name').setRequired(true)
+		);
 
-	const messageInput = new ActionRowBuilder<TextInputBuilder>().addComponents(
-		new TextInputBuilder()
-			.setLabel('Response Message')
-			.setStyle(TextInputStyle.Paragraph)
-			.setCustomId('message')
-			.setRequired(true)
-	);
+	const messageLabel = new LabelBuilder()
+		.setLabel('Response Message')
+		.setTextInputComponent(
+			new TextInputBuilder()
+				.setStyle(TextInputStyle.Paragraph)
+				.setCustomId('message')
+				.setRequired(true)
+		);
 
-	modal.addComponents(keywordInput, nameInput, messageInput);
+	modal.addLabelComponents(keywordLabel, nameLabel, messageLabel);
 	return modal;
 }

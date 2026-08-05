@@ -3,7 +3,8 @@ import {
 	PermissionFlagsBits,
 	type ChatInputCommandInteraction,
 	type AutocompleteInteraction,
-	type ModalSubmitInteraction
+	type ModalSubmitInteraction,
+	InteractionContextType
 } from 'discord.js';
 import {
 	findKeyword,
@@ -22,7 +23,7 @@ import { listResponses } from '$lib/kwRespCmd/util.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('response')
-	.setDMPermission(false)
+	.setContexts(InteractionContextType.Guild)
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 	.setDescription('Manage randomized responses for specified keyword mentions.')
 	.addSubcommand((subcommand) =>
