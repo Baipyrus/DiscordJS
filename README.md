@@ -1,5 +1,11 @@
 # DiscordJS
 
+> [!NOTE]
+> The ideas and principles used behind the project structure and module handling
+> is directly inspired by the official [DiscordJS Guide](https://discordjs.guide/).
+> For more info on this topic, please refer to [Creating Your App > Command Handling](https://discordjs.guide/legacy/app-creation/handling-commands#loading-command-files)
+> and the section for "Event Handling" after that.
+
 ## Setup
 
 ### Requirements
