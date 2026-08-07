@@ -15,12 +15,12 @@
 
 ### Download
 
-Download the current [source code here](https://git.baipyr.us/Baipyrus/DiscordJS-Example/archive/main.zip).
+Download the current [source code here](https://github.com/Baipyrus/DiscordJS/archive/refs/heads/main.zip).
 
 Or clone the repository manually:
 
 ```bash
-git clone https://git.baipyr.us/Baipyrus/DiscordJS-Example.git
+git clone https://github.com/Baipyrus/DiscordJS.git
 ```
 
 ### Installation
