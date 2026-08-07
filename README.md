@@ -5,6 +5,10 @@
 > is directly inspired by the official [DiscordJS Guide](https://discordjs.guide/).
 > For more info on this topic, please refer to [Creating Your App > Command Handling](https://discordjs.guide/legacy/app-creation/handling-commands#loading-command-files)
 > and the section for "Event Handling" after that.
+>
+> Beyond that, this project also includes example feature implementations that are
+> disabled by default. They may be removed or enabled at any point. Please refer
+> to [an example](#example-command---keyword-mentions) for more.
 
 ## Setup
 
@@ -73,7 +77,14 @@ Under the list of names of any given command, there may be a quoted string.
 These are meant to highlight context menu capabilities for the current command,
 by showcasing the commands name in the quote.
 
-## Keyword mentions
+## Example Command - Keyword mentions
+
+> [!NOTE]
+> This command example has to be enabled first. You can do so by renaming the file
+> at [commands/keyword](./src/commands/keyword/slash.example.ts) and take away the
+> `.example` flag in the filename. Also note that this command alone does not
+> implement any usable functionality without its
+> [counterpart](#example-command---randomized-responses).
 
 ### Name
 
@@ -146,7 +157,13 @@ Options:
 
 All messages in this server are scanned for keywords contained in them.
 
-## Randomized responses
+## Example Command - Randomized responses
+
+> [!NOTE]
+> This command example has to be enabled first. You can do so by renaming the file
+> at [commands/response](./src/commands/response/slash.example.ts) and take away
+> the `.example` flag in the filename. Also note that this change has to be applied
+> to [events/messageCreate](./src/events/messages/messageCreate.example.ts) as well.
 
 ### Name
 
@@ -242,7 +259,7 @@ an associated keyword is mentioned in this server.
 
 ## TO-DO List
 
-> **NOTE**
+> [!NOTE]
 > These lists can and will easily be appended to in the future.
 > Any and all feedback is greatly appreciated!
 

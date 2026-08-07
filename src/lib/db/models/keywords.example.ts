@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { guilds } from '$models/guilds.js';
+import { guilds } from '$models/guilds.example.js';
 import type { InferSelectModel } from 'drizzle-orm';
 
 export const keywords = sqliteTable('keywords', {

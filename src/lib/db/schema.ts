@@ -1,3 +1,3 @@
-export * from '$models/guilds.js';
-export * from '$models/keywords.js';
-export * from '$models/responses.js';
+export * from '$models/guilds.example.js';
+export * from '$models/keywords.example.js';
+export * from '$models/responses.example.js';
