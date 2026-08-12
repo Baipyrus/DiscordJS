@@ -1,5 +1,5 @@
 import type { AutocompleteInteraction } from 'discord.js';
-import { getKeywordChoices, getResponseChoices } from '$lib/kwRespCmd/queries.js';
+import { getKeywordChoices, getResponseChoices } from '$lib/kwRespCmd/queries.example.js';
 
 export async function handleKeywordAutocomplete(interaction: AutocompleteInteraction) {
 	const { options, guildId } = interaction;

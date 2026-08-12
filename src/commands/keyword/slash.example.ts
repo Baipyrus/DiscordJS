@@ -11,9 +11,10 @@ import {
 	createKeyword,
 	deleteKeyword,
 	findKeywords
-} from '$lib/kwRespCmd/queries.js';
-import { handleKeywordAutocomplete } from '$lib/kwRespCmd/autocomplete.js';
-import { replyOrFollowUp, logkwRespCmd, listResponses } from '$lib/kwRespCmd/util.js';
+} from '$lib/kwRespCmd/queries.example.js';
+import { handleKeywordAutocomplete } from '$lib/kwRespCmd/autocomplete.example.js';
+import { listResponses } from '$lib/kwRespCmd/util.example.js';
+import { replyOrFollowUp } from '$lib/util.js';
 import { EMPTY } from '$lib/constants.js';
 
 export const data = new SlashCommandBuilder()
@@ -76,7 +77,7 @@ async function remove(interaction: ChatInputCommandInteraction) {
 	if (!existing) return await replyOrFollowUp(interaction, 'Specified keyword does not exist!');
 
 	await deleteKeyword(guildId!, keyword);
-	return await replyOrFollowUp(interaction, `Keyword '${keyword}' removed!`);
+	await replyOrFollowUp(interaction, `Keyword '${keyword}' removed!`);
 }
 
 async function list(interaction: ChatInputCommandInteraction) {
@@ -87,11 +88,10 @@ async function list(interaction: ChatInputCommandInteraction) {
 		return await replyOrFollowUp(interaction, 'No keywords have been registered in this server.');
 
 	const keywordStr = keywords.map((k) => k.word).join('\n- ');
-	return await replyOrFollowUp(interaction, `Keywords:\n- ${keywordStr}`);
+	await replyOrFollowUp(interaction, `Keywords:\n- ${keywordStr}`);
 }
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-	logkwRespCmd(interaction, 'Keyword command');
 	const subCmd = interaction.options.getSubcommand();
 
 	switch (subCmd) {

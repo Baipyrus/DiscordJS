@@ -12,14 +12,14 @@ import {
 	deleteResponseWithKeyword,
 	responseExistsWithKeyword,
 	createResponseWithKeyword
-} from '$lib/kwRespCmd/queries.js';
+} from '$lib/kwRespCmd/queries.example.js';
 import {
 	handleKeywordAutocomplete,
 	handleResponseAutocomplete
-} from '$lib/kwRespCmd/autocomplete.js';
-import { buildResponseModal } from '$lib/kwRespCmd/modal.js';
-import { replyOrFollowUp, logkwRespCmd } from '$lib/kwRespCmd/util.js';
-import { listResponses } from '$lib/kwRespCmd/util.js';
+} from '$lib/kwRespCmd/autocomplete.example.js';
+import { buildResponseModal } from '$lib/kwRespCmd/modal.example.js';
+import { replyOrFollowUp } from '$lib/util.js';
+import { listResponses } from '$lib/kwRespCmd/util.example.js';
 
 export const data = new SlashCommandBuilder()
 	.setName('response')
@@ -126,7 +126,6 @@ async function info(interaction: ChatInputCommandInteraction) {
 }
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-	logkwRespCmd(interaction, 'Response command execute');
 	const subCmd = interaction.options.getSubcommand();
 
 	switch (subCmd) {
@@ -154,7 +153,7 @@ export async function autocomplete(interaction: AutocompleteInteraction) {
 		case 'name':
 			return await handleResponseAutocomplete(interaction);
 		default:
-			throw new Error(`Uknown subcommand option: ${subCmd} - ${focused.name}`);
+			throw new Error(`Unknown subcommand option: ${subCmd} - ${focused.name}`);
 	}
 }
 
@@ -164,7 +163,6 @@ export async function modalSubmit(interaction: ModalSubmitInteraction) {
 	const name = fields.getTextInputValue('name').toLowerCase();
 	const message = fields.getTextInputValue('message');
 
-	logkwRespCmd(interaction, 'Response modal submit');
 	if (await responseExistsWithKeyword(guildId!, keyword, name))
 		return await replyOrFollowUp(
 			interaction,
