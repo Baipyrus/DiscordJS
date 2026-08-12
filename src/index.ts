@@ -38,9 +38,10 @@ const runClient = async (commands: CommandModule[], events: EventModule[]) => {
 		intents: [
 			GatewayIntentBits.Guilds,
 			GatewayIntentBits.GuildMessages,
-			GatewayIntentBits.MessageContent
+			GatewayIntentBits.MessageContent,
+			GatewayIntentBits.GuildMessageReactions
 		],
-		partials: [Partials.Message]
+		partials: [Partials.Message, Partials.Reaction]
 	}) as ModifiedClient;
 
 	// The commands registered for this client.
