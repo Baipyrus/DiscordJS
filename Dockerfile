@@ -7,8 +7,11 @@ WORKDIR /app
 COPY ./package.json ./
 COPY ./package-lock.json ./
 
-# Write default DB file path
-RUN echo "DB_NAME=file:local.db" > .env
+# Write default DB file path.
+# NOTE: Should be overwridden in production use.
+# Can be copied from a temporary countainer to
+# create a persistent database.
+ENV DB_NAME="file:local.db"
 
 # Reinstalls all dependencies cleanly
 RUN npm ci
@@ -34,12 +37,8 @@ WORKDIR /app
 # Copies production build to the image
 COPY --from=builder --chown=node:node /app/build ./build/
 COPY --from=builder --chown=node:node /app/local.db ./
-COPY --from=builder --chown=node:node /app/.env ./
-
-# Copy runtime dependencies
-COPY --chown=node:node ./package.json ./
 
 EXPOSE 3000
 
 # Starts the node server
-CMD ["npm", "run", "prod"]
+CMD [ "node", "./build/index.js" ]
