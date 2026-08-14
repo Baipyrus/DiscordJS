@@ -9,8 +9,8 @@ import {
 	findKeyword,
 	keywordExists,
 	createKeyword,
-	deleteKeyword,
-	findKeywords
+	findKeywords,
+	deleteKeywordAndResponses
 } from '$lib/kwRespCmd/queries.example.js';
 import { handleKeywordAutocomplete } from '$lib/kwRespCmd/autocomplete.example.js';
 import { listResponses } from '$lib/kwRespCmd/util.example.js';
@@ -25,7 +25,7 @@ export const data = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('add')
-			.setDescription('Add a new keyword to listen for.')
+			.setDescription('Add a new keyword to listen for (forces lowercase).')
 			.addStringOption((option) =>
 				option.setName('keyword').setDescription('The keyword to add.').setRequired(true)
 			)
@@ -60,7 +60,7 @@ export const data = new SlashCommandBuilder()
 
 async function add(interaction: ChatInputCommandInteraction) {
 	const { options, guildId } = interaction;
-	const keyword = options.getString('keyword', true);
+	const keyword = options.getString('keyword', true).toLowerCase();
 
 	if (await keywordExists(guildId!, keyword))
 		return await replyOrFollowUp(interaction, `Keyword '${keyword}' already exists!`);
@@ -76,7 +76,7 @@ async function remove(interaction: ChatInputCommandInteraction) {
 	const existing = await findKeyword(guildId!, keyword);
 	if (!existing) return await replyOrFollowUp(interaction, 'Specified keyword does not exist!');
 
-	await deleteKeyword(guildId!, keyword);
+	await deleteKeywordAndResponses(guildId!, keyword);
 	await replyOrFollowUp(interaction, `Keyword '${keyword}' removed!`);
 }
 

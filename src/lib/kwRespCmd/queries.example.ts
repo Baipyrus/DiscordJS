@@ -43,6 +43,11 @@ export async function createKeyword(guildId: string, word: string): Promise<Keyw
 	return created;
 }
 
+export async function deleteKeywordAndResponses(guildId: string, word: string) {
+	await db.delete(responses).where(eq(responses.keyword, getKeywordIdQuery(guildId!, word)));
+	await deleteKeyword(guildId!, word);
+}
+
 export async function deleteKeyword(guildId: string, word: string): Promise<void> {
 	await db.delete(keywords).where(and(eq(keywords.guild, guildId), eq(keywords.word, word)));
 }
