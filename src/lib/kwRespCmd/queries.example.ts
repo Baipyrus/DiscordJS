@@ -162,27 +162,3 @@ export async function deleteResponseWithKeyword(
 export async function deleteResponse(keywordId: string, name: string): Promise<void> {
 	await db.delete(responses).where(and(eq(responses.keyword, keywordId), eq(responses.name, name)));
 }
-
-// Autocomplete helpers
-export async function getKeywordChoices(
-	guildId: string,
-	focused: string
-): Promise<{ name: string; value: string }[]> {
-	const all = await findKeywords(guildId);
-	return all
-		.filter((k) => k.word.startsWith(focused))
-		.map((k) => ({ name: k.word, value: k.word }));
-}
-
-export async function getResponseChoices(
-	guildId: string,
-	keyword: string,
-	focused: string
-): Promise<{ name: string; value: string }[]> {
-	const keywordRow = await findKeyword(guildId, keyword);
-	if (!keywordRow) return [];
-	const all = await findResponses(keywordRow.id);
-	return all
-		.filter((r) => r.name.startsWith(focused))
-		.map((r) => ({ name: r.name, value: r.name }));
-}
