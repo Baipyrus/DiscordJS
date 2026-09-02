@@ -1,0 +1,36 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:best-practices", "config:js-app"],
+	"schedule": ["* 0-3 * * *"],
+	"packageRules": [
+		{
+			"groupName": "Non-major docker or workflow dependencies",
+			"matchDatasources": ["docker", "github-digest", "github-runners", "github-tags"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"automerge": true
+		},
+		{
+			"groupName": "Non-major NPM (app) dependencies",
+			"matchUpdateTypes": ["minor", "patch"],
+			"automerge": true,
+			"automergeType": "branch"
+		},
+		{
+			"groupName": "Major dependencies",
+			"matchUpdateTypes": ["major"]
+		},
+		{
+			"matchUpdateTypes": ["digest"],
+			"automerge": true,
+			"automergeType": "branch"
+		}
+	],
+	"vulnerabilityAlerts": {
+		"enabled": true,
+		"automerge": true
+	},
+	"lockFileMaintenance": {
+		"enabled": true,
+		"automerge": true
+	}
+}
