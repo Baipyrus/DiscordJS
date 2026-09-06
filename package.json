@@ -25,7 +25,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@libsql/client": "0.17.4",
+		"@libsql/client": "0.18.0",
 		"discord.js": "14.27.0",
 		"drizzle-orm": "1.0.0-rc.5-ab785fc",
 		"winston": "3.19.0"
