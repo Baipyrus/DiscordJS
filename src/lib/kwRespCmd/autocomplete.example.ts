@@ -1,5 +1,6 @@
 import type { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from 'discord.js';
 import { findKeywords, findResponsesWithKeyword } from '$lib/kwRespCmd/queries.example.js';
+import { STR_IDX_NOT_FOUND } from '$lib/constants.js';
 
 export async function handleKeywordAutocomplete(interaction: AutocompleteInteraction) {
 	const { options, guildId } = interaction;
@@ -11,7 +12,7 @@ export async function handleKeywordAutocomplete(interaction: AutocompleteInterac
 	const results = await findKeywords(guildId);
 	await interaction.respond(
 		results
-			.filter((k) => k.word.indexOf(focused) > -1)
+			.filter((k) => k.word.indexOf(focused) > STR_IDX_NOT_FOUND)
 			.map((k) => ({ name: k.word, value: k.word }) as ApplicationCommandOptionChoiceData)
 	);
 }
@@ -27,7 +28,7 @@ export async function handleResponseAutocomplete(interaction: AutocompleteIntera
 	const results = await findResponsesWithKeyword(guildId, keyword);
 	await interaction.respond(
 		results
-			.filter((r) => r.name.indexOf(focused) > -1)
+			.filter((r) => r.name.indexOf(focused) > STR_IDX_NOT_FOUND)
 			.map((r) => ({ name: r.name, value: r.name }) as ApplicationCommandOptionChoiceData)
 	);
 }

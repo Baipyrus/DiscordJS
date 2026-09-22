@@ -1,5 +1,7 @@
+/* eslint max-classes-per-file: off, @typescript-eslint/no-explicit-any: off, init-declarations: off, no-case-declarations: off */
+
 import Module from 'module';
-import { EMPTY } from '$lib/constants.js';
+import { ARR_START_POS, EMPTY } from '$lib/constants.js';
 import { logger } from '$lib/Logger.js';
 import type { ContextMenuCommandBuilder, SlashCommandBuilder } from 'discord.js';
 
@@ -26,7 +28,7 @@ const optionalEventProps = ['once'];
 const propsTrimmedStr = (props: string[]) => {
 	const TRIM_PROPS_LIMIT = 2;
 	const missingStr = props
-		.slice(0, TRIM_PROPS_LIMIT)
+		.slice(ARR_START_POS, TRIM_PROPS_LIMIT)
 		.map((p) => `'${p}'`)
 		.join(', ');
 	return missingStr + (props.length > TRIM_PROPS_LIMIT ? ', ...' : '');

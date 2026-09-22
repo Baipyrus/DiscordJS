@@ -1,3 +1,4 @@
+import { ONLY_ONE_RESULT } from '$lib/constants.js';
 import { db } from '$lib/db/index.js';
 import { guilds, keywords, responses } from '$lib/db/schema.js';
 import { and, eq } from 'drizzle-orm';
@@ -12,7 +13,7 @@ export async function findKeyword(guildId: string, word: string) {
 		.select()
 		.from(keywords)
 		.where(and(eq(keywords.guild, guildId), eq(keywords.word, word)))
-		.limit(1);
+		.limit(ONLY_ONE_RESULT);
 	return result[0];
 }
 
@@ -21,7 +22,7 @@ export const getKeywordIdQuery = (guildId: string, word: string) =>
 		.select({ id: keywords.id })
 		.from(keywords)
 		.where(and(eq(keywords.guild, guildId), eq(keywords.word, word)))
-		.limit(1);
+		.limit(ONLY_ONE_RESULT);
 
 export async function getKeywordId(guildId: string, word: string) {
 	const keyword = await getKeywordIdQuery(guildId, word);
@@ -78,7 +79,7 @@ export async function findResponseWithKeyword(
 				eq(responses.name, responseName)
 			)
 		)
-		.limit(1);
+		.limit(ONLY_ONE_RESULT);
 	return result[0];
 }
 
@@ -87,7 +88,7 @@ export async function findResponse(keywordId: string, name: string) {
 		.select()
 		.from(responses)
 		.where(and(eq(responses.keyword, keywordId), eq(responses.name, name)))
-		.limit(1);
+		.limit(ONLY_ONE_RESULT);
 	return result[0];
 }
 

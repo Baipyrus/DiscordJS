@@ -2,12 +2,14 @@ import prettier from 'eslint-config-prettier';
 import path from 'node:path';
 import js from '@eslint/js';
 import { defineConfig, includeIgnoreFile } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,
+	tseslint.configs.recommended,
 	prettier,
 	{
 		rules: {

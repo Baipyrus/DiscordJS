@@ -46,14 +46,14 @@ const genericExecute = async (
 ) => {
 	try {
 		logger.info(
-			// @ts-ignore 2339 Ignore use undefined property 'commandName'
+			// @ts-expect-error 2339 Ignore use undefined property 'commandName'
 			`Command '${cmdName ?? interaction.commandName ?? 'anonymous'}' ${
 				description ?? `used "${name}"`
 			}.`,
 			{ label: 'INTERACTION' }
 		);
 
-		// @ts-ignore 7053 Ignore one time use of this implicite object syntax
+		// @ts-expect-error 7053 Ignore one time use of this implicite object syntax
 		await command[name](interaction);
 	} catch (error) {
 		unknownErrorLogger(error, 'INTERACTION');
@@ -62,7 +62,7 @@ const genericExecute = async (
 
 export const name = Events.InteractionCreate;
 export async function execute(interaction: Interaction & { client: ModifiedClient }) {
-	// @ts-ignore 2339 Ignore use undefined property 'commandName'
+	// @ts-expect-error 2339 Ignore use undefined property 'commandName'
 	const { commandName } = interaction;
 	let command = interaction.client.commands.get(commandName);
 
