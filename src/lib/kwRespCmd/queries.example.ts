@@ -1,13 +1,13 @@
 import { db } from '$lib/db/index.js';
-import { guilds, keywords, responses, type Keyword, type Response } from '$lib/db/schema.js';
+import { guilds, keywords, responses } from '$lib/db/schema.js';
 import { and, eq } from 'drizzle-orm';
 
 // Keyword queries
-export async function findKeywords(guildId: string): Promise<Keyword[]> {
+export function findKeywords(guildId: string) {
 	return db.select().from(keywords).where(eq(keywords.guild, guildId));
 }
 
-export async function findKeyword(guildId: string, word: string): Promise<Keyword | undefined> {
+export async function findKeyword(guildId: string, word: string) {
 	const result = await db
 		.select()
 		.from(keywords)
@@ -23,17 +23,17 @@ export const getKeywordIdQuery = (guildId: string, word: string) =>
 		.where(and(eq(keywords.guild, guildId), eq(keywords.word, word)))
 		.limit(1);
 
-export async function getKeywordId(guildId: string, word: string): Promise<string | undefined> {
+export async function getKeywordId(guildId: string, word: string) {
 	const keyword = await getKeywordIdQuery(guildId, word);
-	return keyword[0]!.id;
+	return keyword[0]?.id;
 }
 
-export async function keywordExists(guildId: string, word: string): Promise<boolean> {
+export async function keywordExists(guildId: string, word: string) {
 	const keyword = await findKeyword(guildId, word);
 	return keyword !== undefined;
 }
 
-export async function createKeyword(guildId: string, word: string): Promise<Keyword> {
+export async function createKeyword(guildId: string, word: string) {
 	// Create Guild entry into DB if not exists
 	await db.insert(guilds).values({ id: guildId }).onConflictDoNothing();
 
@@ -48,22 +48,19 @@ export async function deleteKeywordAndResponses(guildId: string, word: string) {
 	await deleteKeyword(guildId!, word);
 }
 
-export async function deleteKeyword(guildId: string, word: string): Promise<void> {
+export async function deleteKeyword(guildId: string, word: string) {
 	await db.delete(keywords).where(and(eq(keywords.guild, guildId), eq(keywords.word, word)));
 }
 
 // Response queries
-export async function findResponsesWithKeyword(
-	guildId: string,
-	keyword: string
-): Promise<Response[]> {
+export function findResponsesWithKeyword(guildId: string, keyword: string) {
 	return db
 		.select()
 		.from(responses)
 		.where(eq(responses.keyword, getKeywordIdQuery(guildId, keyword)));
 }
 
-export async function findResponses(keywordId: string): Promise<Response[]> {
+export function findResponses(keywordId: string) {
 	return db.select().from(responses).where(eq(responses.keyword, keywordId));
 }
 
@@ -71,7 +68,7 @@ export async function findResponseWithKeyword(
 	guildId: string,
 	keyword: string,
 	responseName: string
-): Promise<Response | undefined> {
+) {
 	const result = await db
 		.select()
 		.from(responses)
@@ -85,7 +82,7 @@ export async function findResponseWithKeyword(
 	return result[0];
 }
 
-export async function findResponse(keywordId: string, name: string): Promise<Response | undefined> {
+export async function findResponse(keywordId: string, name: string) {
 	const result = await db
 		.select()
 		.from(responses)
@@ -98,12 +95,12 @@ export async function responseExistsWithKeyword(
 	guildId: string,
 	keyword: string,
 	responseName: string
-): Promise<boolean> {
+) {
 	const response = await findResponseWithKeyword(guildId, keyword, responseName);
 	return response !== undefined;
 }
 
-export async function responseExists(keywordId: string, name: string): Promise<boolean> {
+export async function responseExists(keywordId: string, name: string) {
 	const response = await findResponse(keywordId, name);
 	return response !== undefined;
 }
@@ -113,7 +110,7 @@ export async function createResponseWithKeyword(
 	keyword: string,
 	responseName: string,
 	responseMessage: string
-): Promise<Response> {
+) {
 	const kwId = await getKeywordId(guildId, keyword);
 	if (!kwId) throw new Error('Failed to get required keyword id!');
 
@@ -132,11 +129,7 @@ export async function createResponseWithKeyword(
 	return created;
 }
 
-export async function createResponse(
-	keywordId: string,
-	name: string,
-	message: string
-): Promise<Response> {
+export async function createResponse(keywordId: string, name: string, message: string) {
 	const created = (
 		await db.insert(responses).values({ keyword: keywordId, name, message }).returning()
 	)[0];
@@ -148,7 +141,7 @@ export async function deleteResponseWithKeyword(
 	guildId: string,
 	keyword: string,
 	responseName: string
-): Promise<void> {
+) {
 	await db
 		.delete(responses)
 		.where(
@@ -159,6 +152,6 @@ export async function deleteResponseWithKeyword(
 		);
 }
 
-export async function deleteResponse(keywordId: string, name: string): Promise<void> {
+export async function deleteResponse(keywordId: string, name: string) {
 	await db.delete(responses).where(and(eq(responses.keyword, keywordId), eq(responses.name, name)));
 }
