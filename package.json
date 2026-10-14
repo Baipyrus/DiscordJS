@@ -27,16 +27,16 @@
 	"dependencies": {
 		"@libsql/client": "0.18.0",
 		"discord.js": "14.27.0",
-		"drizzle-orm": "0.45.3",
+		"drizzle-orm": "0.45.4",
 		"winston": "3.19.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "10.0.1",
-		"@types/node": "26.6.4",
+		"@types/node": "26.6.5",
 		"drizzle-kit": "0.31.11",
 		"eslint": "10.12.0",
 		"eslint-config-prettier": "10.1.8",
-		"prettier": "3.9.9",
+		"prettier": "3.9.10",
 		"tsc-alias": "1.9.7",
 		"tsup": "8.5.1",
 		"tsx": "4.23.15",
