@@ -13,3 +13,4 @@ export const ONLY_ONE_RESULT = 1;
 
 // Miscellaneous
 export const REACTION_COPYABLE_BOOL = 1;
+export const REACTION_KEYWORD_LINK = 0;

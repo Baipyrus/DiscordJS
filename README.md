@@ -263,7 +263,8 @@ an associated keyword is mentioned in this server.
 > [!NOTE]
 > This command example has to be enabled first. You can do so by renaming the file
 > at [commands/reaction](./src/commands/reaction/slash.example.ts) and take away
-> the `.example` flag in the filename.
+> the `.example` flag in the filename. Also note that this example relies on the
+> [Keyword mentions](#example-command---keyword-mentions) example as well.
 > This change also has to be applied to [events/messageReactionAdd](./src/events/messages/reactionAdd.example.ts)
 > and [events/messageReactionRemove](./src/events/messages/reactionRemove.example.ts).
 
@@ -297,6 +298,23 @@ Options:
 
 - \_emoji: String
 
+#### keyword
+
+Full names:
+
+- `/reaction keyword`
+
+Description:
+
+Link a reaction to a keyword instead of simply copying it. When linked, the reaction
+will be sent automatically when the keyword is mentioned, and it will not be
+automatically copied when used in other contexts.
+
+Options:
+
+- \_keyword: String
+- \_emoji: String
+
 #### remove
 
 Full names:
@@ -327,7 +345,9 @@ Lists all registered emojis used in reactions in this server.
 Whenever a registered emoji is used to react to any message the bot
 can read, by default, it will automatically copy that reaction behavior.
 Once all reactions of one such emoji have been removed from a message,
-the bot will automatically revoke is copied reaction as well.
+the bot will automatically revoke is copied reaction as well. Additionally,
+reactions can also be registered to be used in the context of keyword mentions,
+allowing for a much simpler action being taken instead of posting a full message.
 
 ## TO-DO List
 
