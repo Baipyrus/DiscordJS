@@ -16,6 +16,7 @@ export class EventModule extends Module {
 	name!: string;
 	execute!: (...args: any[]) => void | Promise<void>;
 	once?: boolean;
+	ignore?: boolean;
 }
 
 // INFO: Update these lists of attributes when updating the modules above!
@@ -59,11 +60,15 @@ export const importAndCheck = async <T extends CommandModule | EventModule>(
 			name = (command as CommandModule).data.name;
 			break;
 		case EventModule:
+			// NOTE: Unique to Events: Can be skipped from internal checker to use as custom event
+			const typeCast = command as EventModule;
+			if (typeCast.ignore) return null;
+
 			required = requiredEventProps;
 			optional = optionalEventProps;
 
 			typeStr = 'EventModule';
-			name = (command as EventModule).name;
+			name = typeCast.name;
 			break;
 		default:
 			logger.error(`The module at ${filePath} is not of any recognizable type!`, {
