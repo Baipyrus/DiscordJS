@@ -10,3 +10,6 @@ export const SHUTDOWN_TIMEOUT_MS = 3000;
 
 // Database queries
 export const ONLY_ONE_RESULT = 1;
+
+// Miscellaneous
+export const REACTION_COPYABLE_BOOL = 1;

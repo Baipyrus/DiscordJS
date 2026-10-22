@@ -9,6 +9,7 @@ export const name = Events.MessageCreate;
 export async function execute(message: Message) {
 	// Ignore direct messages and own messages
 	if (!message.inGuild() || message.author.id === message.client.user.id) return;
+	const { guildId } = message;
 
 	// Split message content into words
 	const words = message.content
@@ -21,19 +22,12 @@ export async function execute(message: Message) {
 		// Deduplicate word list
 		.filter((word, idx, arr) => arr.indexOf(word) === idx);
 
-	// Get appropriate reponses matching all mentioned keywords
+	// Get appropriate responses matching all mentioned keywords
 	const results = await db
-		.select()
+		.select({ message: responses.message, name: responses.name })
 		.from(responses)
-		.where(
-			inArray(
-				responses.keyword,
-				db
-					.select({ id: keywords.id })
-					.from(keywords)
-					.where(and(eq(keywords.guild, message.guildId), inArray(keywords.word, words)))
-			)
-		);
+		.innerJoin(keywords, and(eq(keywords.id, responses.keyword)))
+		.where(and(eq(keywords.guild, guildId), inArray(keywords.word, words)));
 
 	// Ignore if no keywords with appropriate response were found
 	if (results.length === EMPTY) return;

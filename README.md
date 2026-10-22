@@ -162,8 +162,9 @@ All messages in this server are scanned for keywords contained in them.
 > [!NOTE]
 > This command example has to be enabled first. You can do so by renaming the file
 > at [commands/response](./src/commands/response/slash.example.ts) and take away
-> the `.example` flag in the filename. Also note that this change has to be applied
-> to [events/messageCreate](./src/events/messages/messageCreate.example.ts) as well.
+> the `.example` flag in the filename. Also note that this example relies on the
+> [Keyword mentions](#example-command---keyword-mentions) example as well.
+> This change also has to be applied to [events/messageCreate](./src/events/messages/messageCreate.example.ts).
 
 ### Name
 
@@ -256,6 +257,77 @@ Options:
 
 Registered responses will be used to reply to a user once
 an associated keyword is mentioned in this server.
+
+## Example Command - Reactions
+
+> [!NOTE]
+> This command example has to be enabled first. You can do so by renaming the file
+> at [commands/reaction](./src/commands/reaction/slash.example.ts) and take away
+> the `.example` flag in the filename.
+> This change also has to be applied to [events/messageReactionAdd](./src/events/messages/reactionAdd.example.ts)
+> and [events/messageReactionRemove](./src/events/messages/reactionRemove.example.ts).
+
+### Name
+
+`/reaction`
+
+### Description
+
+Register emojis to be used automatically whenever the bot sees another user react
+to any message with this exact emoji. These emojis can be any builtin or custom
+server emoji, so long as they are valid within this server and usable by the bot
+itself.
+
+### Subcommands
+
+#### add
+
+Full names:
+
+- `/reaction add`
+
+Description:
+
+Registers a new emoji to the database to be listened for in this server.
+Registered reactions will be duplicated by the bot whenever someone uses them.
+The input cannot be autocompleted but simply using Discord's builtin emoji
+selectors should be sufficient.
+
+Options:
+
+- \_emoji: String
+
+#### remove
+
+Full names:
+
+- `/reaction remove`
+
+Description:
+
+Removes a specific emoji from the reaction database of this server.
+Uses auto complete to help fill out the currently registered emojis.
+
+Options:
+
+- \_emoji: String
+
+#### list
+
+Full names:
+
+- `/reaction list`
+
+Description:
+
+Lists all registered emojis used in reactions in this server.
+
+### Automated tasks
+
+Whenever a registered emoji is used to react to any message the bot
+can read, by default, it will automatically copy that reaction behavior.
+Once all reactions of one such emoji have been removed from a message,
+the bot will automatically revoke is copied reaction as well.
 
 ## TO-DO List
 
