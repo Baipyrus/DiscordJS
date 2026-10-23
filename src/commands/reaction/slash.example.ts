@@ -170,11 +170,13 @@ async function keyword(interaction: ChatInputCommandInteraction) {
 	// Otherwise, create one!
 	if (!result) result = await createReaction(new Reaction(guildId!, emoji, KW_REACT_LINK_ONLY));
 	else if (
-		await db
-			.select()
-			.from(keywordReactions)
-			.where(eq(keywordReactions.reaction, result.id))
-			.limit(ONLY_ONE_RESULT)
+		(
+			await db
+				.select()
+				.from(keywordReactions)
+				.where(eq(keywordReactions.reaction, result.id))
+				.limit(ONLY_ONE_RESULT)
+		)[0]
 	)
 		return replyOrFollowUp(interaction, `Reaction is already registered for keyword mentions!`);
 
@@ -186,7 +188,7 @@ async function keyword(interaction: ChatInputCommandInteraction) {
 
 	await replyOrFollowUp(
 		interaction,
-		`Reaction '${emoji}' successfully linked to keyword '${keyword}' (non-copyable).`
+		`Reaction '${emoji}' successfully linked to keyword '${keyword}'.`
 	);
 }
 
