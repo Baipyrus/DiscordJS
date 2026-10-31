@@ -1,6 +1,6 @@
 {
-	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:best-practices", "config:js-app"],
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"schedule": ["* 0-3 * * *"],
 	"packageRules": [
 		{
@@ -23,6 +23,11 @@
 			"matchUpdateTypes": ["digest"],
 			"automerge": true,
 			"automergeType": "branch"
+		},
+		{
+			"description": "Blocked: TS 7 API is not yet compatible",
+			"matchPackageNames": ["typescript"],
+			"allowedVersions": "<7"
 		}
 	],
 	"vulnerabilityAlerts": {
