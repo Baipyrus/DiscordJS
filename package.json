@@ -26,7 +26,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@libsql/client": "0.18.0",
-		"discord.js": "14.27.0",
+		"discord.js": "14.28.0",
 		"drizzle-orm": "0.45.4",
 		"winston": "3.19.0"
 	},
@@ -34,10 +34,10 @@
 		"@eslint/js": "10.0.1",
 		"@types/node": "26.6.6",
 		"drizzle-kit": "0.31.11",
-		"eslint": "10.13.0",
+		"eslint": "10.14.0",
 		"eslint-config-prettier": "10.1.8",
 		"prettier": "3.9.10",
-		"tsc-alias": "1.9.9",
+		"tsc-alias": "1.9.10",
 		"tsup": "9.0.0",
 		"tsx": "4.23.15",
 		"typescript": "6.0.3",
